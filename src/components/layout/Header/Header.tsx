@@ -1,111 +1,122 @@
-"use client";
-import React, { useState, useEffect } from "react";
+'use client'
+import React, { useState } from 'react'
+import { m as motion  } from 'framer-motion'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Facebook, Phone, Twitter, Youtube, Instagram, ChevronDown, Menu } from 'lucide-react'
 import {
-  ChevronDown,
-  Phone,
-  Mail,
-  Facebook,
-  Youtube,
-  Twitter,
-  Linkedin,
-} from "lucide-react";
-import { useSpring, animated, config } from "@react-spring/web";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
+const links = [
+  {
+    title: 'Home',
+    href: '/'
+  },
+  {
+    title: 'About',
+    href: '/about'
+  },
+  {
+    title: 'Services',
+    href: '/services'
+  },
+  {
+    title: 'Contact Us',
+    href: '/contact'
+
+  }
+]
+
 
 const Header = () => {
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const [scrollY, setScrollY] = useState(0);
-  const headerAnimation = useSpring({
-    opacity: scrollY > 50 ? 1 : 0, // Ensure opacity transitions correctly
-    transform: `translateY(${scrollY > 50 ? 0 : -100}%)`,
-    config: config.slow,
-  });
-
-  const fadeIn = useSpring({
-    opacity: 1,
-    from: { opacity: 0 },
-    config: config.molasses,
-  });
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <>
-      <animated.header
-        style={headerAnimation}
-        className="bg-black text-white py-2 fixed w-full z-50"
-      >
-        <div className="container mx-auto flex justify-between items-center">
+    <header className="bg-gradient-to-r from-gray-900 to-black text-white shadow-lg">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-2 text-sm border-b border-gray-700">
+          <motion.a 
+            href="mailto:admin@dalielictrique.ca" 
+            className="hover:text-red-400 transition-colors duration-200"
+            whileHover={{ scale: 1.05 }}
+          >
+            admin@dalielictrique.ca
+          </motion.a>
           <div className="flex items-center space-x-4">
-            <Mail className="h-4 w-4" />
-            <span>admin@yourelectric.com</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Facebook className="h-4 w-4" />
-            <Youtube className="h-4 w-4" />
-            <Twitter className="h-4 w-4" />
-            <Linkedin className="h-4 w-4" />
-            <Phone className="h-4 w-4" />
+            {[Instagram, Facebook, Youtube, Twitter, Phone].map((Icon, index) => (
+              <motion.a
+                key={index}
+                href="#"
+                className="hover:text-red-400 transition-colors duration-200"
+                whileHover={{ scale: 1.2, rotate: 5 }}
+              >
+                <Icon size={18} />
+              </motion.a>
+            ))}
           </div>
         </div>
-      </animated.header>
-      <div className="min-h-screen flex flex-col">
-        <nav className="bg-white shadow-md sticky top-0 z-40">
-          <div className="container mx-auto flex justify-between items-center py-4">
-            <animated.div style={fadeIn} className="text-2xl font-bold">
-              YOUR<span className="text-red-600">ELECTRIC</span>
-            </animated.div>
-            <div className="flex items-center space-x-6">
-              <animated.div style={fadeIn}>
-                <Link href="/" className="text-red-600 font-semibold">
-                  Home
-                </Link>
-              </animated.div>
-              <animated.div style={fadeIn}>
-                <Link
-                  href="/about"
-                  className="text-gray-600 hover:text-red-600"
-                >
-                  About
-                </Link>
-              </animated.div>
-              <animated.div style={fadeIn} className="relative group">
-                <button className="text-gray-600 hover:text-red-600 flex items-center">
-                  Services
-                  <ChevronDown className="h-4 w-4 ml-1" />
-                </button>
-                {/* Dropdown menu would go here */}
-              </animated.div>
-              <animated.div style={fadeIn} className="relative group">
-                <button className="text-gray-600 hover:text-red-600 flex items-center">
-                  Our Projects
-                  <ChevronDown className="h-4 w-4 ml-1" />
-                </button>
-                {/* Dropdown menu would go here */}
-              </animated.div>
-              <animated.div style={fadeIn}>
-                <Link
-                  href="/contact"
-                  className="text-gray-600 hover:text-red-600"
-                >
-                  Contact Us
-                </Link>
-              </animated.div>
-            </div>
-            <animated.div style={fadeIn}>
-              <Button className="bg-red-600 hover:bg-red-700 text-white">
-                Get a consultant
-              </Button>
-            </animated.div>
+        <div className="flex justify-between items-center py-4">
+          <motion.div
+            className="text-2xl md:text-3xl font-bold"
+          >
+            <span className="text-white">DALI</span>
+            <span className="text-red-500">ELICTRIQUE</span>
+          </motion.div>
+          <nav className="hidden lg:flex items-center space-x-4">
+            {links.map((item, index) => (
+              <div key={index} className="relative group">
+                  <Link 
+                    href={item.href} 
+                    className={`text-sm px-4 py-2.5 rounded-sm   font-medium hover:bg-red-500 hover:text-white  text-white  transition-colors duration-200 ${index === 0 ? 'text-red-500' : ''}`}
+                  >
+                    {item.title}
+                  </Link>
+              </div>
+            ))}
+          </nav>
+          <div className="flex items-center space-x-4">
+            <Button className="bg-red-500 hidden lg:block hover:ring-2 hover:ring-red-400">
+              Get a consultant
+            </Button>
+            <Button 
+              variant="ghost" 
+              className="lg:hidden text-white hover:text-red-400"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <Menu size={24} />
+            </Button>
           </div>
-        </nav>
+        </div>
       </div>
-    </>
-  );
-};
+      {isMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="lg:hidden bg-gray-800 py-4"
+        >
+          <nav className="container mx-auto px-4 flex flex-col space-y-4">
+            {links.map((item, index) => (
+              <Link 
+                key={index}
+                href={item.href} 
+                className={`text-sm font-medium hover:text-red-400 transition-colors duration-200 ${index === 0 ? 'text-red-500' : ''}`}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </nav>
+        </motion.div>
+      )}
+      <div className="h-1 bg-gradient-to-r from-red-500 via-red-400 to-transparent"></div>
+    </header>
+  )
+}
 
-export default Header;
+export default Header
