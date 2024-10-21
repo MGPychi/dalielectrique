@@ -3,16 +3,7 @@ import React, { useState } from 'react'
 import { m as motion  } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Facebook, Phone, Twitter, Youtube, Instagram, ChevronDown, Menu } from 'lucide-react'
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+import { Facebook, Phone, Twitter, Youtube, Instagram,  Menu } from 'lucide-react'
 const links = [
   {
     title: 'Home',
@@ -73,7 +64,7 @@ const Header = () => {
               <div key={index} className="relative group">
                   <Link 
                     href={item.href} 
-                    className={`text-sm px-4 py-2.5 rounded-sm   font-medium hover:bg-red-500 hover:text-white  text-white  transition-colors duration-200 ${index === 0 ? 'text-red-500' : ''}`}
+                    className={` px-4 py-2.5 rounded-sm   font-medium hover:bg-red-500 hover:text-white  text-white  transition-colors duration-200 ${index === 0 ? 'text-red-500' : ''}`}
                   >
                     {item.title}
                   </Link>
