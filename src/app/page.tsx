@@ -6,6 +6,7 @@ import Services from "./_components/Services";
 import Introduction from "./_components/Introduction";
 import MainProducts from "./_components/MainProducts";
 import Location from "./_components/Location";
+import WhyChooseUs from "./_components/WhyUs";
 
 export default function Homepage() {
   return (
@@ -17,6 +18,7 @@ export default function Homepage() {
         <Services />
         <MainProducts />
         <Location />
+        <WhyChooseUs/>
       </main>
       <Footer />
     </>
