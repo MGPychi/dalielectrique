@@ -72,8 +72,17 @@ export default function SingleTestimonialCarousel() {
             TESTIMONIALS
           </Badge> */}
 
-          <h2 className="text-4xl font-bold mb-6">
-            What Our Clients Say
+          <h2 className="text-4xl font-bold mb-6 text-white">
+            {"What Our Clients Say".split(" ").map((word,idx)=>(
+                <motion.span
+                initial={{opacity:0,y:50}}
+                animate={{opacity:0,y:0}}
+                transition={{delay:0.1*idx}}
+                >
+                    {word} hi 
+                </motion.span>
+            ))}
+
           </h2>
         </motion.div>
 
