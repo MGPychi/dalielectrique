@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <img src="/placeholder.svg?height=50&width=100" alt="Zak Electric Logo" className="h-12" />
+            {/* <Image src="/placeholder.svg?height=50&width=100" alt="Zak Electric Logo" className="h-12" /> */}
             <p className="text-sm">
               Zak Electric is a neighborhood, family-possessed organization, zeroed in on giving the best electrical technician administrations. We highly esteem the quality and security of the work we do in your home or business.
             </p>
@@ -60,11 +60,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Certifications */}
-        <div className="mt-8 flex flex-wrap gap-4">
-          <img src="/placeholder.svg?height=50&width=100" alt="Electrical Contractor Registration Agency" className="h-12" />
-          <img src="/placeholder.svg?height=50&width=100" alt="Electrical Safety Authority" className="h-12" />
-        </div>
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-4 border-t border-gray-700 flex flex-wrap justify-between items-center text-sm">

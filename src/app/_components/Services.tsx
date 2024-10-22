@@ -1,7 +1,6 @@
 "use client"
 import { motion, useInView } from "framer-motion"
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Home, Building2, Factory } from "lucide-react"
 import { useRef } from "react"
 

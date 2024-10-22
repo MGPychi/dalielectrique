@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import {  useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -60,7 +60,7 @@ export default function SingleTestimonialCarousel() {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)
   }
   return (
-    <section className="py-24 px-4 bg-gradient-to-r h-[80vh] from-gray-900 to-black text-white">
+    <section className="py-24 px-4 bg-black h-[80vh]   text-white">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -72,17 +72,19 @@ export default function SingleTestimonialCarousel() {
             TESTIMONIALS
           </Badge> */}
 
+          
           <h2 className="text-4xl font-bold mb-6 text-white">
-            {"What Our Clients Say".split(" ").map((word,idx)=>(
-                <motion.span
-                initial={{opacity:0,y:50}}
-                animate={{opacity:0,y:0}}
-                transition={{delay:0.1*idx}}
-                >
-                    {word} hi 
-                </motion.span>
+            {"What Our Clients Say".split(" ").map((word, idx) => (
+              <motion.span
+                key={`testimonial_word_${idx}`}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * idx }}
+                className="inline-block mr-1"
+              >
+                {word}
+              </motion.span>
             ))}
-
           </h2>
         </motion.div>
 
@@ -123,7 +125,7 @@ export default function SingleTestimonialCarousel() {
 
                     <div className="space-x-2 flex w-full justify-center mt-5">
                         {testimonials.map((item,idx)=>(
-                            <div onClick={()=>goToTestimonial(idx)} className={ ` ${idx==currentIndex&&"bg-white"} ring-1 cursor-pointer ring-white w-2 h-2 rounded-full` }>
+                            <div key={`testimonial_button_${idx}`} onClick={()=>goToTestimonial(idx)} className={ ` ${idx==currentIndex&&"bg-white"} ring-1 cursor-pointer ring-white w-2 h-2 rounded-full` }>
                             </div>
                         ))}
                     </div>
