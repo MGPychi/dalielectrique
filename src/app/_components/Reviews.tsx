@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -50,15 +50,15 @@ export default function SingleTestimonialCarousel() {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length)
   }
   const goToTestimonial  = (idx:number)=>{
-    if(idx>=0 || idx<testimonials.length)
+    if(idx>=0 || idx<testimonials.length){
     setCurrentIndex(idx)
+    }
 
   }
 
   const prevTestimonial = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)
   }
-
   return (
     <section className="py-24 px-4 bg-gradient-to-r h-[80vh] from-gray-900 to-black text-white">
       <div className="max-w-4xl mx-auto">
@@ -68,9 +68,10 @@ export default function SingleTestimonialCarousel() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <Badge variant="outline" className="mb-4 text-sm  font-semibold text-red-500">
+          {/* <Badge variant="outline" className="mb-4 text-sm  font-semibold bg-primary">
             TESTIMONIALS
-          </Badge>
+          </Badge> */}
+
           <h2 className="text-4xl font-bold mb-6">
             What Our Clients Say
           </h2>
@@ -80,10 +81,10 @@ export default function SingleTestimonialCarousel() {
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0,scale:0.95}}
+              animate={{ opacity: 1,scale:1}}
+              exit={{ opacity: 0,scale:0.95}}
+              transition={{ duration: 0.35 }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.5}
@@ -123,7 +124,7 @@ export default function SingleTestimonialCarousel() {
               variant="outline"
               size="icon"
               onClick={prevTestimonial}
-              className="bg-transparent text-white hover:bg-red-500 hover:text-white transition-colors duration-300"
+              className="bg-transparent text-white hover:bg-primary hover:text-white transition-colors duration-300"
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
@@ -131,7 +132,7 @@ export default function SingleTestimonialCarousel() {
               variant="outline"
               size="icon"
               onClick={nextTestimonial}
-              className="bg-transparent text-white hover:bg-red-500 hover:text-white transition-colors duration-300"
+              className="bg-transparent text-white hover:bg-primary hover:text-white transition-colors duration-300"
             >
               <ChevronRight className="h-5 w-5" />
             </Button>

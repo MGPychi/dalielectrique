@@ -79,7 +79,7 @@ export default function WhyChooseUs() {
             <motion.div key={index} variants={itemVariants}>
               <Card className="h-full flex items-center text-center flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="relative flex flex-col items-center justify-center">
-                  <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                     <feature.icon className="w-8 h-8 text-white" />
                   </div>
                   <CardTitle className="text-2xl mb-2">{feature.title}</CardTitle>

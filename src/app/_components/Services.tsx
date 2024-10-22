@@ -62,11 +62,11 @@ export default function ProfessionalServicesSection() {
           className="text-center mb-16"
         >
           <motion.div variants={itemVariants}>
-            <Badge variant="outline" className="mb-4 text-sm font-semibold text-red-500">
+          <motion.h2 variants={itemVariants} className="text-5xl font-bold mb-6 bg-clip-text  bg-gradient-to-r text-primary">
               OUR SERVICES
-            </Badge>
+              </motion.h2>
           </motion.div>
-          <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-red-700">
+          <motion.h2 variants={itemVariants} className="text-4xl font-medium mb-6 bg-clip-text  bg-gradient-to-r text-primary">
             Delivering Excellent Services Through Our Expert Team
           </motion.h2>
           <motion.p variants={itemVariants} className="text-muted-foreground max-w-2xl mx-auto text-lg">
@@ -84,12 +84,12 @@ export default function ProfessionalServicesSection() {
             <motion.div key={index} variants={itemVariants}>
               <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="relative flex items-center">
-                  <div className="w-16 h-16 bg-red-500  rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 bg-primary  rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
                   <CardTitle className="text-2xl mb-2 py-1">{service.title}</CardTitle>
                   <CardDescription className="text-sm text-center py-1">{service.description}</CardDescription>
-                  <div className="absolute top-4 right-4 w-20 h-20 bg-red-500/10 rounded-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
+                  <div className="absolute top-4 right-4 w-20 h-20 bg-primary/10 rounded-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
                 </CardHeader>
                 <CardFooter />
               </Card>

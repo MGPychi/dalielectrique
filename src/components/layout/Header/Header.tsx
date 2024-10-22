@@ -34,7 +34,7 @@ const Header = () => {
             initial={{ opacity: 0.5, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             href="mailto:admin@dalielictrique.ca"
-            className="hover:text-red-400 transition-colors duration-200"
+            className="hover:bg-primary transition-colors duration-200"
             whileHover={{ scale: 1.05 }}
           >
             admin@dalielictrique.ca
@@ -52,7 +52,7 @@ const Header = () => {
               initial={{ opacity: 0.5, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               href="#"
-              className="hover:text-red-400 transition-colors duration-200"
+              className="hover:bg-primary transition-colors duration-200"
               whileHover={{ scale: 1.2, rotate: 5 }}
             >
               <Facebook size={18} />
@@ -62,15 +62,15 @@ const Header = () => {
         <div className="flex justify-between items-center py-4">
           <motion.div className="text-2xl md:text-3xl font-bold">
             <span className="text-white">DALI</span>
-            <span className="text-red-500">ELICTRIQUE</span>
+            <span className="text-primary">ELICTRIQUE</span>
           </motion.div>
           <nav className="hidden lg:flex items-center space-x-4">
             {links.map((item, index) => (
               <div key={index} className="relative group">
                 <Link
                   href={item.href}
-                  className={` px-4 py-2.5 rounded-sm   font-medium hover:bg-red-500 hover:text-white  text-white  transition-colors duration-200 ${
-                    index === 0 ? "text-red-500" : ""
+                  className={` px-4 py-2.5 rounded-sm   font-medium hover:bg-primary hover:text-white  text-white  transition-colors duration-200 ${
+                    index === 0 ? "text-primary" : ""
                   }`}
                 >
                   {item.title}
@@ -79,12 +79,12 @@ const Header = () => {
             ))}
           </nav>
           <div className="flex items-center space-x-4">
-            <Button className="bg-red-500 rounded-sm hidden lg:block hover:ring-2 hover:ring-red-400">
+            <Button className="  rounded-sm hidden lg:block hover:ring-2 hover:ring-primary">
               Contact Us
             </Button>
             <Button
               variant="ghost"
-              className="lg:hidden text-white hover:text-red-400"
+              className="lg:hidden text-white hover:bg-primary"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <Menu size={24} />
@@ -104,8 +104,8 @@ const Header = () => {
               <Link
                 key={index}
                 href={item.href}
-                className={`text-sm font-medium hover:text-red-400 transition-colors duration-200 ${
-                  index === 0 ? "text-red-500" : ""
+                className={`text-sm font-medium hover:bg-primary transition-colors duration-200 ${
+                  index === 0 ? "text-primary" : ""
                 }`}
               >
                 {item.title}
@@ -114,7 +114,7 @@ const Header = () => {
           </nav>
         </motion.div>
       )}
-      <div className="h-1 bg-gradient-to-r from-red-500 via-red-400 to-transparent"></div>
+      <div className="text-primary"></div>
     </header>
   );
 };

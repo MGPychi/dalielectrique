@@ -16,7 +16,7 @@ const Hero = () => {
         >
           <h1 className="text-5xl md:text-7xl py-2 font-bold mb-4">
             <span className="text-black">DALI</span>
-            <span className="text-red-500">ELECTRIC</span>
+            <span className="text-primary">ELECTRIC</span>
           </h1>
           <h2 className="text-2xl md:text-4xl font-medium mb-4">
             Trusted Local Electricians
@@ -28,7 +28,7 @@ const Hero = () => {
             industries.
           </p>
           <div className="py-4"></div>
-          <Button className="bg-red-500 rounded-sm h-[3.5rem]  px-12 hover:bg-red-600 text-white">
+          <Button className="bg-primary rounded-sm h-[3.5rem]  px-12 hover:bg-red-600 text-white">
             Get a Consultation
           </Button>
         </motion.div>
