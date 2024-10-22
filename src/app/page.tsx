@@ -1,10 +1,11 @@
-'use client';
+"use client";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer";
 import Hero from "./_components/Hero";
 import Services from "./_components/Services";
 import Introduction from "./_components/Introduction";
 import MainProducts from "./_components/MainProducts";
+import Location from "./_components/Location";
 
 export default function Homepage() {
   return (
@@ -12,9 +13,10 @@ export default function Homepage() {
       <Header />
       <main className="flex-grow bg-white pt-16">
         <Hero />
-        <Introduction/>
+        <Introduction />
         <Services />
-        <MainProducts/>
+        <MainProducts />
+        <Location />
       </main>
       <Footer />
     </>

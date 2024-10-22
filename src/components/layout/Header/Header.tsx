@@ -3,14 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  Facebook,
-  Phone,
-  Twitter,
-  Youtube,
-  Instagram,
-  Menu,
-} from "lucide-react";
+import { Facebook, Phone, Menu } from "lucide-react";
 const links = [
   {
     title: "Home",
