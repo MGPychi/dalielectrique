@@ -7,6 +7,7 @@ import Introduction from "./_components/Introduction";
 import MainProducts from "./_components/MainProducts";
 import Location from "./_components/Location";
 import WhyChooseUs from "./_components/WhyUs";
+import Reviews from "./_components/Reviews";
 
 export default function Homepage() {
   return (
@@ -19,6 +20,7 @@ export default function Homepage() {
         <MainProducts />
         <Location />
         <WhyChooseUs/>
+        <Reviews/>
       </main>
       <Footer />
     </>
