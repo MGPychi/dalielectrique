@@ -26,6 +26,21 @@ const testimonials = [
     rating: 5,
     review: "I had my electrical panel upgraded by this company and I'm thoroughly impressed. The technicians were knowledgeable, courteous, and explained every step of the process. They completed the job in a timely manner and left the work area spotless. I feel much safer knowing my home's electrical system is up to date. Excellent service!"
   },
+
+  {
+    name: "Massinissa bousbar",
+    service: "ELECTRICAL PANEL UPGRADE",
+    rating: 5,
+    review: "I had my electrical panel upgraded by this company and I'm thoroughly impressed. The technicians were knowledgeable, courteous, and explained every step of the process. They completed the job in a timely manner and left the work area spotless. I feel much safer knowing my home's electrical system is up to date. Excellent service!"
+  },
+
+  {
+    name: "Anes ben madour",
+    service: "ELECTRICAL PANEL UPGRADE",
+    rating: 5,
+    review: "I had my electrical panel upgraded by this company and I'm thoroughly impressed. The technicians were knowledgeable, courteous, and explained every step of the process. They completed the job in a timely manner and left the work area spotless. I feel much safer knowing my home's electrical system is up to date. Excellent service!"
+  },
+  
 ]
 
 export default function SingleTestimonialCarousel() {
@@ -33,6 +48,11 @@ export default function SingleTestimonialCarousel() {
 
   const nextTestimonial = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length)
+  }
+  const goToTestimonial  = (idx:number)=>{
+    if(idx>=0 || idx<testimonials.length)
+    setCurrentIndex(idx)
+
   }
 
   const prevTestimonial = () => {
@@ -91,13 +111,19 @@ export default function SingleTestimonialCarousel() {
             </motion.div>
           </AnimatePresence>
 
+                    <div className="space-x-2 flex w-full justify-center mt-5">
+                        {testimonials.map((item,idx)=>(
+                            <div onClick={()=>goToTestimonial(idx)} className={ ` ${idx==currentIndex&&"bg-white"} ring-1 cursor-pointer ring-white w-2 h-2 rounded-full` }>
+                            </div>
+                        ))}
+                    </div>
           {/* Navigation buttons */}
-          <div className="flex justify-center mt-8 space-x-4">
+          <div className="flex justify-center mt-6 space-x-4">
             <Button
               variant="outline"
               size="icon"
               onClick={prevTestimonial}
-              className="bg-gray-800 text-white hover:bg-red-500 hover:text-white transition-colors duration-300"
+              className="bg-transparent text-white hover:bg-red-500 hover:text-white transition-colors duration-300"
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
@@ -105,7 +131,7 @@ export default function SingleTestimonialCarousel() {
               variant="outline"
               size="icon"
               onClick={nextTestimonial}
-              className="bg-gray-800 text-white hover:bg-red-500 hover:text-white transition-colors duration-300"
+              className="bg-transparent text-white hover:bg-red-500 hover:text-white transition-colors duration-300"
             >
               <ChevronRight className="h-5 w-5" />
             </Button>
