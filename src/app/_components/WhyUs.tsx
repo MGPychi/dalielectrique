@@ -35,10 +35,11 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
+  hidden: { y: 20, opacity: 0 ,scale:0.95},
   visible: {
     y: 0,
     opacity: 1,
+    scale:1,
     transition: {
       type: "spring",
       stiffness: 100,
@@ -48,10 +49,10 @@ const itemVariants = {
 
 export default function WhyChooseUs() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: "-100px" }) // Trigger animation when in view
+  const inView = useInView(ref, { once: false,margin:"-250px 0px -100px 0px" })
 
   return (
-    <section ref={ref} className="py-24 px-4 ">
+    <section ref={ref} className="py-2  px-4 ">
       <div className="container mx-auto ">
         <motion.div
           initial="hidden"

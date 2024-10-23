@@ -60,7 +60,7 @@ export default function SingleTestimonialCarousel() {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)
   }
   return (
-    <section className="py-24 px-4 bg-black h-[80vh]   text-white">
+    <section className="py-6  px-4      text-white">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -135,7 +135,7 @@ export default function SingleTestimonialCarousel() {
               variant="outline"
               size="icon"
               onClick={prevTestimonial}
-              className="bg-transparent text-white hover:bg-primary hover:text-white transition-colors duration-300"
+              className="bg-transparent text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300"
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
@@ -143,7 +143,7 @@ export default function SingleTestimonialCarousel() {
               variant="outline"
               size="icon"
               onClick={nextTestimonial}
-              className="bg-transparent text-white hover:bg-primary hover:text-white transition-colors duration-300"
+              className="bg-transparent text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300"
             >
               <ChevronRight className="h-5 w-5" />
             </Button>
