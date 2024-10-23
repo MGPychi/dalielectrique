@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <main className="container mx-auto px-4 py-8 md:py-16">
+    <section className="container mx-auto px-4 py-8 md:py-16  lg:min-h-[85vh]">
       <div className="flex  flex-col md:flex-row items-center">
         <motion.div
           className="md:w-1/2"
@@ -47,7 +47,7 @@ const Hero = () => {
           />
         </motion.div>
       </div>
-    </main>
+    </section>
   );
 };
 

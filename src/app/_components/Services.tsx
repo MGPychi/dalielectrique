@@ -1,29 +1,30 @@
-"use client"
-import { motion, useInView } from "framer-motion"
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
-import { Home, Building2, Factory } from "lucide-react"
-import { useRef } from "react"
+"use client"; // Ensure to include this line
+
+import { motion, useInView } from "framer-motion";
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Home, Building2, Factory } from "lucide-react";
+import { useRef } from "react";
 
 const services = [
   {
     icon: Home,
     title: "Residential",
-    description: "Your trusted electricians for all your home electrical needs. From installations to repairs, We've got you covered. Our team is dedicated to providing top-quality services that stand out.",
+    description: "Your trusted electricians for all your home electrical needs...",
     items: ["House Wiring", "Installation", "Service", "Upgrades", "Smart Home", "Rough-Ins", "Emergency Lighting", "Panel Upgrades"],
   },
   {
     icon: Building2,
     title: "Commercial",
-    description: "Running a business is challenging. Leave your electrical concerns to our experienced professionals so you can focus on what truly matters – your success and growth. We provide top-quality services that stand out.",
+    description: "Running a business is challenging...",
     items: ["Lighting Upgrades", "Emergency Lighting", "Low Voltage Switchings", "120v/347 Volt Lighting", "Rough-Ins", "Panel Upgrades"],
   },
   {
     icon: Factory,
     title: "Industrial",
-    description: "Count on our licensed electricians for on-site industrial electrical services prioritizing safety and efficiency. We bring knowledge and experience to your facility, ensuring smooth operations.",
+    description: "Count on our licensed electricians for on-site industrial electrical services...",
     items: ["Safety Devices", "Smoke Detectors", "Exit / Emergency Signs", "Exterior Lighting"],
   },
-]
+];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -33,7 +34,7 @@ const containerVariants = {
       staggerChildren: 0.2,
     },
   },
-}
+};
 
 const itemVariants = {
   hidden: { y: 50, opacity: 0 },
@@ -45,11 +46,11 @@ const itemVariants = {
       stiffness: 100,
     },
   },
-}
+};
 
 export default function ProfessionalServicesSection() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: "-100px" }) // Trigger animation when in view
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false,margin:"-250px 0px -100px 0px" })
 
   return (
     <section id="services" className="py-24 px-4 bg-gradient-to-b from-background to-secondary/10" ref={ref}>
@@ -60,16 +61,14 @@ export default function ProfessionalServicesSection() {
           variants={containerVariants}
           className="text-center mb-16"
         >
-          <motion.div variants={itemVariants}>
-          <motion.h2 variants={itemVariants} className="text-5xl font-bold mb-6 bg-clip-text  bg-gradient-to-r text-primary">
-              OUR SERVICES
-              </motion.h2>
-          </motion.div>
-          <motion.h2 variants={itemVariants} className="text-4xl font-medium mb-6 bg-clip-text  bg-gradient-to-r text-primary">
+          <motion.h2 variants={itemVariants} className="text-5xl font-bold mb-6 bg-clip-text bg-gradient-to-r text-primary">
+            OUR SERVICES
+          </motion.h2>
+          <motion.h2 variants={itemVariants} className="text-4xl font-medium mb-6 bg-clip-text bg-gradient-to-r text-primary">
             Delivering Excellent Services Through Our Expert Team
           </motion.h2>
           <motion.p variants={itemVariants} className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            At our core, excellence defines us. Our exceptionally skilled and professional team is dedicated to providing top-quality services that stand out. Each team member brings a wealth of expertise to every project, ensuring your complete satisfaction.
+            At our core, excellence defines us and our services. We are committed to providing the best electrical services to our clients. Our team of expert electricians is always ready to deliver excellent services to you.
           </motion.p>
         </motion.div>
 
@@ -81,9 +80,9 @@ export default function ProfessionalServicesSection() {
         >
           {services.map((service, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+              <Card className="h-full group flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="relative flex items-center">
-                  <div className="w-16 h-16 bg-primary  rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
                   <CardTitle className="text-2xl mb-2 py-1">{service.title}</CardTitle>
@@ -97,5 +96,5 @@ export default function ProfessionalServicesSection() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

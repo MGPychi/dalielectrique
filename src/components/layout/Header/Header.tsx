@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Facebook, Phone, Menu } from "lucide-react";
+import ContactUsModal from "@/components/modals/ContactUsModal";
 const links = [
   {
     title: "Home",
@@ -79,9 +80,7 @@ const Header = () => {
             ))}
           </nav>
           <div className="flex items-center space-x-4">
-            <Button className="  rounded-sm hidden lg:block hover:ring-2 hover:ring-primary">
-              Contact Us
-            </Button>
+            <ContactUsModal/>
             <Button
               variant="ghost"
               className="lg:hidden text-white hover:bg-primary"
