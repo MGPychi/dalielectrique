@@ -13,7 +13,7 @@ export default function Homepage() {
   return (
     <>
       <Header />
-      <main className="flex-grow bg-white pt-16">
+      <main className="flex-grow bg-white ">
         <Hero />
         <Introduction />
         <Services />
