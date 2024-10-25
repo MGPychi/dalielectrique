@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import { AnimatePresence,motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Hero1 from "../../../public/hero.jpg";
@@ -75,10 +75,7 @@ export default function AnimatedHero() {
                 transition: { duration: 0.8 },
               }}
             >
-              {/* <Image
-                // loader={({ src, width, quality }) => {
-                //   return `${src}?w=${width}&q=${quality || 75}`;
-                // }}
+              <Image
                 blurDataURL=""
                 placeholder="blur"
                 src={item.image}
@@ -86,7 +83,7 @@ export default function AnimatedHero() {
                 layout="fill"
                 objectFit="cover"
                 quality={100}
-              /> */}
+              />
               <div className="absolute inset-0 bg-black bg-opacity-50" />
 
               <div className="flex z-50 flex-col space-y-8 absolute    right-10 top-40 sm:top-1/2 sm:-translate-y-1/2">
