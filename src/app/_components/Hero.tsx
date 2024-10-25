@@ -5,7 +5,7 @@ import Image from "next/image";
 import { AnimatePresence,motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import Hero1 from "../../../public/hero.jpg";
+import Hero1 from "../../../public/hero1.webp";
 import Hero2 from "../../../public/hero2.png";
 import Hero3 from "../../../public/hero3.png";
 import Header from "@/components/layout/Header/Header";
