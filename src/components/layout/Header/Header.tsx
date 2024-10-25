@@ -59,7 +59,7 @@ const Header = () => {
             <span className="text-white">DALI</span>
             <span className="text-primary">ELICTRIQUE</span>
           </motion.div>
-          <nav className="hidden lg:flex sm:-ml-10 items-center space-x-4">
+          <nav className="hidden  lg:flex font-bold text-lg sm:-ml-10 items-center space-x-4">
             {links.map((item, index) => (
               <div key={index} className="relative group">
                 <Link
