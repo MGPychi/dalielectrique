@@ -56,7 +56,7 @@ const ContactUsSection = () => {
               Contact Us
             </Badge>
           </motion.div>
-          <motion.h1 className="text-5xl font-bold mb-4">
+          <h1 className="text-5xl font-bold mb-4">
             {title1.split("").map((letter, index) => (
               <motion.span
                 key={index}
@@ -69,7 +69,7 @@ const ContactUsSection = () => {
                 {letter}
               </motion.span>
             ))}
-          </motion.h1>
+          </h1>
           <motion.h2 className="text-4xl font-semibold mb-6">
             {title2.split("").map((letter, index) => (
               <motion.span
