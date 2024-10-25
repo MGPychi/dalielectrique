@@ -12,10 +12,11 @@ import { Button } from "../ui/button";
 
 const ContactUsModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const openModal = ()=> setIsOpen(true)
 
   return (
     <>
-      <Button className="  rounded-sm hidden lg:block hover:ring-2 hover:ring-primary">
+      <Button onClick={openModal} className="  rounded-sm hidden lg:block hover:ring-2 hover:ring-primary">
         Contact Us
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
