@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import Header from "@/components/layout/Header/Header";
 const content = [
   {
     title: "Power For Seamless",
@@ -49,7 +50,8 @@ export default function AnimatedHero() {
   }, []);
 
   return (
-    <div className="relative  h-[85vh]  flex items-center     w-full overflow-hidden">
+    <div className="relative  h-[100vh]  flex flex-col justify-center     w-full overflow-hidden">
+      <Header/>
       {content.map((item, index) =>
         index == currentIndex ? (
           <AnimatePresence key={`hero_carousel_${index}`}>

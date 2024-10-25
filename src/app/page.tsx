@@ -12,7 +12,6 @@ import Reviews from "./_components/Reviews";
 export default function Homepage() {
   return (
     <>
-      <Header />
       <main className="flex-grow bg-white ">
         <Hero />
         <Introduction />
