@@ -33,23 +33,20 @@ const content = [
 ];
 
 export default function AnimatedHero() {
-  const [isClient, setIsClient] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(currentIndex);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
-  if (!isClient) {
-    return null; // or a loading placeholder
-  }
   const goToNextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % content.length);
   };
   const goToPrevSlide = () => {
     setCurrentIndex((prev) => (prev - 1 + content.length) % content.length);
   };
+
+  useEffect(() => {
+    const ticker = setInterval(()=>goToNextSlide(),5000)
+    return ()=>clearInterval(ticker)
+  }, []);
 
   return (
     <div className="relative  h-[85vh]  flex items-center     w-full overflow-hidden">
@@ -65,12 +62,12 @@ export default function AnimatedHero() {
               animate={{
                 opacity: 1,
                 x: 0,
-                transition: { duration: 0.5 },
+                transition: { duration: 0.8 },
               }}
               exit={{
-                opacity: 0,
+                opacity: 0.7,
                 x: -10,
-                transition: { duration: 0.5 },
+                transition: { duration: 0.8 },
               }}
             >
               <Image
