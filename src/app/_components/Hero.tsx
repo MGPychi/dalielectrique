@@ -9,17 +9,7 @@ import Hero1 from "../../../public/hero.jpg";
 import Hero2 from "../../../public/hero2.png";
 import Hero3 from "../../../public/hero3.png";
 import Header from "@/components/layout/Header/Header";
-const imageLoader = ({
-  src,
-  width,
-  quality,
-}: {
-  src: string;
-  width: number;
-  quality: string;
-}) => {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
-};
+
 const content = [
   {
     title: "Power For Seamless",
