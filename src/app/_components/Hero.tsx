@@ -81,7 +81,7 @@ export default function AnimatedHero() {
               />
               <div className="absolute inset-0 bg-black bg-opacity-50" />
 
-              <div className="flex z-50 flex-col space-y-8 absolute   right-10 top-10 sm:top-1/2 sm:-translate-y-1/2">
+              <div className="flex z-50 flex-col space-y-8 absolute    right-10 top-40 sm:top-1/2 sm:-translate-y-1/2">
                 <Button
                   onClick={goToPrevSlide}
                   className="bg-transparent hover:bg-primary hover:text-white text-white outline-none py-6 "

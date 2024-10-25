@@ -53,9 +53,9 @@ const ContactUsForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Email (Optional)</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Email " {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
