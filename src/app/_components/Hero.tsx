@@ -5,7 +5,21 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import Hero1 from "../../../public/hero.jpg";
+import Hero2 from "../../../public/hero2.png";
+import Hero3 from "../../../public/hero3.png";
 import Header from "@/components/layout/Header/Header";
+const imageLoader = ({
+  src,
+  width,
+  quality,
+}: {
+  src: string;
+  width: number;
+  quality: string;
+}) => {
+  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
+};
 const content = [
   {
     title: "Power For Seamless",
@@ -13,7 +27,7 @@ const content = [
     subtitle: "Electricity Solutions",
     description:
       "Whether you're a homeowner, business owner, or community leader, we're here to light up your life with sustainable energy solutions.",
-    image: "/hero.jpg",
+    image: Hero1,
   },
   {
     title: "Reliable Energy",
@@ -21,7 +35,7 @@ const content = [
     subtitle: "For Your Needs",
     description:
       "Our team of experts ensures that you have reliable and efficient energy solutions tailored to your specific requirements.",
-    image: "/hero2.png",
+    image: Hero2,
   },
   {
     title: "Sustainable Power",
@@ -29,13 +43,12 @@ const content = [
     subtitle: "For a Better Future",
     description:
       "Join us in our mission to provide sustainable and eco-friendly energy solutions that benefit both you and the environment.",
-    image: "/hero3.png",
+    image: Hero3,
   },
 ];
 
 export default function AnimatedHero() {
   const [currentIndex, setCurrentIndex] = useState(0);
-
 
   const goToNextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % content.length);
@@ -45,13 +58,13 @@ export default function AnimatedHero() {
   };
 
   useEffect(() => {
-    const ticker = setInterval(()=>goToNextSlide(),5000)
-    return ()=>clearInterval(ticker)
+    const ticker = setInterval(() => goToNextSlide(), 5000);
+    return () => clearInterval(ticker);
   }, []);
 
   return (
     <div className="relative  h-[100vh]  flex flex-col justify-center     w-full overflow-hidden">
-      <Header/>
+      <Header />
       {content.map((item, index) =>
         index == currentIndex ? (
           <AnimatePresence key={`hero_carousel_${index}`}>
@@ -73,6 +86,11 @@ export default function AnimatedHero() {
               }}
             >
               <Image
+                // loader={({ src, width, quality }) => {
+                //   return `${src}?w=${width}&q=${quality || 75}`;
+                // }}
+                blurDataURL=""
+                placeholder="blur"
                 src={item.image}
                 alt="Electrician working"
                 layout="fill"
