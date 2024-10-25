@@ -2,7 +2,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
 import { MapPinIcon, PhoneIcon, MailIcon, LinkedinIcon } from "lucide-react";
 import ContactUsForm from "./Contact/ContactUsForm";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 
@@ -91,7 +90,7 @@ const ContactUsSection = () => {
             variants={letterAnimation}
           >
             Have questions or ready to get started with our electricity
-            services? Our team is here to help! Whether you're seeking...
+            services? Our team is here to help! Whether you are seeking...
           </motion.p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {contactInfos.map((contact, index) => (
