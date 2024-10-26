@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence,motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Hero1 from "../../../public/hero1.webp";
@@ -82,7 +82,7 @@ export default function AnimatedHero() {
                 alt="Electrician working"
                 layout="fill"
                 objectFit="cover"
-                quality={50}
+                quality={55}
               />
               <div className="absolute inset-0 bg-black bg-opacity-50" />
 
