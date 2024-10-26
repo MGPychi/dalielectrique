@@ -82,7 +82,7 @@ export default function AnimatedHero() {
                 alt="Electrician working"
                 layout="fill"
                 objectFit="cover"
-                quality={65}
+                quality={50}
               />
               <div className="absolute inset-0 bg-black bg-opacity-50" />
 
