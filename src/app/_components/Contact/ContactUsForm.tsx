@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -29,15 +30,18 @@ const initialValues = {
   message: "",
 };
 const ContactUsForm = () => {
-  const {toast}  = useToast();
+  const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues,
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data)
-    toast({title:"Message sent",description:"We will get back to you soon"})
+    console.log(data);
+    toast({
+      title: "Message sent",
+      description: "We will get back to you soon",
+    });
   };
 
   return (
