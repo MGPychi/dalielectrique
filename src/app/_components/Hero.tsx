@@ -98,6 +98,7 @@ export default function HeroCarousel() {
             >
               <div className="relative h-full w-full">
                 <div className="absolute inset-0 bg-black/60 z-10" />
+
                 <Image
                   src={item.image}
                   alt={item.title}

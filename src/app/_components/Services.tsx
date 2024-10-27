@@ -8,9 +8,12 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { Home, Building2, Factory } from "lucide-react";
-import { useRef } from "react";
+import { Home, Building2, Factory, HomeIcon } from "lucide-react";
+import { ReactElement, ReactNode, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
+import Hero1 from "../../../public/hero1.webp";
+import { StaticImageData } from "next/image";
+import Image from "next/image";
 
 const services = [
   {
@@ -28,6 +31,7 @@ const services = [
       "Emergency Lighting",
       "Panel Upgrades",
     ],
+    image: Hero1,
   },
   {
     icon: Building2,
@@ -41,18 +45,21 @@ const services = [
       "Rough-Ins",
       "Panel Upgrades",
     ],
+    image: Hero1,
   },
   {
     icon: Factory,
     title: "Industrial",
     description:
       "Count on our licensed electricians for on-site industrial electrical services...",
+
     items: [
       "Safety Devices",
       "Smoke Detectors",
       "Exit / Emergency Signs",
       "Exterior Lighting",
     ],
+    image: Hero1,
   },
 ];
 
@@ -128,21 +135,12 @@ export default function ProfessionalServicesSection() {
         >
           {services.map((service, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <Card className="h-full group flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
-                <CardHeader className="relative flex items-center">
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <service.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl mb-2 py-1">
-                    {service.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm text-center py-1">
-                    {service.description}
-                  </CardDescription>
-                  <div className="absolute top-4 right-4 w-20 h-20 bg-primary/10 rounded-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
-                </CardHeader>
-                <CardFooter />
-              </Card>
+              <ServiceItem
+                image={service.image}
+                title={service.title}
+                description={service.description}
+                Icon={service.icon}
+              />
             </motion.div>
           ))}
         </motion.div>
@@ -150,3 +148,30 @@ export default function ProfessionalServicesSection() {
     </section>
   );
 }
+interface ServiceItemProps {
+  Icon: typeof HomeIcon;
+  title: string;
+  description: string;
+  image: StaticImageData;
+}
+const ServiceItem = ({ description, Icon, image, title }: ServiceItemProps) => {
+  console.log(image.src);
+  return (
+    <Card className="h-full group relative flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+      <CardHeader className="relative flex items-center">
+        {/* <div className="w-full h-[300px] relative ">
+          <Image alt={title} src={image} fill  className="rounded-md" />
+        </div> */}
+        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <Icon className="w-8 h-8 text-white" />
+        </div>
+        <CardTitle className="text-2xl mb-2 py-1">{title}</CardTitle>
+        <CardDescription className="text-sm text-center py-1">
+          {description}
+        </CardDescription>
+        <div className="absolute top-4 right-4 w-20 h-20 bg-primary/10 rounded-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
+      </CardHeader>
+      <CardFooter />
+    </Card>
+  );
+};
