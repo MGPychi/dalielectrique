@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import Hero1 from "../../../public/hero1.webp";
 import Hero2 from "../../../public/hero2.png";
 import Hero3 from "../../../public/hero3.png";
@@ -69,10 +72,10 @@ export default function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("right");
 
-  // const swipeConfidenceThreshold = 10000;
-  // const swipePower = (offset: number, velocity: number) => {
-  //   return Math.abs(offset) * velocity;
-  // };
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
 
   const paginate = (newDirection: string) => {
     setDirection(newDirection);
@@ -105,17 +108,17 @@ export default function HeroCarousel() {
                 y: { type: "spring", stiffness: 300, damping: 30 },
                 opacity: { duration: 0.4 },
               }}
-              // drag="x"
-              // dragConstraints={{ left: 0, right: 0 }}
-              // dragElastic={0.5}
-              // onDragEnd={(e, { offset, velocity }) => {
-              // const swipe = swipePower(offset.x, velocity.x);
-              // if (swipe < -swipeConfidenceThreshold) {
-              //   paginate("right");
-              // } else if (swipe > swipeConfidenceThreshold) {
-              //   paginate("left");
-              // }
-              // }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.5}
+              onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+              if (swipe < -swipeConfidenceThreshold) {
+                paginate("right");
+              } else if (swipe > swipeConfidenceThreshold) {
+                paginate("left");
+              }
+              }}
               className="absolute inset-0"
             >
               <div className="relative h-full w-full">
@@ -168,7 +171,7 @@ export default function HeroCarousel() {
         {content.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+            className={`w-3 h-3    rounded-full transition-colors duration-300 ${
               index === currentIndex ? "bg-white scale-125" : "bg-white/50"
             }`}
             onClick={() => {
