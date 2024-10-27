@@ -30,13 +30,11 @@ const content = [
     image: Hero3,
   },
   {
-
     title: "I dont know what to write here",
     subtitle:
       "From residential to commercial projects, we're committed to delivering reliable and sustainable electrical solutions for a brighter tomorrow.",
     image: Hero1,
-
-  }
+  },
 ];
 
 const slideVariants = {
@@ -77,7 +75,7 @@ export default function HeroCarousel() {
   }, []);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-black">
+    <div className="relative h-screen w-full overflow-hidden bg-black backdrop-blur-sm ">
       <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pt-4 pb-16">
         <Header />
       </div>
@@ -104,11 +102,13 @@ export default function HeroCarousel() {
                   src={item.image}
                   alt={item.title}
                   className="h-full w-full object-cover"
+                  blurDataURL=""
+                  placeholder="blur"
                   priority
                 />
                 <div className="absolute inset-0 z-20 flex flex-col justify-center items-start p-8 md:p-16 lg:p-24">
                   <motion.h1
-                    initial={{ opacity: 0,  y: 20 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: 0.5 }}
