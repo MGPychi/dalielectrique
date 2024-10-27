@@ -1,203 +1,195 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Hero1 from "../../../public/hero1.webp";
 import Hero2 from "../../../public/hero2.png";
 import Hero3 from "../../../public/hero3.png";
+import Image from "next/image";
 import Header from "@/components/layout/Header/Header";
 
 const content = [
   {
-    title: "Power For Seamless",
-    title2: " Living",
-    subtitle: "Electricity Solutions",
-    description:
-      "Whether you're a homeowner, business owner, or community leader, we're here to light up your life with sustainable energy solutions.",
+    title: "Power For Seamless Electricity Solutions",
+    subtitle:
+      "Whether you're a homeowner, business owner, or community leader, we're here to light up your life with sustainable energy solutions that.",
     image: Hero1,
   },
   {
-    title: "Reliable Energy",
-    title2: "Solutions",
-    subtitle: "For Your Needs",
-    description:
-      "Our team of experts ensures that you have reliable and efficient energy solutions tailored to your specific requirements.",
+    title: "Innovative Electrical Services",
+    subtitle:
+      "Our team of expert electricians brings cutting-edge technology to your doorstep, ensuring efficient and safe electrical installations.",
     image: Hero2,
   },
   {
-    title: "Sustainable Power",
-    title2: "Solutions",
-    subtitle: "For a Better Future",
-    description:
-      "Join us in our mission to provide sustainable and eco-friendly energy solutions that benefit both you and the environment.",
+    title: "Powering Your Future",
+    subtitle:
+      "From residential to commercial projects, we're committed to delivering reliable and sustainable electrical solutions for a brighter tomorrow.",
     image: Hero3,
   },
 ];
 
-export default function AnimatedHero() {
+const slideVariants = {
+  enter: (direction: string) => ({
+    x: direction === "right" ? 1000 : direction === "left" ? -1000 : 0,
+    y: direction === "up" ? 1000 : direction === "down" ? -1000 : 0,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    y: 0,
+    opacity: 1,
+  },
+  exit: (direction: string) => ({
+    x: direction === "right" ? -1000 : direction === "left" ? 1000 : 0,
+    y: direction === "up" ? -1000 : direction === "down" ? 1000 : 0,
+    opacity: 0,
+  }),
+};
+
+const contentVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: delay * 0.2,
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  }),
+};
+
+export default function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [direction, setDirection] = useState("right");
 
-  const resetInterval = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
+  // const swipeConfidenceThreshold = 10000;
+  // const swipePower = (offset: number, velocity: number) => {
+  //   return Math.abs(offset) * velocity;
+  // };
+
+  const paginate = (newDirection: string) => {
+    setDirection(newDirection);
+    if (newDirection === "right" || newDirection === "down") {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % content.length);
+    } else {
+      setCurrentIndex(
+        (prevIndex) => (prevIndex - 1 + content.length) % content.length
+      );
     }
-    intervalRef.current = setInterval(() => goToNextSlide(), 8000);
   };
-
-  const goToNextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % content.length);
-    resetInterval()
-  };
-  const goToPrevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + content.length) % content.length);
-    resetInterval()
-  };
-
-  useEffect(() => {
-    resetInterval();
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, []);
 
   return (
-    <div className="relative h-[100vh] flex flex-col justify-center w-full overflow-hidden">
-      <Header />
-      {content.map(
-        (item, index) =>
-          index === currentIndex && (
-            <div key={index} className="relative h-full w-full">
-              <motion.div
-                initial={{ opacity: 0.9, scale: 1 }}
-                animate={{ opacity: 1, scale: 1 }}
-              >
-                <Image
-                  blurDataURL=""
-                  placeholder="blur"
-                  src={item.image}
-                  alt="Electrician working"
-                  layout="fill"
-                  objectFit="cover"
-                  quality={100}
-                />
-              </motion.div>
-              <div className="absolute inset-0 bg-black bg-opacity-50" />
-              <AnimatePresence key={`hero_carousel_${index}`}>
-                <motion.div
-                  className="relative h-full w-full flex items-center justify-center"
-                  initial={{
-                    opacity: 0.8,
-                    x: 10,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    x: 0,
-                    transition: { duration: 0.8 },
-                  }}
-                  exit={{
-                    opacity: 0.7,
-                    x: -10,
-                    transition: { duration: 0.8 },
-                  }}
-                >
-                  <div className="container mx-auto">
-                    <div className="flex z-50  space-y-2 justify-start items-center">
-                      <motion.div
-                        initial={{ scale: 1 }}
-                        animate={{ scale: 1.05 }}
-                        transition={{
-                          duration: 10,
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                        }}
-                        className="absolute inset-0"
-                      ></motion.div>
-                      <div className="relative z-10 flex h-full flex-col justify-center px-4 sm:px-6 lg:px-8">
-                        <motion.div
-                          initial={{ opacity: 0, x: -50 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="text-sm font-semibold uppercase tracking-wider text-gray-300"
-                        >
-                          {item.subtitle}
-                        </motion.div>
-                        <div className="py-2" />
-                        <motion.h1
-                          initial={{ opacity: 0, x: -50 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.2 }}
-                          className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-                        >
-                          {item.title}
-                        </motion.h1>
-                        <motion.h1
-                          initial={{ opacity: 0, x: -50 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.4 }}
-                          className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-                        >
-                          {item.title2}
-                        </motion.h1>
-                        <div className="py-2" />
-                        <motion.p
-                          initial={{ opacity: 0, x: -50 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.6 }}
-                          className="mt-3 max-w-md text-base text-gray-300 sm:text-lg md:mt-5 md:max-w-3xl"
-                        >
-                          {item.description}
-                        </motion.p>
-                        <div className="py-2" />
-                        <motion.div
-                          initial={{ opacity: 0, x: -50 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.8 }}
-                          className="mt-6 sm:flex sm:space-x-4"
-                        >
-                          <Button
-                            size="lg"
-                            className="px-14 w-full py-5 sm:w-auto"
-                          >
-                            Contact Us
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="lg"
-                            className="mt-3 bg-transparent hover:bg-white hover:text-primary text-white px-10 w-full sm:mt-0 sm:w-auto"
-                          >
-                            Learn More
-                          </Button>
-                        </motion.div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          )
-      )}
-      <div className="flex z-50 flex-col space-y-8 absolute right-10 top-40 sm:top-1/2 sm:-translate-y-1/2">
-        <Button
-          onClick={goToPrevSlide}
-          className="bg-transparent hover:bg-primary hover:text-white text-white outline-none py-6"
-          variant="outline"
-        >
-          <ChevronUp />
-        </Button>
-        <Button
-          onClick={goToNextSlide}
-          className="bg-transparent hover:bg-primary hover:text-white text-white outline-none py-6"
-          variant="outline"
-        >
-          <ChevronDown />
-        </Button>
+    <div className="relative h-screen w-full overflow-hidden    bg-black">
+      <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pt-4 pb-16">
+        <Header />
       </div>
+      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        {content.map((item, index) =>
+          index == currentIndex ? (
+            <motion.div
+              key={currentIndex}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 100, damping: 30 },
+                y: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.4 },
+              }}
+              // drag="x"
+              // dragConstraints={{ left: 0, right: 0 }}
+              // dragElastic={0.5}
+              // onDragEnd={(e, { offset, velocity }) => {
+              // const swipe = swipePower(offset.x, velocity.x);
+              // if (swipe < -swipeConfidenceThreshold) {
+              //   paginate("right");
+              // } else if (swipe > swipeConfidenceThreshold) {
+              //   paginate("left");
+              // }
+              // }}
+              className="absolute inset-0"
+            >
+              <div className="relative h-full w-full">
+                <div className="absolute inset-0 bg-black/60 z-10" />
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  className="h-full w-full object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 z-20 flex flex-col justify-center items-start p-8 md:p-16 lg:p-24">
+                  <motion.h1
+                    custom={1}
+                    variants={contentVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 max-w-3xl"
+                  >
+                    {item.title}
+                  </motion.h1>
+                  <motion.p
+                    custom={2}
+                    variants={contentVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="text-lg md:text-xl text-white mb-8 max-w-2xl"
+                  >
+                    {item.subtitle}
+                  </motion.p>
+                  <motion.div
+                    custom={3}
+                    variants={contentVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="flex space-x-4"
+                  >
+                    <Button size="lg">Get A Free Estimate</Button>
+                    <Button variant="outline" size="lg">
+                      Discover More
+                    </Button>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          ) : null
+        )}
+      </AnimatePresence>
+
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
+        {content.map((_, index) => (
+          <button
+            key={index}
+            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+              index === currentIndex ? "bg-white scale-125" : "bg-white/50"
+            }`}
+            onClick={() => {
+              setDirection(index > currentIndex ? "right" : "left");
+              setCurrentIndex(index);
+            }}
+          />
+        ))}
+      </div>
+      <button
+        onClick={() => paginate("left")}
+        className="absolute left-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors"
+      >
+        <ChevronLeft size={48} />
+      </button>
+      <button
+        onClick={() => paginate("right")}
+        className="absolute right-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors"
+      >
+        <ChevronRight size={48} />
+      </button>
     </div>
   );
 }
