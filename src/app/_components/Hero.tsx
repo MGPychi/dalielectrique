@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Hero1 from "../../../public/hero1.webp";
-import Hero2 from "../../../public/hero2.png";
+import Hero2 from "../../../public/hero1.webp";
+import Hero1 from "../../../public/hero2.png";
 import Hero3 from "../../../public/hero3.png";
 import Image from "next/image";
 import Header from "@/components/layout/Header/Header";
@@ -106,6 +106,7 @@ export default function HeroCarousel() {
                   blurDataURL=""
                   placeholder="blur"
                   priority
+                  quality={65}
                 />
                 <div className="absolute inset-0 z-20 flex flex-col justify-center items-start p-8 md:p-16 lg:p-24">
                   <motion.h1
