@@ -35,6 +35,7 @@ const Location = () => {
           objectFit="cover"
           alt="Location map background"
           loading="lazy"
+          placeholder="blur"
         />
         <div className="absolute inset-0 bg-black/60" />
       </div>
@@ -83,6 +84,8 @@ const Location = () => {
               height={350}
               alt="Our office"
               className="rounded-lg shadow-lg w-[800px] h-[350px]"
+              loading="lazy"
+              placeholder="blur"
             />
           </motion.div>
         </div>
