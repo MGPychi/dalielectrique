@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { m as motion, useInView } from "framer-motion";
 
 const titleVariants = {
   hidden: { opacity: 0, y: -20 },

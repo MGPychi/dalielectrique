@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Hero2 from "../../../public/hero1.webp";
@@ -67,6 +67,7 @@ export default function HeroCarousel() {
         : (prevIndex - 1 + content.length) % content.length;
     });
   };
+
   useEffect(() => {
     const interval = setInterval(() => {
       paginate("right");

@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
 import { MapPinIcon, PhoneIcon, MailIcon, LinkedinIcon } from "lucide-react";
 import ContactUsForm from "./ContactUsForm";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 
 const contactInfos = [

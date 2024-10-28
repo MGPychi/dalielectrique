@@ -1,6 +1,6 @@
 "use client"; // Ensure to include this line
 
-import { motion, useInView } from "framer-motion";
+import { m as motion, useInView } from "framer-motion";
 import {
   Card,
   CardHeader,

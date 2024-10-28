@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -103,13 +103,13 @@ export default function SingleTestimonialCarousel() {
               animate="center"
               exit="exit"
               transition={sliderTransition}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.5}
-              onDragEnd={(_, dragInfo) => {
-                if (dragInfo.offset.x < -50) nextTestimonial();
-                if (dragInfo.offset.x > 50) prevTestimonial();
-              }}
+              // drag="x"
+              // dragConstraints={{ left: 0, right: 0 }}
+              // dragElastic={0.5}
+              // onDragEnd={(_, dragInfo) => {
+              //   if (dragInfo.offset.x < -50) nextTestimonial();
+              //   if (dragInfo.offset.x > 50) prevTestimonial();
+              // }}
             >
               <Card className="bg-white text-black shadow-lg rounded-lg h-80 lg:h-72 p-4">
                 <CardHeader className="px-6 pt-6">
