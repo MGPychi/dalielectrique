@@ -98,7 +98,7 @@ export default function HeroCarousel() {
               className="absolute inset-0"
             >
               <div className="relative h-full w-full">
-                <div className="absolute inset-0 bg-black/60 z-10" />
+                <div className="absolute inset-0 bg-black/70 z-10" />
 
                 <Image
                   src={item.image}
@@ -106,8 +106,9 @@ export default function HeroCarousel() {
                   className="h-full w-full object-cover"
                   blurDataURL=""
                   placeholder="blur"
+                  quality={15}
                   priority
-                  quality={65}
+
                 />
                 <div className="absolute inset-0 z-20 flex flex-col justify-center items-start p-8 md:p-16 lg:p-24">
                   <motion.h1
