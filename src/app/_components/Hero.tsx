@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -45,7 +45,7 @@ const slideVariants = {
     x: 0,
     opacity: 1,
   },
-  exit: (direction: string) => ({
+  exit: () => ({
     opacity: 0,
   }),
 };
@@ -55,23 +55,26 @@ export default function HeroCarousel() {
   const [direction, setDirection] = useState("right");
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const paginate = (newDirection: string) => {
-    if (isAnimating) return; // Prevent further pagination during animation
-    setDirection(newDirection);
-    setIsAnimating(true); // Start animation
-    setCurrentIndex((prevIndex) => {
-      return newDirection === "right"
-        ? (prevIndex + 1) % content.length
-        : (prevIndex - 1 + content.length) % content.length;
-    });
-  };
+  const paginate = useCallback(
+    (newDirection: string) => {
+      if (isAnimating) return; // Prevent further pagination during animation
+      setDirection(newDirection);
+      setIsAnimating(true); // Start animation
+      setCurrentIndex((prevIndex) => {
+        return newDirection === "right"
+          ? (prevIndex + 1) % content.length
+          : (prevIndex - 1 + content.length) % content.length;
+      });
+    },
+    [isAnimating]
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
       paginate("right");
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [paginate]);
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black backdrop-blur-sm ">
@@ -83,6 +86,7 @@ export default function HeroCarousel() {
           (item, idx) =>
             idx != 0 && (
               <Image
+                key={`hero_hidden_ig_${idx}`}
                 src={item.image}
                 alt={item.title}
                 className="h-full w-full object-cover"

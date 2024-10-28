@@ -1,11 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { m as motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRef, useState } from "react";
+import { m as motion, AnimatePresence, useInView } from "framer-motion";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const itemVariants = {
+  hidden: { y: 50, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+    },
+  },
+};
 
 const testimonials = [
   {
@@ -13,7 +25,7 @@ const testimonials = [
     service: "OUTLET AND SWITCH INSTALLATION",
     rating: 5,
     review:
-      "I recently hired Zak as an electrician, and I couldn't be happier with his service. He completed the electrical work for our entire basement and placed pot lights surrounding the exterior of our house. Zak is highly skilled and completed the job efficiently and effectively. He was punctual, professional, and his attention to detail was impressive. I felt confident in his expertise, and he went above and beyond to ensure customer satisfaction. I highly recommend Zak for any electrical needs.",
+      "I recently hired Zak as an electrician, and I couldnt be happier with his service. He completed the electrical work for our entire basement and placed pot lights surrounding the exterior of our house. Zak is highly skilled and completed the job efficiently and effectively. He was punctual, professional, and his attention to detail was impressive. I felt confident in his expertise, and he went above and beyond to ensure customer satisfaction. I highly recommend Zak for any electrical needs.",
   },
   {
     name: "Dipali Sharma",
@@ -32,7 +44,7 @@ const testimonials = [
   // Add more testimonials as needed
 ];
 
-export default function SingleTestimonialCarousel() {
+export default function Component() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -43,124 +55,133 @@ export default function SingleTestimonialCarousel() {
 
   const prevTestimonial = () => {
     setDirection(-1);
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const goToTestimonial = (idx:number) => {
-    if (idx >= 0 && idx < testimonials.length) {
-      setDirection(idx > currentIndex ? 1 : -1);
-      setCurrentIndex(idx);
-    }
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length
+    );
   };
 
   const sliderVariants = {
-    enter: (direction:number) => ({
-      x: direction > 0 ? "100%" : "-100%",
+    enter: (direction: number) => ({
+      x: direction > 0 ? 130 : -130,
       opacity: 0,
       scale: 0.95,
     }),
     center: { x: 0, opacity: 1, scale: 1 },
-    exit: (direction:number) => ({
-      x: direction > 0 ? "-100%" : "100%",
+    exit: (direction: number) => ({
+      x: direction > 0 ? -130 : 130,
       opacity: 0,
       scale: 0.95,
     }),
   };
 
   const sliderTransition = { duration: 0.35 };
+  const ref = useRef(null);
+  const inView = useInView(ref, {
+    once: false,
+    margin: "-250px 0px -100px 0px",
+  });
 
   return (
-    <section className="py-6 px-4 text-white">
-      <div className="max-w-4xl mx-auto">
+    <section
+      ref={ref}
+      className=" py-32 items-center flex  px-4 bg-gray-800    text-white"
+    >
+      <div className="container flex justify-between  w-full   mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={itemVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-left mb-16"
         >
-          <h2 className="text-4xl font-bold mb-6 text-white">
-            {"What Our Clients Say".split(" ").map((word, idx) => (
+          <Badge className="mb-6 px-4 py-2 font-bold bg-white text-primary rounded-md">
+            Testimonials
+          </Badge>
+
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            {"Powerful Praise".split(" ").map((word, idx) => (
               <motion.span
                 key={`testimonial_word_${idx}`}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * idx }}
-                className="inline-block mr-1"
+                className="inline-block mr-2"
+              >
+                {word}
+              </motion.span>
+            ))}
+            <br />
+            {"Hear from Our Customers".split(" ").map((word, idx) => (
+              <motion.span
+                key={`testimonial_word_2_${idx}`}
+                variants={itemVariants}
+                initial={"hidden"}
+                animate={inView ? "visible" : "hidden"}
+                transition={{ delay: 0.1 * (idx + 2) }}
+                className="inline-block mr-2"
               >
                 {word}
               </motion.span>
             ))}
           </h2>
+          <p className="text-gray-400 max-w-2xl">
+            We take pride in providing top-notch electricity services that
+            exceed our customers expectations.
+          </p>
         </motion.div>
 
-        <div className="relative">
-          <AnimatePresence custom={direction} mode="wait">
-            <motion.div
-              key={currentIndex}
-              custom={direction}
-              variants={sliderVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={sliderTransition}
-              // drag="x"
-              // dragConstraints={{ left: 0, right: 0 }}
-              // dragElastic={0.5}
-              // onDragEnd={(_, dragInfo) => {
-              //   if (dragInfo.offset.x < -50) nextTestimonial();
-              //   if (dragInfo.offset.x > 50) prevTestimonial();
-              // }}
-            >
-              <Card className="bg-white text-black shadow-lg rounded-lg h-80 lg:h-72 p-4">
-                <CardHeader className="px-6 pt-6">
-                  <CardTitle className="flex justify-between items-center text-lg font-semibold">
-                    <span>{testimonials[currentIndex].name}</span>
-                    <div className="flex space-x-1">
-                      {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                      ))}
+        <div className="relative   w-1/2 flex flex-col md:flex-row">
+          <div className="w-full  md:pr-8 mb-8 md:mb-0">
+            <AnimatePresence custom={direction} mode="wait">
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={sliderVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={sliderTransition}
+              >
+                <Card className="bg-gray-800 text-white shadow-lg rounded-lg p-8 border-none">
+                  <CardHeader className="px-0 pt-0"></CardHeader>
+                  <CardContent className="px-0  md:min-h-[250px]  pb-0">
+                    <div className="text-lg">
+                      {testimonials[currentIndex].review
+                        .split(" ")
+                        .slice(0, 45)
+                        .join(" ")}
                     </div>
-                  </CardTitle>
-                  <Badge variant="destructive" className="mt-2 max-w-64 cursor-pointer text-white">
-                    {testimonials[currentIndex].service}
-                  </Badge>
-                </CardHeader>
-                <CardContent className="px-6 pb-6">
-                  <p className="text-gray-700 text-sm">
-                    {testimonials[currentIndex].review.slice(0, 800)}...
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </AnimatePresence>
+                    <div className="flex items-center mt-6">
+                      <div className="space-2">
+                        <h4 className="font-semibold">
+                          {testimonials[currentIndex].name}
+                        </h4>
+                        <p className="text-gray-400">Happy Client</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </AnimatePresence>
 
-          <div className="space-x-2 flex w-full justify-center mt-5">
-            {testimonials.map((_, idx) => (
-              <div
-                key={`testimonial_button_${idx}`}
-                onClick={() => goToTestimonial(idx)}
-                className={`${idx === currentIndex ? "bg-white" : "bg-gray-300"} ring-1 cursor-pointer ring-white w-2 h-2 rounded-full`}
-              />
-            ))}
-          </div>
-
-          <div className="flex justify-center mt-6 space-x-4">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={prevTestimonial}
-              className="bg-transparent text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={nextTestimonial}
-              className="bg-transparent text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </Button>
+            <div className="flex justify-start mt-6 space-x-4">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={prevTestimonial}
+                className="bg-transparent text-white border-white hover:bg-white hover:text-gray-900 transition-colors duration-300"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={nextTestimonial}
+                className="bg-transparent text-white border-white hover:bg-white hover:text-gray-900 transition-colors duration-300"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>

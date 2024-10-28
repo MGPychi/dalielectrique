@@ -9,11 +9,10 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Home, Building2, Factory, HomeIcon } from "lucide-react";
-import { ReactElement, ReactNode, useRef } from "react";
+import {   useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import Hero1 from "../../../public/hero1.webp";
 import { StaticImageData } from "next/image";
-import Image from "next/image";
 
 const services = [
   {

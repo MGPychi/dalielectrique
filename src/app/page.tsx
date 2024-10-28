@@ -1,7 +1,7 @@
 import Footer from "@/components/layout/Footer";
 import Hero from "./_components/Hero";
 import Services from "./_components/Services";
-import Introduction from "./_components/Introduction";
+import AboutUs from "./_components/AboutUs";
 import MainProducts from "./_components/MainProducts";
 import Location from "./_components/Location";
 import WhyChooseUs from "./_components/WhyUs";
@@ -14,7 +14,7 @@ export default function Homepage() {
     <>
       <main className="flex-grow bg-white ">
         <Hero />
-        <Introduction />
+        <AboutUs />
         <Services />
         <MainProducts />
         <Location />
