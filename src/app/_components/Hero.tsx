@@ -38,8 +38,7 @@ const content = [
 ];
 
 const slideVariants = {
-  enter: (direction: string) => ({
-    x: direction === "right" ? 1000 : direction === "left" ? -1000 : 0,
+  enter: () => ({
     opacity: 0,
   }),
   center: {
@@ -47,7 +46,6 @@ const slideVariants = {
     opacity: 1,
   },
   exit: (direction: string) => ({
-    x: direction === "right" ? -1000 : 1000,
     opacity: 0,
   }),
 };
