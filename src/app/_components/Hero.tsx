@@ -77,7 +77,7 @@ export default function HeroCarousel() {
   }, [paginate]);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-black backdrop-blur-sm ">
+    <div className="relative h-screen w-full overflow-hidden bg-black/40 backdrop-blur  ">
       <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pt-4 pb-16">
         <Header />
       </div>
@@ -92,7 +92,7 @@ export default function HeroCarousel() {
                 className="h-full w-full object-cover"
                 blurDataURL=""
                 placeholder="blur"
-                quality={70}
+                quality={1}
                 priority
               />
             )
@@ -100,7 +100,7 @@ export default function HeroCarousel() {
       </div>
       <AnimatePresence
         initial={false}
-        mode="popLayout"
+        mode="sync"
         onExitComplete={() => setIsAnimating(false)}
       >
         {content.map((item, index) =>
@@ -116,7 +116,7 @@ export default function HeroCarousel() {
               className="absolute inset-0"
             >
               <div className="relative h-full w-full">
-                <div className="absolute inset-0 bg-black/50 z-10" />
+                <div className="absolute inset-0 bg-black/50 backdrop-blur z-10" />
 
                 <Image
                   src={item.image}
@@ -124,7 +124,7 @@ export default function HeroCarousel() {
                   className="h-full w-full object-cover"
                   blurDataURL=""
                   placeholder="blur"
-                  quality={70}
+                  quality={1}
                   priority
                 />
                 <div className="absolute inset-0 z-20 flex flex-col justify-center items-start p-8 md:p-16 lg:p-24">

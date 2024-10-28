@@ -17,11 +17,11 @@ export default function Homepage() {
         <AboutUs />
         <Services />
         <MainProducts />
-        <Location />
-        <WhyChooseUs />
         <Reviews />
+        <WhyChooseUs />
+        <Location />
         <ContactusSection />
-        <ScrollUp /> 
+        <ScrollUp />
       </main>
       <Footer />
     </>
