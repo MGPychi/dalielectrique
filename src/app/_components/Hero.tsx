@@ -80,6 +80,22 @@ export default function HeroCarousel() {
       <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pt-4 pb-16">
         <Header />
       </div>
+      <div className="hidden">
+        {content.map(
+          (item, idx) =>
+            idx != 0 && (
+              <Image
+                src={item.image}
+                alt={item.title}
+                className="h-full w-full object-cover"
+                blurDataURL=""
+                placeholder="blur"
+                quality={70}
+                priority
+              />
+            )
+        )}
+      </div>
       <AnimatePresence
         initial={false}
         mode="popLayout"
@@ -98,7 +114,7 @@ export default function HeroCarousel() {
               className="absolute inset-0"
             >
               <div className="relative h-full w-full">
-                <div className="absolute inset-0 bg-black/70 z-10" />
+                <div className="absolute inset-0 bg-black/50 z-10" />
 
                 <Image
                   src={item.image}
@@ -106,9 +122,8 @@ export default function HeroCarousel() {
                   className="h-full w-full object-cover"
                   blurDataURL=""
                   placeholder="blur"
-                  quality={15}
+                  quality={70}
                   priority
-
                 />
                 <div className="absolute inset-0 z-20 flex flex-col justify-center items-start p-8 md:p-16 lg:p-24">
                   <motion.h1
