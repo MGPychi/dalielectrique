@@ -1,62 +1,72 @@
-'use client'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+"use client";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 // Define the form schema with Zod
 const formSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-})
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
 
 // Mock login function
-const mockLogin = async (email: string, password: string) => {
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  
-  // Check if email is admin@example.com and password is 'adminpass'
-  if (email === 'admin@example.com' && password === 'adminpass') {
-    return { success: true }
-  } else {
-    throw new Error('Invalid credentials')
-  }
-}
 
 export default function AdminLogin() {
-  const router = useRouter()
-  const [error, setError] = useState<string | null>(null)
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
-  })
+  });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setError(null)
-      await mockLogin(values.email, values.password)
+      setError(null);
+      await signIn("credentials", {
+        redirect: true,
+        redirectTo: "/admin/dashboard",
+        ...values,
+      });
       // Redirect to admin dashboard on successful login
-      router.push('/admin/dashboard')
+      router.push("/admin/dashboard");
     } catch (error) {
-      setError('Invalid email or password')
+      setError("Invalid email or password");
     }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="max-w-lg w-full">
         <CardHeader>
           <CardTitle>Admin Login</CardTitle>
-          <CardDescription>Enter your credentials to access the admin panel.</CardDescription>
+          <CardDescription>
+            Enter your credentials to access the admin panel.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -81,21 +91,29 @@ export default function AdminLogin() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full">Login</Button>
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
             </form>
           </Form>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <p className="text-sm text-gray-500">Forgot your password? Contact support.</p>
+          <p className="text-sm text-gray-500">
+            Forgot your password? Contact support.
+          </p>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
