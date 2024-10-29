@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
 import { MapPinIcon, PhoneIcon, MailIcon, LinkedinIcon } from "lucide-react";
 import ContactUsForm from "./Contact/ContactUsForm";
-import {m as motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 
 const contactInfos = [
@@ -44,7 +44,7 @@ const ContactUsSection = () => {
   const title2 = "Get in Contact";
 
   return (
-    <div className="container mx-auto py-16">
+    <section className="container mx-auto py-16" id="contact">
       <div className="lg:flex gap-4  lg:space-x-10">
         <div className="lg:w-1/2 space-y-4">
           <motion.div
@@ -120,7 +120,7 @@ const ContactUsSection = () => {
           <ContactUsForm />
         </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 

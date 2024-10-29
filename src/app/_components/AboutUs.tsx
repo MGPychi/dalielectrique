@@ -2,8 +2,8 @@ import React from "react";
 
 const Introduction = () => {
   return (
-    <section>
-      <div className=""></div>
+    <section id="about">
+      <div className="">about us</div>
     </section>
   );
 };

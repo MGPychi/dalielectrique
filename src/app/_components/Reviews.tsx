@@ -84,9 +84,9 @@ export default function Component() {
   return (
     <section
       ref={ref}
-      className=" py-32 items-center flex  px-4 bg-gray-800    text-white"
+      className=" py-32 items-center flex   px-4 bg-gray-800    text-white"
     >
-      <div className="container flex justify-between  w-full   mx-auto">
+      <div className="container flex flex-col lg:flex-row justify-between  w-full   mx-auto">
         <motion.div
           variants={itemVariants}
           initial="hidden"
@@ -130,8 +130,8 @@ export default function Component() {
           </p>
         </motion.div>
 
-        <div className="relative   w-1/2 flex flex-col md:flex-row">
-          <div className="w-full  md:pr-8 mb-8 md:mb-0">
+        <div className="relative   lg:w-1/2  flex flex-col md:flex-row">
+          <div className="">
             <AnimatePresence custom={direction} mode="wait">
               <motion.div
                 key={currentIndex}
@@ -142,7 +142,7 @@ export default function Component() {
                 exit="exit"
                 transition={sliderTransition}
               >
-                <Card className="bg-gray-800 text-white shadow-lg rounded-lg p-8 border-none">
+                <Card className="bg-gray-800  text-white shadow-lg rounded-lg p-8 border-none">
                   <CardHeader className="px-0 pt-0"></CardHeader>
                   <CardContent className="px-0  md:min-h-[250px]  pb-0">
                     <div className="text-lg">
@@ -164,7 +164,7 @@ export default function Component() {
               </motion.div>
             </AnimatePresence>
 
-            <div className="flex justify-start mt-6 space-x-4">
+            <div className="flex justify-end lg:justify-start  mt-6 space-x-4">
               <Button
                 variant="outline"
                 size="icon"

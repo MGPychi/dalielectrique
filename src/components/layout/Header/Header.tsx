@@ -29,7 +29,7 @@ const Header = () => {
 
   return (
     <header
-      className="absolute w-full max-w-screen-xl rounded-xl py-2.5 px-2 backdrop-blur-2xl top-0 lg:top-6 z-10 left-1/2 -translate-x-1/2"
+      className="absolute w-full max-w-screen-xl rounded-xl py-2.5 px-2 backdrop-blur-2xl top-0 lg:top-0 xl:top-6 z-10 left-1/2 -translate-x-1/2"
     >
       <div className="container mx-auto px-4 ">
         <div className="flex justify-between items-center py-2.5 text-sm border-b border-gray-700">

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import Hero2 from "../../../public/hero1.webp";
 import Hero1 from "../../../public/hero2.png";
 import Hero3 from "../../../public/hero3.png";
@@ -28,12 +29,6 @@ const content = [
     subtitle:
       "From residential to commercial projects, we're committed to delivering reliable and sustainable electrical solutions for a brighter tomorrow.",
     image: Hero3,
-  },
-  {
-    title: "I dont know what to write here",
-    subtitle:
-      "From residential to commercial projects, we're committed to delivering reliable and sustainable electrical solutions for a brighter tomorrow.",
-    image: Hero1,
   },
 ];
 
@@ -92,7 +87,7 @@ export default function HeroCarousel() {
                 className="h-full w-full object-cover"
                 blurDataURL=""
                 quality={1}
-                loading="lazy"
+                priority
               />
             )
         )}
@@ -152,10 +147,14 @@ export default function HeroCarousel() {
                     transition={{ duration: 0.5, delay: 0.4 }}
                     className="flex space-x-4"
                   >
-                    <Button size="lg">Get A Free Estimate</Button>
-                    <Button variant="outline" size="lg">
-                      Discover More
-                    </Button>
+                    <Link href="#contact">
+                      <Button size="lg">Contact</Button>
+                    </Link>
+                    <Link href="#about">
+                      <Button variant="outline" size="lg">
+                        About Us
+                      </Button>
+                    </Link>
                   </motion.div>
                 </div>
               </div>
@@ -183,14 +182,19 @@ export default function HeroCarousel() {
       <button
         onClick={() => paginate("left")}
         disabled={isAnimating}
-        className="absolute left-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors"
+        className={`${
+          isAnimating && "!opacity-80"
+        } absolute left-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors`}
       >
         <ChevronLeft size={48} />
       </button>
       <button
         onClick={() => paginate("right")}
         disabled={isAnimating}
-        className="absolute right-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors"
+        className={`
+          
+          ${isAnimating && "!opacity-80"}
+          absolute right-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors`}
       >
         <ChevronRight size={48} />
       </button>
