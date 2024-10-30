@@ -11,6 +11,7 @@ import Reviews from "./_components/Reviews";
 import ContactusSection from "./_components/ContactUsSection";
 import ScrollUp from "./_components/ScrollUp";
 import { m as motion } from "framer-motion";
+import AandQ from "./_components/AndQ";
 
 export default function Homepage() {
   const { scrollYProgress } = useScroll();
@@ -28,6 +29,7 @@ export default function Homepage() {
         <MainProducts />
         <Reviews />
         <WhyChooseUs />
+        <AandQ />
         <Location />
         <ContactusSection />
         <ScrollUp />
