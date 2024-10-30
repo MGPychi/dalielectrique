@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const content = [
@@ -35,23 +36,45 @@ export default function AandQ() {
     <div className="container mx-auto min-h-[70vh] px-4 py-16 max-w-7xl">
       <div className="grid lg:grid-cols-2 gap-12">
         <div className="space-y-6">
-          <div className="inline-block px-4 py-1 bg-red-50 rounded-full">
-            <span className="bg-primary font-medium">FAQ'S</span>
-          </div>
-          <h2 className="text-4xl font-bold">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1,y:0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Badge className="mb-6 px-4 py-2 font-bold bg-primary/10 text-primary rounded-md">
+              FAQ'S
+            </Badge>
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.4 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-4xl font-bold"
+          >
             Frequently Best Asked Question?
-          </h2>
-          <p className="text-gray-600 text-lg">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.4 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-gray-600 text-lg"
+          >
             That's why we've compiled a list of frequently asked questions to
             help make the process as smooth as possible for you.
-          </p>
-          <Button
-            className="bg-primary/90 hover:bg-primary  text-white rounded-full px-6"
-            size="lg"
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.4 }}
+            whileInView={{ opacity: 1, y: 0 }}
           >
-            Have Any Questions
-            <span className="ml-2">→</span>
-          </Button>
+            <Button
+              className="bg-primary/90 hover:bg-primary  text-white rounded-full px-6"
+              size="lg"
+            >
+              Have Any Questions
+              <span className="ml-2">→</span>
+            </Button>
+          </motion.div>
         </div>
 
         {/* Right Column */}
@@ -59,9 +82,10 @@ export default function AandQ() {
           <AnimatePresence>
             {content.map((item, index) => (
               <motion.div
+                whileInView={{ opacity: 1, y: 0 }}
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                // animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
                 <button
@@ -93,7 +117,7 @@ export default function AandQ() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2, ease: "backIn" }}
+                        transition={{ duration: 0.2, ease: "linear" }}
                       >
                         <p
                           className={`mt-4 ${

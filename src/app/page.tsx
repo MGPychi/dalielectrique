@@ -15,12 +15,15 @@ import AandQ from "./_components/AndQ";
 
 export default function Homepage() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {});
+  const scaleX = useSpring(scrollYProgress, {
+    restSpeed:100
+  });
+
   return (
     <>
       <main className="flex-grow bg-white ">
         <motion.div
-          className="h-2 fixed top-0 left-0 right-0 z-50 bg-primary origin-left"
+          className="h-1  fixed top-0 left-0 right-0 z-50 bg-primary origin-left"
           style={{ scaleX: scaleX }}
         />
         <Hero />
