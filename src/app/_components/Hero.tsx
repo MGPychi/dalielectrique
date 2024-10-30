@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -34,41 +34,44 @@ const content = [
 
 const slideVariants = {
   enter: () => ({
-    opacity: 0,
+    opacity: 0.9,
+    scale: 1,
   }),
   center: {
-    x: 0,
     opacity: 1,
+    scale: 1.02,
   },
   exit: () => ({
-    opacity: 0,
+    opacity: 0.9,
+    scale: 1,
   }),
 };
 
 export default function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const interval = useRef<NodeJS.Timeout>();
   const [direction, setDirection] = useState("right");
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [doneAnimating, setDoneAnimating] = useState(true);
 
   const paginate = useCallback(
     (newDirection: string) => {
-      if (isAnimating) return; // Prevent further pagination during animation
+      if (!doneAnimating) return;
       setDirection(newDirection);
-      setIsAnimating(true); // Start animation
       setCurrentIndex((prevIndex) => {
         return newDirection === "right"
           ? (prevIndex + 1) % content.length
           : (prevIndex - 1 + content.length) % content.length;
       });
+      setDoneAnimating(false);
+      clearInterval(interval.current);
     },
-    [isAnimating]
+    [doneAnimating]
   );
-
   useEffect(() => {
-    const interval = setInterval(() => {
+    interval.current = setInterval(() => {
       paginate("right");
     }, 5000);
-    return () => clearInterval(interval);
+    return () => clearInterval(interval?.current);
   }, [paginate]);
 
   return (
@@ -84,7 +87,7 @@ export default function HeroCarousel() {
                 key={`hero_hidden_ig_${idx}`}
                 src={item.image}
                 alt={item.title}
-                className="h-full w-full object-cover"
+                className="hidden"
                 blurDataURL=""
                 quality={1}
                 priority
@@ -93,9 +96,10 @@ export default function HeroCarousel() {
         )}
       </div>
       <AnimatePresence
-        initial={false}
-        mode="sync"
-        onExitComplete={() => setIsAnimating(false)}
+        initial={true}
+        mode="wait"
+        onExitComplete={() => setDoneAnimating(true)}
+        // onExitComplete={() => (doneAnimating.current = true)}
       >
         {content.map((item, index) =>
           index === currentIndex ? (
@@ -105,7 +109,7 @@ export default function HeroCarousel() {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.3, delay: 0.6 }}
               custom={direction}
               className="absolute inset-0"
             >
@@ -126,7 +130,7 @@ export default function HeroCarousel() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.2 }}
                     className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 max-w-3xl"
                   >
                     {item.title}
@@ -181,19 +185,17 @@ export default function HeroCarousel() {
       </div>
       <button
         onClick={() => paginate("left")}
-        disabled={isAnimating}
-        className={`${
-          isAnimating && "!opacity-80"
-        } absolute left-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors`}
+        disabled={!doneAnimating}
+        className={`
+         absolute left-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors`}
       >
         <ChevronLeft size={48} />
       </button>
       <button
         onClick={() => paginate("right")}
-        disabled={isAnimating}
+        disabled={!doneAnimating}
         className={`
           
-          ${isAnimating && "!opacity-80"}
           absolute right-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors`}
       >
         <ChevronRight size={48} />
