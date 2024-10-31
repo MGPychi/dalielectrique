@@ -1,11 +1,13 @@
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgTable, pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+export const rolesEnum = pgEnum("roles", ["admin", "superAdmin"]);
 
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   password: text("password").notNull(),
   email: text("email").notNull().unique(),
+  role: rolesEnum().default("admin"),
 });
 
 export const contacts = pgTable("contact", {

@@ -48,14 +48,14 @@ export const authConfig: NextAuthConfig = {
           if (!user || !user.password) return null;
 
           const isValid =
-            // (user.role == "admin" || user.role == "superAdmin") &&
-            await verifyPassword(password as string, user.password);
+            (user.role == "admin" || user.role == "superAdmin") &&
+            (await verifyPassword(password as string, user.password));
           if (!isValid) return null;
           return {
-            id: user.id as string,
-            email: user.email as string,
-            name: user.name as string,
-            role: "admin",
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.password,
           };
         } catch (err) {
           console.log("Error in auth.ts ", err);
