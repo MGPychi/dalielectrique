@@ -27,12 +27,30 @@ export const contacts = pgTable("contact", {
     .notNull()
     .$onUpdate(() => new Date()),
 });
+export const reviews = pgTable("review", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  body: text("body").notNull(),
+  client: text("client").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+export const QandA = pgTable("q_and_a", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
 
-// export type InsertUser = typeof users.$inferInsert;
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);
-// export type SelectUser = typeof users.$inferSelect;
-// export type InsertContact = typeof contacts.$inferInsert;
-// export type SelectContact = typeof contacts.$inferSelect;
 export const insertContactSchema = createInsertSchema(contacts);
 export const selectContactSchema = createSelectSchema(contacts);
+export const insertReviewSchema = createInsertSchema(reviews);
+export const selectReviewSchema = createSelectSchema(reviews);
+export const insertQandASchema = createInsertSchema(QandA);
+export const selectQandASchema = createSelectSchema(QandA);

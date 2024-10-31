@@ -50,6 +50,13 @@
       "when": 1730409250533,
       "tag": "0006_pink_avengers",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1730415600886,
+      "tag": "0007_military_maddog",
+      "breakpoints": true
     }
   ]
 }
