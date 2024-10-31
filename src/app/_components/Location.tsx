@@ -1,8 +1,7 @@
-"use client";
-
 import Image from "next/image";
-import React, { useRef } from "react";
-import { m as motion, useInView } from "framer-motion";
+import React from "react";
+// import { m as motion } from "framer-motion";
+import * as  motion from "framer-motion/m";
 import { MapPin, Clock, Phone } from "lucide-react";
 import LocationImage from "../../../public/location1.png";
 
@@ -17,17 +16,8 @@ const itemVariants = {
 };
 
 const Location = () => {
-  const ref = useRef(null);
-  const inView = useInView(ref, {
-    once: false,
-    margin: "-100px 0px -100px 0px",
-  });
-
   return (
-    <section
-      ref={ref}
-      className="relative min-h-screen flex items-center justify-center  px-4 overflow-hidden"
-    >
+    <section className="relative min-h-screen flex items-center justify-center  px-4 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src={LocationImage}
@@ -43,7 +33,7 @@ const Location = () => {
       <motion.div
         variants={containerVariants}
         initial="hidden"
-        animate={inView ? "visible" : "hidden"}
+        whileInView={"visible"}
         className="relative z-10 w-full max-w-7xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl  p-8 lg:p-12 shadow-2xl"
       >
         <div className="grid lg:grid-cols-2 gap-12 items-center">

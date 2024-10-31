@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { m as motion, AnimatePresence, useInView } from "framer-motion";
+import { useState } from "react";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -75,22 +75,14 @@ export default function Component() {
   };
 
   const sliderTransition = { duration: 0.35 };
-  const ref = useRef(null);
-  const inView = useInView(ref, {
-    once: false,
-    margin: "-250px 0px -100px 0px",
-  });
 
   return (
-    <section
-      ref={ref}
-      className=" py-32 items-center flex   px-4 bg-gray-800    text-white"
-    >
+    <section className=" py-32 items-center flex   px-4 bg-gray-800    text-white">
       <div className="container flex flex-col lg:flex-row justify-between  w-full   mx-auto">
         <motion.div
           variants={itemVariants}
           initial="hidden"
-          animate={inView ? "visible" : "hidden"}
+          whileInView={"visible"}
           transition={{ duration: 0.5 }}
           className="text-left mb-16"
         >
@@ -116,7 +108,7 @@ export default function Component() {
                 key={`testimonial_word_2_${idx}`}
                 variants={itemVariants}
                 initial={"hidden"}
-                animate={inView ? "visible" : "hidden"}
+                whileInView={"visible"}
                 transition={{ delay: 0.1 * (idx + 2) }}
                 className="inline-block mr-2"
               >
@@ -124,10 +116,14 @@ export default function Component() {
               </motion.span>
             ))}
           </h2>
-          <p className="text-gray-400 max-w-2xl">
+          <motion.p
+            initial={"hidden"}
+            whileInView={"visible"}
+            className="text-gray-400 max-w-2xl"
+          >
             We take pride in providing top-notch electricity services that
             exceed our customers expectations.
-          </p>
+          </motion.p>
         </motion.div>
 
         <div className="relative   lg:w-1/2  flex flex-col md:flex-row">

@@ -33,16 +33,16 @@ export default function AandQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   return (
-    <div className="container mx-auto min-h-[70vh] px-4 py-16 max-w-7xl">
+    <div className="container mx-auto min-h-[70vh] px-4 py-16 ">
       <div className="grid lg:grid-cols-2 gap-12">
         <div className="space-y-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1,y:0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
             <Badge className="mb-6 px-4 py-2 font-bold bg-primary/10 text-primary rounded-md">
-              FAQ'S
+              FAQ&aposS
             </Badge>
           </motion.div>
           <motion.h2
@@ -59,7 +59,7 @@ export default function AandQ() {
             whileInView={{ opacity: 1, y: 0 }}
             className="text-gray-600 text-lg"
           >
-            That's why we've compiled a list of frequently asked questions to
+            That&aposs why we&aposve compiled a list of frequently asked questions to
             help make the process as smooth as possible for you.
           </motion.p>
           <motion.div
@@ -117,7 +117,7 @@ export default function AandQ() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2, ease: "linear" }}
+                        transition={{ duration: 0.3, ease: "linear" }}
                       >
                         <p
                           className={`mt-4 ${

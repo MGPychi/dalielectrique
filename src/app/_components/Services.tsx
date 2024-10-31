@@ -1,6 +1,6 @@
 "use client"; // Ensure to include this line
 
-import { m as motion, useInView } from "framer-motion";
+import { m as motion  } from "framer-motion";
 import {
   Card,
   CardHeader,
@@ -9,7 +9,6 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Home, Building2, Factory, HomeIcon } from "lucide-react";
-import {   useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import Hero1 from "../../../public/hero1.webp";
 import { StaticImageData } from "next/image";
@@ -85,22 +84,16 @@ const itemVariants = {
 };
 
 export default function ProfessionalServicesSection() {
-  const ref = useRef(null);
-  const inView = useInView(ref, {
-    once: false,
-    margin: "-250px 0px -100px 0px",
-  });
 
   return (
     <section
       id="services"
       className="py-24 px-4 bg-gradient-to-b from-background to-secondary/10"
-      ref={ref}
     >
       <div className="container mx-auto">
         <motion.div
           initial="hidden"
-          animate={inView ? "visible" : "hidden"}
+          whileInView={"visible"}
           variants={containerVariants}
           className="text-center mb-16"
         >
@@ -129,7 +122,7 @@ export default function ProfessionalServicesSection() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate={inView ? "visible" : "hidden"}
+          whileInView={"visible"}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {services.map((service, index) => (
