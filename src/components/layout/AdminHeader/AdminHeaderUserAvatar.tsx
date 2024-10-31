@@ -11,12 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 const HeaderUserAvatar = () => {
   const session = useSession();
-  const router = useRouter();
   return (
     <div className="flex items-center gap-2">
       <DropdownMenu>
@@ -39,9 +37,9 @@ const HeaderUserAvatar = () => {
           <DropdownMenuItem
             onClick={async () => {
               await signOut({
-                redirect: false,
+                redirect: true,
+                redirectTo: "/admin/auth/signin",
               });
-              router.push("/");
             }}
             className="cursor-pointer hover:!text-red-500"
           >

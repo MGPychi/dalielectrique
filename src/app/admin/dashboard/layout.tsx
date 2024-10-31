@@ -1,7 +1,7 @@
 import SideBar from "@/components/SideBar";
 import Header from "@/components/layout/AdminHeader/AdminHeader";
 import { auth } from "@/lib/auth";
-import { Contact, Home} from "lucide-react";
+import { Contact, Home } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { ComponentProps, ReactNode } from "react";
@@ -33,11 +33,14 @@ const paths: IPath[] = [
   //   href: "/dashboard",
   // },
 ];
-
+const checkIfAdmin = (role: string) => {
+  return role == "admin" || role == "superAdmin";
+};
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
 
-  if (!session || !session.user || session.user.role !== "admin") redirect("/admin/auth/signin");
+  if (!session || !session.user || !checkIfAdmin(session.user.role))
+    redirect("/admin/auth/signin");
   return (
     <div className="flex">
       <SideBar paths={paths} />

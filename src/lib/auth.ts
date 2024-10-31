@@ -11,6 +11,9 @@ export const authConfig: NextAuthConfig = {
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/admin/auth/signin",
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -55,7 +58,7 @@ export const authConfig: NextAuthConfig = {
             id: user.id,
             email: user.email,
             name: user.name,
-            role: user.password,
+            role: user.role,
           };
         } catch (err) {
           console.log("Error in auth.ts ", err);
