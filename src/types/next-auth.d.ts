@@ -1,7 +1,8 @@
 import "next-auth";
+
 declare module "next-auth" {
   interface User {
-    role: string;
+    role: "admin" | "superAdmin";
     email: string;
     id: string;
   }

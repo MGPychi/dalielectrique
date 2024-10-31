@@ -7,7 +7,7 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   password: text("password").notNull(),
   email: text("email").notNull().unique(),
-  role: rolesEnum().default("admin"),
+  role: rolesEnum().default("admin").notNull(),
 });
 
 export const contacts = pgTable("contact", {
