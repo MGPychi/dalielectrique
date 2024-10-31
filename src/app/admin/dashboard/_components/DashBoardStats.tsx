@@ -2,16 +2,13 @@ import {
   getTotalContactsCount,
   getTotalContactsCountToDay,
 } from "@/app/data/contacts-data";
-import {
-  getTotalUsersCount,
-  getTotalUsersCountToday,
-} from "@/app/data/users-data";
+import { getTotalUsersCount, getUserCountToday } from "@/app/data/users-data";
 import StatusCard from "@/components/StatusCard";
 import { Contact, User2Icon, UserIcon } from "lucide-react";
 
 const DashBoardStats = async () => {
   const usersCount = await getTotalUsersCount();
-  const userCountToday = await getTotalUsersCountToday();
+  const userCountToday = await getUserCountToday();
   const contactsCount = await getTotalContactsCount();
   const contactsCountToday = await getTotalContactsCountToDay();
   return (

@@ -1,7 +1,7 @@
 import SideBar from "@/components/SideBar";
 import Header from "@/components/layout/AdminHeader/AdminHeader";
 import { auth } from "@/lib/auth";
-import { Contact, Home } from "lucide-react";
+import { Contact, Home, Settings, Users } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { ComponentProps, ReactNode } from "react";
@@ -20,18 +20,18 @@ const paths: IPath[] = [
   {
     name: "Contact",
     icon: <Contact className="h-5 w-5" />,
-    href: "/admin/dashboard/contact",
+    href: "/admin/dashboard/contacts",
   },
-  // {
-  //   name: "newsletter",
-  //   icon: <Mail className="h-5 w-5" />,
-  //   href: "/dashboard/newsletter",
-  // },
-  // {
-  //   name: "Settings",
-  //   icon: <Settings className="h-5 w-5" />,
-  //   href: "/dashboard",
-  // },
+  {
+    name: "users",
+    icon: <Users className="h-5 w-5" />,
+    href: "/admin/dashboard/users",
+  },
+  {
+    name: "Q an A",
+    icon: <Settings className="h-5 w-5" />,
+    href: "/dashboard",
+  },
 ];
 const checkIfAdmin = (role: string) => {
   return role == "admin" || role == "superAdmin";

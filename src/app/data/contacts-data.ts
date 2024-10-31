@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
 import { contacts } from "@/db/schema";
-import { and, or, sql } from "drizzle-orm";
+import { and, count, or, sql } from "drizzle-orm";
 import { cache } from "react";
 
 export const getContacts = cache(
@@ -30,8 +30,17 @@ export const getContacts = cache(
   }
 );
 export const getTotalContactsCount = cache(async () => {
-  return 13;
+  const result = await db.select({ count: count() }).from(contacts);
+  const c = result[0];
+  return c.count;
 });
 export const getTotalContactsCountToDay = cache(async () => {
-  return 0;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); //
+  const result = await db
+    .select({ count: count() })
+    .from(contacts)
+    .where(sql`DATE(created_at) = ${today.toISOString().split("T")[0]}`);
+  const c = result[0];
+  return c.count;
 });
