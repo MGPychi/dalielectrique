@@ -1,8 +1,7 @@
-import { config } from "dotenv";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-
-config({ path: ".env" });
-
-const client = postgres(process.env.DATABASE_URL!);
-export const db = drizzle({ client });
+import { drizzle } from "drizzle-orm/node-postgres";
+const dbUrl = process.env.DATABASE_URL;
+import * as schema from "./schema";
+if (!dbUrl) throw new Error("invalid database url");
+export const db = drizzle(dbUrl, {
+  schema,
+});

@@ -1,23 +1,18 @@
-import {
-  integer,
-  pgEnum,
-  pgTable,
-  serial,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   password: text("password").notNull(),
   email: text("email").notNull().unique(),
 });
 
 export const contacts = pgTable("contact", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   body: text("body").notNull(),
-  email: text("email"),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
   phone: text("phone").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
@@ -25,8 +20,11 @@ export const contacts = pgTable("contact", {
     .$onUpdate(() => new Date()),
 });
 
-export type InsertUser = typeof users.$inferInsert;
-export type SelectUser = typeof users.$inferSelect;
-
-export type InsertPost = typeof contacts.$inferInsert;
-export type SelectPost = typeof contacts.$inferSelect;
+// export type InsertUser = typeof users.$inferInsert;
+export const insertUserSchema = createInsertSchema(users);
+export const selectUserSchema = createSelectSchema(users);
+// export type SelectUser = typeof users.$inferSelect;
+// export type InsertContact = typeof contacts.$inferInsert;
+// export type SelectContact = typeof contacts.$inferSelect;
+export const insertContactSchema = createInsertSchema(contacts);
+export const selectContactSchema = createSelectSchema(contacts);

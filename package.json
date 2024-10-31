@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "analyze": "ANALYZE=true  pnpm build"
+    "analyze": "ANALYZE=true  pnpm build",
+    "db:g": "pnpm drizzle-kit generate",
+    "db:p": "pnpm drizzle-kit push",
+    "db:s": "pnpm drizzle-kit studio"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -28,13 +31,14 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.35.3",
+    "drizzle-zod": "^0.5.1",
     "framer-motion": "^11.11.10",
     "lucide-react": "^0.453.0",
     "next": "14.2.11",
     "next-auth": "5.0.0-beta.25",
     "next-nprogress-bar": "^2.3.14",
+    "next-safe-action": "^7.9.9",
     "pg": "^8.13.1",
-    "postgres": "^3.4.5",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.1",

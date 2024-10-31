@@ -16,32 +16,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  message: z.string().min(1, "Message is required"),
-});
-const initialValues = {
+import { createContact } from "@/app/actions";
+import { insertContactSchema } from "@/db/schema";
+const initialValues: z.infer<typeof insertContactSchema> = {
+  body: "",
   name: "",
-  email: "",
   phone: "",
-  message: "",
+  email: "",
 };
 const ContactUsForm = () => {
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(insertContactSchema),
     defaultValues: initialValues,
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    toast({
-      title: "Message sent",
-      description: "We will get back to you soon",
+  const onSubmit = async (data: z.infer<typeof insertContactSchema>) => {
+    const response = await createContact({
+      ...data,
     });
+    if (response?.data?.success) {
+      toast({
+        title: "Message sent",
+        description: "We will get back to you soon",
+      });
+      form.reset();
+    } else {
+      toast({
+        title: "Failed sent",
+        description: "cant send your message",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -90,10 +96,10 @@ const ContactUsForm = () => {
         </div>
         <FormField
           control={form.control}
-          name="message"
+          name="body"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Message</FormLabel>
+              <FormLabel>body</FormLabel>
               <FormControl>
                 <Textarea
                   rows={8}

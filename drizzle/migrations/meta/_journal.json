@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1730390797664,
+      "tag": "0000_previous_edwin_jarvis",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1730391110823,
+      "tag": "0001_bouncy_inhumans",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1730391609063,
+      "tag": "0002_tan_captain_midlands",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1730391871195,
+      "tag": "0003_classy_reaper",
+      "breakpoints": true
+    }
+  ]
+}

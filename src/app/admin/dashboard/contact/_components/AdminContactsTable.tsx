@@ -1,6 +1,7 @@
 "use client";
 
-// import { getNewsLetterEmails } from "@/data/newsletter";
+import { deleteContact } from "@/app/actions";
+import { getContacts } from "@/app/data/contacts-data";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,11 +20,13 @@ import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
+  TableCell,
   // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
 // import { useToast } from "@/hooks/use-toast";
 import { MoreHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -32,14 +35,14 @@ import { useState } from "react";
 // import { deleteEmailAction } from "../actions";
 
 interface Props {
-  // emails: Awaited<ReturnType<typeof getNewsLetterEmails>>["emails"];
+  data: Awaited<ReturnType<typeof getContacts>>["data"];
   totalEmails: number;
   currentPage: number;
   searchTerm: string;
 }
 
 export default function UsersListTable({
-  // emails,
+  data,
   totalEmails,
   currentPage,
   searchTerm,
@@ -47,7 +50,7 @@ export default function UsersListTable({
   const router = useRouter();
   const [searchInput, setSearchInput] = useState(searchTerm || "");
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
-    null,
+    null
   );
 
   // Handle search with debounce
@@ -61,7 +64,9 @@ export default function UsersListTable({
 
     // Set a new timeout to wait for 500ms before executing search
     const timeout = setTimeout(() => {
-      router.push(`/dashboard/users?search=${value}&page=${currentPage}`);
+      router.push(
+        `/admin/dashboard/contacts?search=${value}&page=${currentPage}`
+      );
     }, 500);
 
     setDebounceTimeout(timeout);
@@ -70,7 +75,7 @@ export default function UsersListTable({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>NewsLetter Dashboard</CardTitle>
+        <CardTitle>Contacts Dashboard</CardTitle>
       </CardHeader>
       <CardContent className="min-h-[calc(100vh-328px)]">
         <div className="mb-6 flex flex-col gap-4 md:flex-row">
@@ -90,34 +95,33 @@ export default function UsersListTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* {emails.map((email) => (
-              <TableRow key={email.id}>
-                <TableCell>{email.email}</TableCell>
-                <TableCell>{email.createdAt?.toLocaleDateString()}</TableCell>
+            {data.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>
-                  <UserActionsMenu email={email.email} />
+                  <UserActionsMenu contactId={item.id} />
                 </TableCell>
               </TableRow>
-            ))} */}
-            
+            ))}
           </TableBody>
         </Table>
       </CardContent>
       <CardFooter className="flex w-full justify-center">
         <span className="text-sm text-muted-foreground">
-          {totalEmails} Emails
+          {totalEmails} contacts
         </span>
       </CardFooter>
     </Card>
   );
 }
 
-// interface UserActionsMenuProps {
-//   email: string;
-// }
+interface UserActionsMenuProps {
+  contactId: string;
+}
 
-export const UserActionsMenu = () => {//{ email }: UserActionsMenuProps
-  // const { toast } = useToast();
+export const UserActionsMenu = ({ contactId }: UserActionsMenuProps) => {
+  const { toast } = useToast();
 
   return (
     <DropdownMenu>
@@ -133,20 +137,19 @@ export const UserActionsMenu = () => {//{ email }: UserActionsMenuProps
             variant="destructive"
             size="sm"
             onClick={async () => {
-              // const result = await deleteEmailAction({
-              //   email: email,
-              // });
-              // if (result?.data?.status == "success") {
-              //   toast({
-              //     title: "Email deleted",
-              //     variant: "success",
-              //   });
-              // } else {
-              //   toast({
-              //     title: "Failed to delete email",
-              //     variant: "destructive",
-              //   });
-              // }
+              const result = await deleteContact({
+                id: contactId,
+              });
+              if (result?.data?.success) {
+                toast({
+                  title: "Contact deleted",
+                });
+              } else {
+                toast({
+                  title: "Failed to delete contact",
+                  variant: "destructive",
+                });
+              }
             }}
           >
             Delete

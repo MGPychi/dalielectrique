@@ -1,5 +1,5 @@
 {
-  "id": "11ee6320-cf99-4735-bfbb-e5aa8989fe64",
+  "id": "3a3389af-abcd-4c90-b96c-239f703530b0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,9 +10,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "gen_random_uuid()"
         },
         "body": {
           "name": "body",
@@ -58,9 +59,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",
