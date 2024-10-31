@@ -1,9 +1,10 @@
 "use sever";
-// import { db } from "@/lib/db";
-// import { eq } from "@/components/database/src";
-// import { users } from "@/components/database/src/db/schema";
+import { db } from "@/db";
+import { users } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { verifyPassword } from "./passwords";
 // import { verifyPassword } from "./passwords";
 
 export const authConfig: NextAuthConfig = {
@@ -37,46 +38,30 @@ export const authConfig: NextAuthConfig = {
         },
       },
       authorize: async (credentials) => {
-        console.log("data",credentials)
-        if (
-          credentials.email == "admin@email.com" &&
-          credentials.password == "password"
-        ) {
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+        if (!email || !password) return null;
+        try {
+          const user = await db.query.users.findFirst({
+            where: eq(users.email, email),
+          });
+          if (!user || !user.password) return null;
+
+          const isValid =
+            // (user.role == "admin" || user.role == "superAdmin") &&
+            await verifyPassword(password as string, user.password);
+          if (!isValid) return null;
           return {
-            id: "1",
-            email: credentials.email as string,
-            name: "admin",
+            id: user.id as string,
+            email: user.email as string,
+            name: user.name as string,
             role: "admin",
           };
+        } catch (err) {
+          console.log("Error in auth.ts ", err);
+          return null;
         }
-        return null;
       },
-      // const email = credentials?.email;
-      // const password = credentials?.password;
-      // if (!email || !password) return null;
-      // if (typeof email !== "string" || typeof password !== "string") {
-      //   return null;
-      // }
-      // try {
-      //   const user = await db.query.users.findFirst({
-      //     where: eq(users.email, email),
-      //   });
-      //   if (!user || !user.password) return null;
-      //   const isValid =
-      //     user.role == "admin" &&
-      //     (await verifyPassword(password as string, user.password));
-      //   if (!isValid) return null;
-      //   return {
-      //     id: user.id as string,
-      //     email: user.email as string,
-      //     name: user.name as string,
-      //     role: user.role as "admin" | "user",
-      //   };
-      // } catch (err) {
-      //   console.log("Error in auth.ts ", err);
-      //   return null;
-      // }
-      // },
     }),
   ],
 };

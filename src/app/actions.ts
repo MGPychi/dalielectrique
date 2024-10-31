@@ -1,5 +1,5 @@
 "use server";
-import { contacts, insertContactSchema, users } from "@/db/schema";
+import { contacts, insertContactSchema } from "@/db/schema";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";

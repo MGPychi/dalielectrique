@@ -29,3 +29,9 @@ export const getContacts = cache(
     return { data: result, hasNext, hasPrev, totalEmails, pageCount };
   }
 );
+export const getTotalContactsCount = cache(async () => {
+  return 13;
+});
+export const getTotalContactsCountToDay = cache(async () => {
+  return 0;
+});

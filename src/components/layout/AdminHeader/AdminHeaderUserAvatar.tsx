@@ -23,10 +23,10 @@ const HeaderUserAvatar = () => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="h-12 w-12 rounded-full"
+            className="h-14 w-14  rounded-full"
             size="icon"
           >
-            <User className="h-6 w-6" />
+            <User className="h-10 w-10" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-40">

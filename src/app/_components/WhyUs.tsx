@@ -4,7 +4,6 @@ import { m as motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Award, DollarSign, Heart } from "lucide-react";
-import { useRef } from "react";
 
 const features = [
   {

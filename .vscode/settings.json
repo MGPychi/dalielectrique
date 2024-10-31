@@ -1,0 +1,7 @@
+{
+  "cSpell.words": ["linkedinboost"],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  }
+}

@@ -1,23 +1,19 @@
+import {
+  getTotalContactsCount,
+  getTotalContactsCountToDay,
+} from "@/app/data/contacts-data";
+import {
+  getTotalUsersCount,
+  getTotalUsersCountToday,
+} from "@/app/data/users-data";
 import StatusCard from "@/components/StatusCard";
-import { TextIcon, User2Icon, UserIcon } from "lucide-react";
-
-const dashBoardStats: { text: string; value: string; icon: React.ReactNode }[] =
-  [
-    {
-      text: "Total Reviews",
-      value: "120",
-      icon: <TextIcon className="h-4 w-4" />,
-    },
-    {
-      text: "Total New Reviews",
-      value: "10",
-      icon: <TextIcon className="h-4 w-4" />,
-    },
-  ];
+import { Contact, User2Icon, UserIcon } from "lucide-react";
 
 const DashBoardStats = async () => {
-  const usersCount = 40;
-  const userCountToday = 5;
+  const usersCount = await getTotalUsersCount();
+  const userCountToday = await getTotalUsersCountToday();
+  const contactsCount = await getTotalContactsCount();
+  const contactsCountToday = await getTotalContactsCountToDay();
   return (
     <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
       <StatusCard
@@ -31,14 +27,17 @@ const DashBoardStats = async () => {
         icon={<UserIcon className="h-4 w-4" />}
       />
 
-      {dashBoardStats.map((stat, idx) => (
-        <StatusCard
-          key={`card_stat_${idx}`}
-          text={stat.text}
-          value={stat.value}
-          icon={stat.icon}
-        />
-      ))}
+      <StatusCard
+        text="Total  Contacts"
+        value={contactsCount.toString()}
+        icon={<Contact className="h-4 w-4" />}
+      />
+
+      <StatusCard
+        text="Total New Contacts"
+        value={contactsCountToday.toString()}
+        icon={<Contact className="h-4 w-4" />}
+      />
     </div>
   );
 };
