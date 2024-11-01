@@ -1,3 +1,4 @@
+"use server";
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
 import { users } from "@/db/schema";

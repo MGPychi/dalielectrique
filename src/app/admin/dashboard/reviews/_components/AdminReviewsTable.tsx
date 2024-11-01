@@ -1,6 +1,7 @@
 "use client";
-import { deleteContact } from "@/app/actions";
-import { getContacts } from "@/app/data/contacts-data";
+import CreateReviewModal from "@/components/modals/CreateReviewModal";
+import { deleteReview } from "../actions";
+import { getReviews } from "@/app/data/reviews-data";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,18 +32,16 @@ import { MoreHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-// import { deleteEmailAction } from "../actions";
-
 interface Props {
-  data: Awaited<ReturnType<typeof getContacts>>["data"];
-  totalEmails: number;
+  data: Awaited<ReturnType<typeof getReviews>>["data"];
+  count: number;
   currentPage: number;
   searchTerm: string;
 }
 
-export default function UsersListTable({
+export default function AdminReviewsTable({
   data,
-  totalEmails,
+  count,
   currentPage,
   searchTerm,
 }: Props) {
@@ -64,7 +63,7 @@ export default function UsersListTable({
     // Set a new timeout to wait for 500ms before executing search
     const timeout = setTimeout(() => {
       router.push(
-        `/admin/dashboard/contacts?search=${value}&page=${currentPage}`
+        `/admin/dashboard/reviews?search=${value}&page=${currentPage}`
       );
     }, 500);
 
@@ -74,7 +73,10 @@ export default function UsersListTable({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Contacts Dashboard</CardTitle>
+        <div className="flex items-center justify-between space-x-6">
+          <CardTitle>Reviews Dashboard</CardTitle>
+          <CreateReviewModal />
+        </div>
       </CardHeader>
       <CardContent className="min-h-[calc(100vh-328px)]">
         <div className="mb-6 flex flex-col gap-4 md:flex-row">
@@ -88,18 +90,18 @@ export default function UsersListTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Email</TableHead>
-              <TableHead>Registred at</TableHead>
+              <TableHead>Client</TableHead>
+              <TableHead>created at</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.client}</TableCell>
                 <TableCell>{item.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>
-                  <UserActionsMenu contactId={item.id} />
+                  <UserActionsMenu reviewId={item.id} />
                 </TableCell>
               </TableRow>
             ))}
@@ -107,19 +109,17 @@ export default function UsersListTable({
         </Table>
       </CardContent>
       <CardFooter className="flex w-full justify-center">
-        <span className="text-sm text-muted-foreground">
-          {totalEmails} contacts
-        </span>
+        <span className="text-sm text-muted-foreground">{count} reviews</span>
       </CardFooter>
     </Card>
   );
 }
 
 interface UserActionsMenuProps {
-  contactId: string;
+  reviewId: string;
 }
 
-export const UserActionsMenu = ({ contactId }: UserActionsMenuProps) => {
+export const UserActionsMenu = ({ reviewId }: UserActionsMenuProps) => {
   const { toast } = useToast();
 
   return (
@@ -136,16 +136,16 @@ export const UserActionsMenu = ({ contactId }: UserActionsMenuProps) => {
             variant="destructive"
             size="sm"
             onClick={async () => {
-              const result = await deleteContact({
-                id: contactId,
+              const result = await deleteReview({
+                id: reviewId,
               });
               if (result?.data?.success) {
                 toast({
-                  title: "Contact deleted",
+                  title: "review deleted",
                 });
               } else {
                 toast({
-                  title: "Failed to delete contact",
+                  title: "Failed to delete review",
                   variant: "destructive",
                 });
               }

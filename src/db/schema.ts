@@ -1,5 +1,6 @@
 import { pgTable, pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 export const rolesEnum = pgEnum("roles", ["admin", "superAdmin"]);
 
 export const users = pgTable("users", {
@@ -48,9 +49,19 @@ export const QandA = pgTable("q_and_a", {
 
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);
-export const insertContactSchema = createInsertSchema(contacts);
+export const insertContactSchema = createInsertSchema(contacts, {
+  body: z.string().min(10),
+  name: z.string().min(3),
+  email: z.string().email(),
+});
 export const selectContactSchema = createSelectSchema(contacts);
-export const insertReviewSchema = createInsertSchema(reviews);
+export const insertReviewSchema = createInsertSchema(reviews, {
+  body: z.string().min(10),
+  client: z.string().min(3),
+});
 export const selectReviewSchema = createSelectSchema(reviews);
-export const insertQandASchema = createInsertSchema(QandA);
+export const insertQandASchema = createInsertSchema(QandA, {
+  question: z.string().min(10),
+  answer: z.string().min(10),
+});
 export const selectQandASchema = createSelectSchema(QandA);

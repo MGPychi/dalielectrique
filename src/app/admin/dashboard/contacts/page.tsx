@@ -4,7 +4,7 @@ import { PagePaginator } from "@/components/PagePaginator";
 import AdminContactsTable from "./_components/AdminContactsTable";
 import { getContacts } from "@/app/data/contacts-data";
 
-export default async function UserDashboard({
+export default async function ContactsDashboard({
   searchParams,
 }: {
   searchParams?: { [key: string]: string | string[] };

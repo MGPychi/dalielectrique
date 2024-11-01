@@ -1,14 +1,14 @@
 import { PagePaginator } from "@/components/PagePaginator";
-import { getUsers } from "@/app/data/users-data";
-import AdminUsersTable from "../users/_components/AdminUsersTable";
+import { getReviews } from "@/app/data/reviews-data";
+import AdminReviewsTable from "./_components/AdminReviewsTable";
 
-export default async function UserDashboard({
+export default async function ReviewsDashboard({
   searchParams,
 }: {
   searchParams?: { [key: string]: string | string[] };
 }) {
   const page = (searchParams?.page as string) || "1";
-  const { data, count, hasNext, hasPrev, pageCount } = await getUsers({
+  const { data, count, hasNext, hasPrev, pageCount } = await getReviews({
     page: parseInt(page),
     q: searchParams?.search as string,
   });
@@ -16,7 +16,7 @@ export default async function UserDashboard({
   return (
     <main className="flex-col space-y-8 p-2">
       <div className="flex min-h-[calc(100vh-228px)] justify-center">
-        <AdminUsersTable
+        <AdminReviewsTable
           currentPage={parseInt(page)}
           count={count}
           data={data}

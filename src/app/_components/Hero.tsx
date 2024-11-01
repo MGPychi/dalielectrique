@@ -1,12 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  m as motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -80,7 +75,7 @@ export default function HeroCarousel() {
   }, [paginate]);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-black/40 backdrop-blur  ">
+    <motion.section className="relative h-screen w-full overflow-hidden bg-black/40 backdrop-blur  ">
       <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pt-4 pb-16">
         <Header />
       </div>
@@ -205,6 +200,6 @@ export default function HeroCarousel() {
       >
         <ChevronRight size={48} />
       </button>
-    </div>
+    </motion.section>
   );
 }
