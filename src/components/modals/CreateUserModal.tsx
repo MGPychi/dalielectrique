@@ -17,10 +17,7 @@ const CreateUserModal: React.FC = () => {
 
   return (
     <>
-      <Button
-        onClick={openModal}
-        className="  rounded-sm hidden lg:block hover:ring-2 hover:ring-primary"
-      >
+      <Button onClick={openModal} className="  rounded-sm hidden lg:block  ">
         <PlusIcon />
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -5,11 +5,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
-import ContactUsForm from "@/app/_components/Contact/ContactUsForm";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
-import AddNewUserForm from "@/app/admin/dashboard/users/_components/AddNewUserForm";
 import AddNewReviewForm from "@/app/admin/dashboard/reviews/_components/AddNewReviewForm";
 
 const CreateReviewModal: React.FC = () => {
@@ -18,10 +16,7 @@ const CreateReviewModal: React.FC = () => {
 
   return (
     <>
-      <Button
-        onClick={openModal}
-        className="  rounded-sm hidden lg:block hover:ring-2 hover:ring-primary"
-      >
+      <Button onClick={openModal} className="  rounded-sm hidden lg:block ">
         <PlusIcon />
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

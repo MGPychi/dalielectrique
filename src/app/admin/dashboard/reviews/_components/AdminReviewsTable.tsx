@@ -31,6 +31,9 @@ import { useToast } from "@/hooks/use-toast";
 import { MoreHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { selectReviewSchema } from "@/db/schema";
+import { z } from "zod";
+import { ReviewDataModal } from "@/components/modals/ReviewDataModal";
 
 interface Props {
   data: Awaited<ReturnType<typeof getReviews>>["data"];
@@ -97,13 +100,7 @@ export default function AdminReviewsTable({
           </TableHeader>
           <TableBody>
             {data.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.client}</TableCell>
-                <TableCell>{item.createdAt?.toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <UserActionsMenu reviewId={item.id} />
-                </TableCell>
-              </TableRow>
+              <ReviewTableItem key={item.id} review={item} />
             ))}
           </TableBody>
         </Table>
@@ -114,6 +111,30 @@ export default function AdminReviewsTable({
     </Card>
   );
 }
+const ReviewTableItem = ({
+  review,
+}: {
+  review: z.infer<typeof selectReviewSchema>;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <ReviewDataModal
+        onClose={() => setIsOpen(false)}
+        open={isOpen}
+        review={review}
+      />
+      <TableRow onClick={() => setIsOpen(true)} key={review.id}>
+        <TableCell>{review.client}</TableCell>
+        <TableCell>{review.createdAt?.toLocaleDateString()}</TableCell>
+        <TableCell onClick={(e) => e.stopPropagation()}>
+          <UserActionsMenu reviewId={review.id} />
+        </TableCell>
+      </TableRow>
+    </>
+  );
+};
 
 interface UserActionsMenuProps {
   reviewId: string;

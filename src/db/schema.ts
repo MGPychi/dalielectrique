@@ -56,7 +56,7 @@ export const insertContactSchema = createInsertSchema(contacts, {
 });
 export const selectContactSchema = createSelectSchema(contacts);
 export const insertReviewSchema = createInsertSchema(reviews, {
-  body: z.string().min(10),
+  body: z.string().min(10).max(700),
   client: z.string().min(3),
 });
 export const selectReviewSchema = createSelectSchema(reviews);
