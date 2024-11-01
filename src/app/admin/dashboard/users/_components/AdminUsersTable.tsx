@@ -26,10 +26,11 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 // import { useToast } from "@/hooks/use-toast";
-import { MoreHorizontalIcon } from "lucide-react";
+import { MoreHorizontalIcon, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { deleteUser } from "../actions";
+import CreateUserModal from "@/components/modals/CreateUserModal";
 
 // import { deleteEmailAction } from "../actions";
 
@@ -72,7 +73,10 @@ export default function AdminUsersTable({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Users Dashboard</CardTitle>
+        <div className="flex items-center justify-between space-x-6">
+          <CardTitle>Users Dashboard</CardTitle>
+          <CreateUserModal />
+        </div>
       </CardHeader>
       <CardContent className="min-h-[calc(100vh-328px)]">
         <div className="mb-6 flex flex-col gap-4 md:flex-row">
@@ -83,6 +87,7 @@ export default function AdminUsersTable({
             className="md:w-1/3"
           />
         </div>
+
         <Table>
           <TableHeader>
             <TableRow>

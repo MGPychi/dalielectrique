@@ -29,12 +29,12 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <>
-      <header className="absolute w-full max-w-screen-xl rounded-xl py-2.5 px-2 backdrop-blur-2xl top-0 lg:top-0 xl:top-6 z-10 left-1/2 -translate-x-1/2">
-        <div className="container mx-auto px-4 ">
-          <div className="flex justify-between items-center py-2.5 text-sm border-b border-gray-700">
+      <header className="absolute  w-full max-w-screen-xl rounded-xl py-2.5 px-2 backdrop-blur-2xl top-0 lg:top-0 xl:top-6 z-10 left-1/2 -translate-x-1/2">
+        <div className="container origin-center mx-auto px-4 ">
+          <div className="flex justify-between items-center py-2.5 text-sm border-b border-gray-500">
             <motion.a
               href="mailto:admin@dalielictrique.com"
-              className="hover:bg-primary text-white transition-colors duration-200"
+              className=" text-white transition-colors duration-200"
               whileHover={{ scale: 1.05 }}
             >
               admin@dalielictrique.ca
@@ -46,8 +46,8 @@ const Header = () => {
               </motion.div>
               <motion.a
                 href="#"
-                className="hover:bg-primary transition-colors duration-200"
-                whileHover={{ scale: 1.2, rotate: 5 }}
+                className=" transition-colors duration-200"
+                whileHover={{ scale: 1.2 }}
               >
                 <Facebook size={18} />
               </motion.a>

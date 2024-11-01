@@ -1,7 +1,8 @@
 "use server";
 import { users, insertUserSchema } from "@/db/schema";
+import { hashPassword } from "@/lib/passwords";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
-import { eq } from "drizzle-orm";
+import { and, ne, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -9,14 +10,17 @@ export const createUser = actionClient
   .schema(insertUserSchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
-      console.log(parsedInput);
+      const hashed = await hashPassword(parsedInput.password);
       await ctx.db.insert(users).values({
         ...parsedInput,
+        password: hashed,
       });
     } catch (err) {
       console.log(err);
       return { success: false };
     }
+
+    revalidatePath("/admin/dashboard/users");
     return {
       success: true,
     };
@@ -28,7 +32,9 @@ export const deleteUser = protectedActionClient
     try {
       if (ctx.user.id == parsedInput.id || ctx.user.role == "admin")
         return { success: false };
-      await ctx.db.delete(users).where(eq(users.id, parsedInput.id));
+      await ctx.db
+        .delete(users)
+        .where(and(eq(users.id, parsedInput.id), ne(users.role, "superAdmin")));
     } catch (err) {
       console.log(err);
       return { success: false };
