@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { m as motion } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Facebook, Menu, Phone } from "lucide-react";
 import ContactUsModal from "@/components/modals/ContactUsModal";
+import MobileMenu from "./MobileMenu";
 const links = [
   {
     title: "Home",
@@ -83,28 +84,11 @@ const Header = () => {
             </div>
           </div>
         </div>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="lg:hidden     py-4"
-          >
-            <nav className="container mx-auto px-4 flex flex-col space-y-4">
-              {links.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.href}
-                  className={`text-sm text-white font-medium hover:text-primary transition-colors duration-200 ${
-                    index === 0 ? "text-primary" : ""
-                  }`}
-                >
-                  {item.title}
-                </Link>
-              ))}
-            </nav>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <MobileMenu close={() => setIsMenuOpen(false)} links={links} />
+          )}
+        </AnimatePresence>
       </header>
     </>
   );

@@ -1,7 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { m as motion, AnimatePresence } from "framer-motion";
+import {
+  m as motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -9,7 +14,7 @@ import Hero2 from "../../../public/hero1.webp";
 import Hero1 from "../../../public/hero2.png";
 import Hero3 from "../../../public/hero3.png";
 import Image from "next/image";
-import Header from "@/components/layout/Header";
+import Header from "@/components/layout/Header/Header";
 
 const content = [
   {
