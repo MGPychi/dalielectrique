@@ -4,6 +4,10 @@ import { reviews } from "@/db/schema";
 import { and, count, gte, or, sql } from "drizzle-orm";
 import { cache } from "react";
 
+export const getAllReviews = cache(async () => {
+  const result = await db.select().from(reviews);
+  return result;
+});
 // Fetch paginated reviews with optional search query
 export const getReviews = cache(
   async ({ page, q }: { page: number; q?: string }) => {
