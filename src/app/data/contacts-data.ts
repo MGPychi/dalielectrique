@@ -2,7 +2,6 @@ import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
 import { contacts } from "@/db/schema";
 import { and, count, gte, or, sql } from "drizzle-orm";
-import { data } from "framer-motion/m";
 import { cache } from "react";
 
 export const getContacts = cache(

@@ -63,7 +63,7 @@ const Header = () => {
                 <div key={index} className="relative group">
                   <Link
                     href={item.href}
-                    className={` px-4 py-2.5 rounded-sm     font-medium  hover:text-primary  text-gray-100  transition-colors duration-200 ${
+                    className={` px-4 py-2.5  rounded-sm     font-medium  hover:text-primary  text-gray-100  transition-colors duration-200 ${
                       index === 0 ? "text-primary" : ""
                     }`}
                   >

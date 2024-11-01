@@ -1,15 +1,17 @@
 "use server";
-import { insertReviewSchema, reviews } from "@/db/schema";
+
+import { insertQandASchema, QandA } from "@/db/schema";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
 import { eq } from "drizzle-orm";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 
-export const createReview = actionClient
-  .schema(insertReviewSchema)
+// Create a new Q&A entry
+export const createQandA = actionClient
+  .schema(insertQandASchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
-      await ctx.db.insert(reviews).values({
+      await ctx.db.insert(QandA).values({
         ...parsedInput,
       });
     } catch (err) {
@@ -17,24 +19,26 @@ export const createReview = actionClient
       return { success: false };
     }
 
-    revalidatePath("/admin/dashboard/reviews");
+    revalidatePath("/admin/dashboard/q_and_a");
     revalidatePath("/");
     return {
       success: true,
     };
   });
 
-export const deleteReview = protectedActionClient
+// Delete a Q&A entry by ID
+export const deleteQandA = protectedActionClient
   .schema(z.object({ id: z.string() }))
   .action(async ({ ctx, parsedInput }) => {
     try {
-      await ctx.db.delete(reviews).where(eq(reviews.id, parsedInput.id));
+      await ctx.db.delete(QandA).where(eq(QandA.id, parsedInput.id));
     } catch (err) {
       console.log(err);
       return { success: false };
     }
-    revalidatePath("/admin/dashboard/reviews");
-    revalidateTag("reviews");
+
+    revalidatePath("/admin/dashboard/q_and_a");
+    revalidateTag("q_and_a");
     revalidatePath("/");
     return { success: true };
   });

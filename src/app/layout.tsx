@@ -4,6 +4,11 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import MotionWrapper from "@/components/wrappers/MotionWrapper";
 import Providers from "@/components/providers";
+// import { Roboto } from "next/font/google";
+// export const inter = Roboto({
+//   subsets: ["latin"],
+//   weight: ["100", "300", "400", "500"],
+// });
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,7 +23,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "dali electronic",
-  description: "dali electronic ",
+  description: "dali electronic is a company that sells electronic products",
 };
 
 export default function RootLayout({
@@ -27,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={` scroll-smooth`}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

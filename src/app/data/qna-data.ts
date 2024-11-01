@@ -1,33 +1,36 @@
+"use server";
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
-import { reviews } from "@/db/schema";
+import { QandA } from "@/db/schema";
 import { and, count, gte, or, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
-export const getAllReviews = unstable_cache(
+// Fetch all Q&A entries
+export const getAllQandA = unstable_cache(
   async () => {
-    const result = await db.select().from(reviews);
+    const result = await db.select().from(QandA);
     return result;
   },
-  ["reviews"],
+  ["q_and_a"],
   {
-    tags: ["reviews"],
+    tags: ["q_and_a"],
   }
 );
-// Fetch paginated reviews with optional search query
-export const getReviews = cache(
+
+// Fetch paginated Q&A entries with optional search query
+export const getQandA = cache(
   async ({ page, q }: { page: number; q?: string }) => {
-    const filteredReviews = db.$with("filtered_reviews").as(
+    const filteredQandA = db.$with("filtered_q_and_a").as(
       db
         .select()
-        .from(reviews)
+        .from(QandA)
         .where(
           and(
             q
               ? or(
-                  sql`${reviews.body} LIKE ${`%${q}%`}`,
-                  sql`${reviews.client} LIKE ${`%${q}%`}`
+                  sql`${QandA.question} LIKE ${`%${q}%`}`,
+                  sql`${QandA.answer} LIKE ${`%${q}%`}`
                 )
               : undefined
           )
@@ -35,14 +38,13 @@ export const getReviews = cache(
     );
 
     const result = await db
-      .with(filteredReviews)
+      .with(filteredQandA)
       .select()
-      .from(filteredReviews)
+      .from(filteredQandA)
       .limit(PAGE_SIZE)
       .offset((page - 1) * PAGE_SIZE);
 
-    // Get total review count after filters
-    const totalCount = await getReviewsCount({ q });
+    const totalCount = await getQandACount({ q });
     const pageCount = Math.ceil(totalCount / PAGE_SIZE);
     const hasNext = page < pageCount;
     const hasPrev = page > 1;
@@ -51,18 +53,18 @@ export const getReviews = cache(
   }
 );
 
-// Get total count of filtered reviews
-export const getReviewsCount = cache(async ({ q }: { q?: string }) => {
-  const filteredReviews = db.$with("filtered_reviews").as(
+// Get total count of filtered Q&A entries
+export const getQandACount = cache(async ({ q }: { q?: string }) => {
+  const filteredQandA = db.$with("filtered_q_and_a").as(
     db
       .select()
-      .from(reviews)
+      .from(QandA)
       .where(
         and(
           q
             ? or(
-                sql`${reviews.body} LIKE ${`%${q}%`}`,
-                sql`${reviews.client} LIKE ${`%${q}%`}`
+                sql`${QandA.question} LIKE ${`%${q}%`}`,
+                sql`${QandA.answer} LIKE ${`%${q}%`}`
               )
             : undefined
         )
@@ -70,40 +72,40 @@ export const getReviewsCount = cache(async ({ q }: { q?: string }) => {
   );
 
   const [result] = await db
-    .with(filteredReviews)
+    .with(filteredQandA)
     .select({ count: count() })
-    .from(filteredReviews);
+    .from(filteredQandA);
 
   return result.count;
 });
 
-// Get count of reviews created today
-export const getReviewCountToday = cache(async () => {
+// Get count of Q&A entries created today
+export const getQandACountToday = cache(async () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const [result] = await db
     .select({ count: count() })
-    .from(reviews)
-    .where(gte(reviews.createdAt, today));
+    .from(QandA)
+    .where(gte(QandA.createdAt, today));
 
   return result.count;
 });
 
-// Get total count of all reviews
-export const getTotalReviewsCount = cache(async () => {
-  const result = await db.select({ count: count() }).from(reviews);
+// Get total count of all Q&A entries
+export const getTotalQandACount = cache(async () => {
+  const result = await db.select({ count: count() }).from(QandA);
   return result[0].count;
 });
 
-// Get count of reviews created specifically today
-export const getTotalReviewsCountToday = cache(async () => {
+// Get count of Q&A entries created specifically today
+export const getTotalQandACountToday = cache(async () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const result = await db
     .select({ count: count() })
-    .from(reviews)
+    .from(QandA)
     .where(sql`DATE(created_at) = ${today.toISOString().split("T")[0]}`);
 
   return result[0].count;

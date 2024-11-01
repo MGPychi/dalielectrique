@@ -1,7 +1,7 @@
 import * as motion from "framer-motion/m";
 import { Badge } from "@/components/ui/badge";
 import ReviewsCarousel from "./ReviewsCarousel";
-import { getAllReviews, getReviews } from "@/app/data/reviews-data";
+import { getAllReviews } from "@/app/data/reviews-data";
 
 const itemVariants = {
   hidden: { y: 50, opacity: 0 },

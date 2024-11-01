@@ -1,7 +1,7 @@
 import SideBar from "@/components/SideBar";
 import Header from "@/components/layout/AdminHeader/AdminHeader";
 import { auth } from "@/lib/auth";
-import { Contact, Home, Text, Users } from "lucide-react";
+import { Contact, HelpCircleIcon, Home, Text, Users } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { ComponentProps, ReactNode } from "react";
@@ -31,6 +31,11 @@ const paths: IPath[] = [
     name: "Reviews",
     icon: <Text className="h-5 w-5" />,
     href: "/admin/dashboard/reviews",
+  },
+  {
+    name: "Q and A",
+    icon: <HelpCircleIcon className="h-5 w-5" />,
+    href: "/admin/dashboard/q-and-a",
   },
 ];
 const checkIfAdmin = (role: string) => {

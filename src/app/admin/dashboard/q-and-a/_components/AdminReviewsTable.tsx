@@ -1,5 +1,7 @@
 "use client";
-import { getUsers } from "@/app/data/users-data";
+
+import { deleteQandA } from "../actions";
+import { getQandA } from "@/app/data/qna-data";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,29 +21,27 @@ import {
   Table,
   TableBody,
   TableCell,
-  // TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-// import { useToast } from "@/hooks/use-toast";
 import { MoreHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { deleteUser } from "../actions";
-import CreateUserModal from "@/components/modals/CreateUserModal";
-
-// import { deleteEmailAction } from "../actions";
+import { selectQandASchema } from "@/db/schema";
+import { z } from "zod";
+import CreateQandAModal from "@/components/modals/CreateQandAModal";
+import { QandADataModal } from "@/components/modals/QandADataModal";
 
 interface Props {
-  data: Awaited<ReturnType<typeof getUsers>>["data"];
+  data: Awaited<ReturnType<typeof getQandA>>["data"];
   count: number;
   currentPage: number;
   searchTerm: string;
 }
 
-export default function AdminUsersTable({
+export default function AdminQandATable({
   data,
   count,
   currentPage,
@@ -53,18 +53,17 @@ export default function AdminUsersTable({
     null
   );
 
-  // Handle search with debounce
   const handleSearch = (value: string) => {
     setSearchInput(value);
 
-    // Clear previous timeout if user keeps typing
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
 
-    // Set a new timeout to wait for 500ms before executing search
     const timeout = setTimeout(() => {
-      router.push(`/admin/dashboard/users?search=${value}&page=${currentPage}`);
+      router.push(
+        `/admin/dashboard/q_and_a?search=${value}&page=${currentPage}`
+      );
     }, 500);
 
     setDebounceTimeout(timeout);
@@ -74,57 +73,73 @@ export default function AdminUsersTable({
     <Card className="w-full">
       <CardHeader>
         <div className="flex items-center justify-between space-x-6">
-          <CardTitle>Users Dashboard</CardTitle>
-          <CreateUserModal />
+          <CardTitle>Q&A Dashboard</CardTitle>
+          <CreateQandAModal />
         </div>
       </CardHeader>
       <CardContent className="min-h-[calc(100vh-328px)]">
         <div className="mb-6 flex flex-col gap-4 md:flex-row">
           <Input
-            placeholder="Search users..."
+            placeholder="Search Q&A..."
             value={searchInput}
             onChange={(e) => handleSearch(e.target.value)}
             className="md:w-1/3"
           />
         </div>
-
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Registred at</TableHead>
+              <TableHead>Question</TableHead>
+              <TableHead>Created At</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.role}</TableCell>
-                <TableCell>{item.createdAt?.toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <UserActionsMenu userId={item.id} />
-                </TableCell>
-              </TableRow>
+              <QandATableItem key={item.id} qanda={item} />
             ))}
           </TableBody>
         </Table>
       </CardContent>
       <CardFooter className="flex w-full justify-center">
-        <span className="text-sm text-muted-foreground">{count} users</span>
+        <span className="text-sm text-muted-foreground">
+          {count} Q&A entries
+        </span>
       </CardFooter>
     </Card>
   );
 }
 
+const QandATableItem = ({
+  qanda,
+}: {
+  qanda: z.infer<typeof selectQandASchema>;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <QandADataModal
+        onClose={() => setIsOpen(false)}
+        open={isOpen}
+        qanda={qanda}
+      />
+      <TableRow onClick={() => setIsOpen(true)} key={qanda.id}>
+        <TableCell>{qanda.question}</TableCell>
+        <TableCell>{qanda.createdAt?.toLocaleDateString()}</TableCell>
+        <TableCell onClick={(e) => e.stopPropagation()}>
+          <UserActionsMenu qandaId={qanda.id} />
+        </TableCell>
+      </TableRow>
+    </>
+  );
+};
+
 interface UserActionsMenuProps {
-  userId: string;
+  qandaId: string;
 }
 
-export const UserActionsMenu = ({ userId }: UserActionsMenuProps) => {
+export const UserActionsMenu = ({ qandaId }: UserActionsMenuProps) => {
   const { toast } = useToast();
 
   return (
@@ -141,16 +156,16 @@ export const UserActionsMenu = ({ userId }: UserActionsMenuProps) => {
             variant="destructive"
             size="sm"
             onClick={async () => {
-              const result = await deleteUser({
-                id: userId,
+              const result = await deleteQandA({
+                id: qandaId,
               });
               if (result?.data?.success) {
                 toast({
-                  title: "User deleted",
+                  title: "Q&A deleted",
                 });
               } else {
                 toast({
-                  title: "Failed to delete user",
+                  title: "Failed to delete Q&A",
                   variant: "destructive",
                 });
               }
