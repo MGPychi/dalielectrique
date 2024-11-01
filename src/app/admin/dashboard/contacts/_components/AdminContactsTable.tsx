@@ -2,6 +2,7 @@
 
 import { deleteContact } from "@/app/actions";
 import { getContacts } from "@/app/data/contacts-data";
+import { ContactUsDataModal } from "@/components/modals/ContactUsDataModal";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,24 +27,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { selectContactSchema } from "@/db/schema";
 import { useToast } from "@/hooks/use-toast";
 // import { useToast } from "@/hooks/use-toast";
 import { MoreHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { z } from "zod";
 
 // import { deleteEmailAction } from "../actions";
 
 interface Props {
   data: Awaited<ReturnType<typeof getContacts>>["data"];
-  totalEmails: number;
+  count: number;
   currentPage: number;
   searchTerm: string;
 }
 
 export default function UsersListTable({
   data,
-  totalEmails,
+  count,
   currentPage,
   searchTerm,
 }: Props) {
@@ -90,31 +93,48 @@ export default function UsersListTable({
           <TableHeader>
             <TableRow>
               <TableHead>Email</TableHead>
+              <TableHead>Phone</TableHead>
               <TableHead>Registred at</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.createdAt?.toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <UserActionsMenu contactId={item.id} />
-                </TableCell>
-              </TableRow>
+              <ContactItem key={`contact_item_${item.id}`} contact={item} />
             ))}
           </TableBody>
         </Table>
       </CardContent>
       <CardFooter className="flex w-full justify-center">
-        <span className="text-sm text-muted-foreground">
-          {totalEmails} contacts
-        </span>
+        <span className="text-sm text-muted-foreground">{count} contacts</span>
       </CardFooter>
     </Card>
   );
 }
+export const ContactItem = ({
+  contact,
+}: {
+  contact: z.infer<typeof selectContactSchema>;
+}) => {
+  const [showModal, setShowModal] = useState(false);
+  return (
+    <>
+      <ContactUsDataModal
+        open={showModal}
+        contact={contact}
+        onClose={() => setShowModal(false)}
+      />
+      <TableRow className="cursor-pointer" onClick={() => setShowModal(true)}>
+        <TableCell>{contact.email}</TableCell>
+        <TableCell>{contact.phone}</TableCell>
+        <TableCell>{contact.createdAt?.toLocaleDateString()}</TableCell>
+        <TableCell onClick={(e) => e.stopPropagation()}>
+          <UserActionsMenu contactId={contact.id} />
+        </TableCell>
+      </TableRow>
+    </>
+  );
+};
 
 interface UserActionsMenuProps {
   contactId: string;

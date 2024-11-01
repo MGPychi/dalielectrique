@@ -10,7 +10,7 @@ export default async function ContactsDashboard({
   searchParams?: { [key: string]: string | string[] };
 }) {
   const page = (searchParams?.page as string) || "1";
-  const { data, hasNext, hasPrev, pageCount, totalEmails } = await getContacts({
+  const { data, hasNext, hasPrev, pageCount, count } = await getContacts({
     page: parseInt(page),
     q: searchParams?.search as string,
   });
@@ -20,7 +20,7 @@ export default async function ContactsDashboard({
       <div className="flex min-h-[calc(100vh-228px)] justify-center">
         <AdminContactsTable
           currentPage={parseInt(page)}
-          totalEmails={totalEmails}
+          count={count}
           data={data}
           searchTerm={searchTerm}
         />

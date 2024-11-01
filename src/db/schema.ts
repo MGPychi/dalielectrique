@@ -50,7 +50,7 @@ export const QandA = pgTable("q_and_a", {
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);
 export const insertContactSchema = createInsertSchema(contacts, {
-  body: z.string().min(10),
+  body: z.string().min(10).max(1500),
   name: z.string().min(3),
   email: z.string().email(),
 });
