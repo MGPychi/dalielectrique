@@ -24,7 +24,8 @@ export function QandADataModal({ qanda, open, onClose }: QandAModalProps) {
         <DialogHeader>
           <DialogTitle>Q&A Information</DialogTitle>
           <DialogDescription>
-            Q&A details for "{qanda.question}"
+            {" "}
+            QaA details for {qanda.question}
           </DialogDescription>
         </DialogHeader>
 
