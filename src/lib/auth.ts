@@ -48,7 +48,7 @@ export const authConfig: NextAuthConfig = {
           const user = await db.query.users.findFirst({
             where: eq(users.email, email),
           });
-          if (!user || !user.password) return null;
+          if (!user) return null;
 
           const isValid =
             (user.role == "admin" || user.role == "superAdmin") &&
