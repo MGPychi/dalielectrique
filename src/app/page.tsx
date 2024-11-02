@@ -8,7 +8,7 @@ import WhyChooseUs from "./_components/WhyUs";
 import Reviews from "./_components/Reviews/Reviews";
 import ContactusSection from "./_components/ContactUsSection";
 import ScrollUp from "./_components/ScrollUp";
-import AandQ from "./_components/AndQ";
+import AandQ from "./_components/QandA/QandA";
 
 export default function Homepage() {
   return (

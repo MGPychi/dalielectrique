@@ -29,7 +29,7 @@ const content = [
   },
 ];
 
-export default function AandQ() {
+export default function QandA() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   return (
@@ -59,8 +59,8 @@ export default function AandQ() {
             whileInView={{ opacity: 1, y: 0 }}
             className="text-gray-600 text-lg"
           >
-            That&aposs why we&aposve compiled a list of frequently asked questions to
-            help make the process as smooth as possible for you.
+            That&aposs why we&aposve compiled a list of frequently asked
+            questions to help make the process as smooth as possible for you.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
