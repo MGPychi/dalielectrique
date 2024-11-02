@@ -16,13 +16,13 @@ const content = [
     title: "Power For Seamless Electricity Solutions",
     subtitle:
       "Whether you're a homeowner, business owner, or community leader, we're here to light up your life with sustainable energy solutions that.",
-    image: Hero1,
+    image: Hero2,
   },
   {
     title: "Innovative Electrical Services",
     subtitle:
       "Our team of expert electricians brings cutting-edge technology to your doorstep, ensuring efficient and safe electrical installations.",
-    image: Hero2,
+    image: Hero1,
   },
   {
     title: "Powering Your Future",
