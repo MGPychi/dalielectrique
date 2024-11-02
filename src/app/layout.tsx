@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import MotionWrapper from "@/components/wrappers/MotionWrapper";
 import Providers from "@/components/providers";
+import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 // import { Roboto } from "next/font/google";
 // export const inter = Roboto({
@@ -42,6 +43,7 @@ export default function RootLayout({
         </Providers>
         <Toaster />
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
