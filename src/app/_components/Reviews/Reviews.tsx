@@ -92,7 +92,7 @@ export default async function Reviews() {
           </motion.p>
         </motion.div>
 
-        <ReviewsCarousel reviews={reviews} />
+        {reviews && reviews.length > 0 && <ReviewsCarousel reviews={reviews} />}
       </div>
     </section>
   );

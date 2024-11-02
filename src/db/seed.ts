@@ -10,6 +10,7 @@ const registerAdminUser = async () => {
   const email = process.env.SUPERUSER_EMAIL;
   const password = process.env.SUPERUSER_PASSWORD;
   const name = process.env.SUPERUSER_NAME;
+  console.log(email, password, name);
   if (!email || !password || !name) {
     throw new Error(" SUPERUSER CREDENTIALS ARE REQUIRED");
   }
