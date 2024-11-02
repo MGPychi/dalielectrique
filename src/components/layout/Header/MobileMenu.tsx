@@ -31,7 +31,7 @@ const MobileMenu = ({ links, close }: Props) => {
                   onMouseLeave={() => setCurrentHovered(null)}
                   onClick={close}
                   href={item.href}
-                  className={`text-2xl font-semibold my-4 transition-all duration-200 text-white     hover:text-primary   
+                  className={`text-xl font-semibold my-4 transition-all duration-200 text-white     hover:text-primary   
                     ${currentHovered && currentHovered != item.title && "blur-sm"}
                     ${index === 0 ? "text-primary" : ""}`}
                 >

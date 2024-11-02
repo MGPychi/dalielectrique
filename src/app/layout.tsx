@@ -6,11 +6,6 @@ import MotionWrapper from "@/components/wrappers/MotionWrapper";
 import Providers from "@/components/providers";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-// import { Roboto } from "next/font/google";
-// export const inter = Roboto({
-//   subsets: ["latin"],
-//   weight: ["100", "300", "400", "500"],
-// });
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

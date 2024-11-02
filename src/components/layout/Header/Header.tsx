@@ -1,11 +1,10 @@
-"use client";
 import React, { useState } from "react";
-import { AnimatePresence, m as motion } from "framer-motion";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Facebook, Menu, Phone } from "lucide-react";
+import * as motion from "framer-motion/m";
 import ContactUsModal from "@/components/modals/ContactUsModal";
-import MobileMenu from "./MobileMenu";
+import DesktopNav from "./DesktopNav";
+import MobileNav from "./MobileNav";
 const links = [
   {
     title: "Home",
@@ -58,20 +57,7 @@ const Header = () => {
               <span className="text-white">DALI</span>
               <span className="text-primary">ELICTRIQUE</span>
             </motion.div>
-            <nav className="hidden  lg:flex font-bold text-lg sm:-ml-10 items-center space-x-4">
-              {links.map((item, index) => (
-                <div key={index} className="relative group">
-                  <Link
-                    href={item.href}
-                    className={` px-4 py-2.5  rounded-sm     font-medium  hover:text-primary  text-gray-100  transition-colors duration-200 ${
-                      index === 0 ? "text-primary" : ""
-                    }`}
-                  >
-                    {item.title}
-                  </Link>
-                </div>
-              ))}
-            </nav>
+            <DesktopNav links={links} />
             <div className="flex items-center space-x-4">
               <ContactUsModal />
               <Button
@@ -84,11 +70,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-        <AnimatePresence>
-          {isMenuOpen && (
-            <MobileMenu close={() => setIsMenuOpen(false)} links={links} />
-          )}
-        </AnimatePresence>
+        <MobileNav links={links} />
       </header>
     </>
   );
