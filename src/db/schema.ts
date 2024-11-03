@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   pgEnum,
@@ -65,16 +66,25 @@ export const products = pgTable("products", {
     .$onUpdate(() => new Date()),
 });
 
-// export const productImage = pgTable("product_image", {
-//   id: uuid("id").defaultRandom().primaryKey(),
-//   // productId: uuid("product_id").notNull().references(),
-//   cloudId: varchar("cloud_id", { length: 255 }).notNull(),
-//   createdAt: timestamp("created_at").notNull().defaultNow(),
-//   updatedAt: timestamp("updated_at")
-//     .notNull()
-//     .$onUpdate(() => new Date()),
-// });
+export const userRelations = relations(users, ({ many }) => ({
+  images: many(productImage),
+}));
 
+export const productImage = pgTable("product_image", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  productId: uuid("product_id").notNull(),
+  cloudId: text("cloud_id").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+export const productImageRelations = relations(productImage, ({ one }) => ({
+  product: one(products, {
+    fields: [productImage.productId],
+    references: [products.id],
+  }),
+}));
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);
 export const insertContactSchema = createInsertSchema(contacts, {
