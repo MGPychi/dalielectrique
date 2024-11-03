@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { getAllQandA } from "@/app/data/qna-data";
+import Link from "next/link";
 
 async function QandA() {
   const data = await getAllQandA();
@@ -31,13 +32,15 @@ async function QandA() {
           </p>
 
           <div>
-            <Button
-              className="bg-primary/90 hover:bg-primary text-white rounded-full px-6"
-              size="lg"
-            >
-              Have Any Questions
-              <span className="ml-2">→</span>
-            </Button>
+            <Link href={"#contact"}>
+              <Button
+                className="bg-primary/90 hover:bg-primary text-white rounded-full px-6"
+                size="lg"
+              >
+                Have Any Questions
+                <span className="ml-2">→</span>
+              </Button>
+            </Link>
           </div>
         </div>
 

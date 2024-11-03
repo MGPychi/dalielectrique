@@ -49,7 +49,7 @@ const ContactUsSection = () => {
         <div className="lg:w-1/2 space-y-4">
           <motion.div
             initial="hidden"
-            animate="visible"
+            whileInView={"visible"}
             variants={letterAnimation}
           >
             <Badge className="mb-6 px-4 py-2 font-bold bg-primary/10 text-primary rounded-md">
@@ -62,7 +62,7 @@ const ContactUsSection = () => {
                 key={index}
                 custom={index}
                 initial="hidden"
-                animate="visible"
+                whileInView={"visible"}
                 variants={letterAnimation}
                 className="inline-block"
               >
@@ -76,7 +76,7 @@ const ContactUsSection = () => {
                 key={index}
                 custom={index}
                 initial="hidden"
-                animate="visible"
+                whileInView={"visible"}
                 variants={letterAnimation}
                 className="inline-block"
               >
@@ -87,7 +87,7 @@ const ContactUsSection = () => {
           <motion.p
             className="mb-8 text-muted-foreground"
             initial="hidden"
-            animate="visible"
+            whileInView={"visible"}
             variants={letterAnimation}
           >
             Have questions or ready to get started with our electricity
@@ -98,9 +98,9 @@ const ContactUsSection = () => {
               <motion.div
                 key={index}
                 custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={letterAnimation}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index }}
               >
                 <Card>
                   <CardContent className="flex items-center p-4">
@@ -119,7 +119,7 @@ const ContactUsSection = () => {
         </div>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           className="lg:w-1/2 flex bg-gray-50  shadow  px-4 flex-col justify-end py-14 rounded-md "
         >
