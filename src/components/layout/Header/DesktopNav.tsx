@@ -54,7 +54,7 @@ export const DesktopItemLink = ({
     >
       <Link
         href={href}
-        className={` ${currentHovered && currentHovered != title && "blur-sm"}  px-1  py-2.5  rounded-sm     font-medium  hover:text-blur  text-gray-100    transition-all duration-200`}
+        className={` ${currentHovered && currentHovered != title && "blur-sm"}    py-2.5  rounded-sm     font-medium  hover:text-blur  text-gray-100    transition-all duration-300`}
       >
         {title}
       </Link>
@@ -64,7 +64,7 @@ export const DesktopItemLink = ({
             initial={{ opacity: 0, width: 0 }}
             animate={{ opacity: 1, width: "100%" }}
             exit={{ opacity: 0, width: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.4 }}
             className="absolute -bottom-1 left-0 w-full h-px bg-primary"
           />
         )}
