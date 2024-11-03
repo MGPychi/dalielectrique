@@ -4,13 +4,21 @@ import { actionClient, protectedActionClient } from "@/lib/safe-actions";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { zfd } from "zod-form-data";
 
+const createProductSchema = zfd.formData({
+  images: zfd.file().nullable().array(),
+  description: zfd.text(),
+  name: zfd.text(),
+});
 export const createProduct = actionClient
-  .schema(insertProductSchema)
+  .schema(createProductSchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
+      console.log(parsedInput.images);
       await ctx.db.insert(products).values({
-        ...parsedInput,
+        description: parsedInput.description,
+        name: parsedInput.name,
       });
     } catch (err) {
       console.log(err);
