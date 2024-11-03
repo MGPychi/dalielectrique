@@ -1,5 +1,5 @@
 "use server";
-import { products, insertProductSchema } from "@/db/schema";
+import { products } from "@/db/schema";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";

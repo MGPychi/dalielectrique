@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +19,7 @@ import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
+import Image from "next/image";
 
 // Define a proper form schema
 const formSchema = z.object({
@@ -134,7 +134,7 @@ const AddNewProductForm = () => {
       formData.append("description", data.description);
 
       // Append each image with a unique key
-      imagePreviews.forEach((preview, index) => {
+      imagePreviews.forEach((preview) => {
         formData.append(`images`, preview.file);
       });
 
@@ -195,70 +195,75 @@ const AddNewProductForm = () => {
           <FormField
             control={form.control}
             name="images"
-            render={({ field: { value, onChange, ...field } }) => (
-              <FormItem>
-                <FormLabel>Product Images</FormLabel>
-                <FormControl>
-                  <Card className="border-2 border-dashed">
-                    <CardContent className="flex flex-col items-center justify-center p-6 space-y-4">
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-                        {imagePreviews.map((preview) => (
-                          <div key={preview.id} className="relative">
-                            <img
-                              src={preview.url}
-                              alt="Preview"
-                              className="w-full h-32 object-cover rounded-md"
-                            />
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="icon"
-                              className="absolute top-2 right-2 h-6 w-6"
-                              onClick={() => removeImage(preview.id)}
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
+            render={({ field }) => {
+              const { value, onChange, ...restField } = field;
+              void value;
+              void onChange;
+              return (
+                <FormItem>
+                  <FormLabel>Product Images</FormLabel>
+                  <FormControl>
+                    <Card className="border-2 border-dashed">
+                      <CardContent className="flex flex-col items-center justify-center p-6 space-y-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
+                          {imagePreviews.map((preview) => (
+                            <div key={preview.id} className="relative">
+                              <Image
+                                src={preview.url}
+                                alt="Preview"
+                                className="w-full h-32 object-cover rounded-md"
+                              />
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                size="icon"
+                                className="absolute top-2 right-2 h-6 w-6"
+                                onClick={() => removeImage(preview.id)}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
 
-                      {imagePreviews.length < MAX_FILES && (
-                        <>
-                          <Upload className="w-8 h-8 text-gray-400" />
-                          <div className="text-center">
-                            <Button
-                              type="button"
-                              variant="secondary"
-                              onClick={() => {
-                                document
-                                  .getElementById("image-upload")
-                                  ?.click();
-                              }}
-                            >
-                              Choose Images
-                            </Button>
-                          </div>
-                          <p className="text-sm text-gray-500">
-                            PNG, JPG up to 10MB (Maximum {MAX_FILES} images)
-                          </p>
-                        </>
-                      )}
+                        {imagePreviews.length < MAX_FILES && (
+                          <>
+                            <Upload className="w-8 h-8 text-gray-400" />
+                            <div className="text-center">
+                              <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() => {
+                                  document
+                                    .getElementById("image-upload")
+                                    ?.click();
+                                }}
+                              >
+                                Choose Images
+                              </Button>
+                            </div>
+                            <p className="text-sm text-gray-500">
+                              PNG, JPG up to 10MB (Maximum {MAX_FILES} images)
+                            </p>
+                          </>
+                        )}
 
-                      <Input
-                        id="image-upload"
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        className="hidden"
-                        onChange={handleImageChange}
-                        {...field}
-                      />
-                    </CardContent>
-                  </Card>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+                        <Input
+                          id="image-upload"
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          className="hidden"
+                          onChange={handleImageChange}
+                          {...restField}
+                        />
+                      </CardContent>
+                    </Card>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
         </div>
 
