@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
 import { MapPinIcon, PhoneIcon, MailIcon, LinkedinIcon } from "lucide-react";
 import ContactUsForm from "./Contact/ContactUsForm";
-import { m as motion } from "framer-motion";
+import * as motion from "framer-motion/m";
 import { Badge } from "@/components/ui/badge";
 
 const contactInfos = [
@@ -102,11 +102,17 @@ const ContactUsSection = () => {
                 animate="visible"
                 variants={letterAnimation}
               >
-                <ContactUsInfo
-                  icon={contact.icon}
-                  title={contact.title}
-                  info={contact.info}
-                />
+                <Card>
+                  <CardContent className="flex items-center p-4">
+                    {contact.icon}
+                    <div>
+                      <h3 className="font-semibold">{contact.title}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {contact.info}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -125,23 +131,3 @@ const ContactUsSection = () => {
 };
 
 export default ContactUsSection;
-
-interface ContactUsInfoProps {
-  icon: React.ReactNode;
-  title: string;
-  info: string;
-}
-
-const ContactUsInfo: React.FC<ContactUsInfoProps> = ({ icon, title, info }) => {
-  return (
-    <Card>
-      <CardContent className="flex items-center p-4">
-        {icon}
-        <div>
-          <h3 className="font-semibold">{title}</h3>
-          <p className="text-sm text-muted-foreground">{info}</p>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};

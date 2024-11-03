@@ -6,7 +6,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ChevronDown } from "lucide-react";
 import { getAllQandA } from "@/app/data/qna-data";
 
 async function QandA() {

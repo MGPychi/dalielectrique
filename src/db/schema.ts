@@ -1,4 +1,12 @@
-import { pgTable, pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  pgEnum,
+  varchar,
+  boolean,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 export const rolesEnum = pgEnum("roles", ["admin", "superAdmin"]);
@@ -46,6 +54,27 @@ export const QandA = pgTable("q_and_a", {
     .notNull()
     .$onUpdate(() => new Date()),
 });
+
+export const products = pgTable("products", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+
+// export const productImage = pgTable("product_image", {
+//   id: uuid("id").defaultRandom().primaryKey(),
+//   // productId: uuid("product_id").notNull().references(),
+//   cloudId: varchar("cloud_id", { length: 255 }).notNull(),
+//   createdAt: timestamp("created_at").notNull().defaultNow(),
+//   updatedAt: timestamp("updated_at")
+//     .notNull()
+//     .$onUpdate(() => new Date()),
+// });
 
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);

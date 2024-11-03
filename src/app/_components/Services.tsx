@@ -1,6 +1,4 @@
-"use client"; // Ensure to include this line
-
-import { m as motion  } from "framer-motion";
+import * as motion from "framer-motion/m";
 import {
   Card,
   CardHeader,
@@ -84,7 +82,6 @@ const itemVariants = {
 };
 
 export default function ProfessionalServicesSection() {
-
   return (
     <section
       id="services"
