@@ -1,7 +1,14 @@
 import SideBar from "@/components/SideBar";
 import Header from "@/components/layout/AdminHeader/AdminHeader";
 import { auth } from "@/lib/auth";
-import { Contact, HelpCircleIcon, Home, Text, Users } from "lucide-react";
+import {
+  Contact,
+  ShoppingBasket,
+  HelpCircleIcon,
+  Home,
+  Text,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { ComponentProps, ReactNode } from "react";
@@ -26,6 +33,11 @@ const paths: IPath[] = [
     name: "users",
     icon: <Users className="h-5 w-5" />,
     href: "/admin/dashboard/users",
+  },
+  {
+    name: "products",
+    icon: <ShoppingBasket className="h-5 w-5" />,
+    href: "/admin/dashboard/products",
   },
   {
     name: "Reviews",

@@ -94,3 +94,5 @@ export const insertQandASchema = createInsertSchema(QandA, {
   answer: z.string().min(10),
 });
 export const selectQandASchema = createSelectSchema(QandA);
+export const insertProductSchema = createInsertSchema(products);
+export const selectProductsSchema = createSelectSchema(products);

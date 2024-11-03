@@ -30,8 +30,7 @@ export const deleteUser = protectedActionClient
   .schema(z.object({ id: z.string() }))
   .action(async ({ ctx, parsedInput }) => {
     try {
-      if (ctx.user.id == parsedInput.id || ctx.user.role == "admin")
-        return { success: false };
+      if (ctx.user.role == "admin") return { success: false };
       await ctx.db
         .delete(users)
         .where(and(eq(users.id, parsedInput.id), ne(users.role, "superAdmin")));
