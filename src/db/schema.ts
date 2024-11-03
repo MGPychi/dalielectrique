@@ -1,7 +1,6 @@
 import {
   pgTable,
   pgEnum,
-  varchar,
   boolean,
   text,
   timestamp,

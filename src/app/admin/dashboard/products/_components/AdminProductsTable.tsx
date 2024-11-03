@@ -26,14 +26,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 // import { useToast } from "@/hooks/use-toast";
-import {
-  Check,
-  CheckCheck,
-  CheckCircle,
-  CheckCircle2,
-  CrossIcon,
-  MoreHorizontalIcon,
-} from "lucide-react";
+import { MoreHorizontalIcon } from "lucide-react";
 import { useState } from "react";
 import { deleteProduct, toggleProductActivation } from "../actions";
 import CreateProductModal from "@/components/modals/CreateProductModal";
