@@ -22,9 +22,14 @@ import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
 import Image from "next/image";
 
 // Define a proper form schema
+const MAX_CHARS = 2000;
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  description: z.string().min(1, "Description is required"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .min(50)
+    .max(MAX_CHARS),
   images: z
     .array(z.any())
     .min(1, "At least one image is required")
@@ -187,6 +192,11 @@ const AddNewProductForm = () => {
                 <FormControl>
                   <Textarea placeholder="Product description" {...field} />
                 </FormControl>
+                <div>
+                  <span className="text-gray-800 text-xs font-medium">
+                    {form.getValues("description").length}/{MAX_CHARS}
+                  </span>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -208,7 +218,7 @@ const AddNewProductForm = () => {
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
                           {imagePreviews.map((preview) => (
                             <div key={preview.id} className="relative">
-                              <Image
+                              <img
                                 src={preview.url}
                                 alt="Preview"
                                 className="w-full h-32 object-cover rounded-md"

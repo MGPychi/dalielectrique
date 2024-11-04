@@ -1,10 +1,28 @@
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
 import { products } from "@/db/schema";
-import { and, count, gte, or, sql } from "drizzle-orm";
+import { and, count, eq, gte, or, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
+export const getAllFeaturedActiveProducts = unstable_cache(
+  async () => {
+    // const result = await db
+    //   .select()
+    //   .from(products)
+    //   .where(and(eq(products.isActive, true), eq(products.featured, true)));
+    return db.query.products.findMany({
+      where: and(eq(products.isActive, true), eq(products.featured, true)),
+      with: {
+        images: true,
+      },
+    });
+  },
+  ["featured_products"],
+  {
+    tags: ["featured_products"],
+  }
+);
 export const getAllProducts = unstable_cache(
   async () => {
     const result = await db.select().from(products);

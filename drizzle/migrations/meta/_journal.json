@@ -71,6 +71,20 @@
       "when": 1730672621737,
       "tag": "0009_absurd_professor_monster",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1730720571435,
+      "tag": "0010_thick_james_howlett",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1730721093543,
+      "tag": "0011_short_carnage",
+      "breakpoints": true
     }
   ]
 }
