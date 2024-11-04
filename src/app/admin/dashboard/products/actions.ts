@@ -50,7 +50,7 @@ export const createProduct = actionClient
   .schema(createProductSchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
-      console.log(parsedInput.images);
+      console.log("data", parsedInput.images);
       await ctx.db.insert(products).values({
         description: parsedInput.description,
         name: parsedInput.name,

@@ -19,7 +19,6 @@ import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
-import Image from "next/image";
 
 // Define a proper form schema
 const MAX_CHARS = 2000;
@@ -142,6 +141,8 @@ const AddNewProductForm = () => {
       imagePreviews.forEach((preview) => {
         formData.append(`images`, preview.file);
       });
+      if (imagePreviews.length == 1)
+        formData.append(`images`, imagePreviews[0].file);
 
       const response = await createProduct(formData);
 
@@ -190,7 +191,12 @@ const AddNewProductForm = () => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Product description" {...field} />
+                  <Textarea
+                    rows={8}
+                    className="resize-none"
+                    placeholder="Product description"
+                    {...field}
+                  />
                 </FormControl>
                 <div>
                   <span className="text-gray-800 text-xs font-medium">
