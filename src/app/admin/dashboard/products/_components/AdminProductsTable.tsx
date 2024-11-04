@@ -31,6 +31,7 @@ import { useState } from "react";
 import { deleteProduct, toggleProductActivation } from "../actions";
 import CreateProductModal from "@/components/modals/CreateProductModal";
 import { useRouter } from "next/navigation";
+import UpdateProductModal from "@/components/modals/UpdateProductModal";
 
 interface Props {
   data: Awaited<ReturnType<typeof getProducts>>["data"];
@@ -99,23 +100,7 @@ export default function AdminProductsTable({
           </TableHeader>
           <TableBody>
             {data.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>
-                  {item.isActive ? (
-                    <span className="text-green-500">yes</span>
-                  ) : (
-                    <span className="text-red-500">no</span>
-                  )}
-                </TableCell>
-                <TableCell>{item.createdAt?.toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <ProductActionsMenu
-                    isActive={item.isActive}
-                    productId={item.id}
-                  />
-                </TableCell>
-              </TableRow>
+              <TableItem product={item} />
             ))}
           </TableBody>
         </Table>
@@ -126,20 +111,45 @@ export default function AdminProductsTable({
     </Card>
   );
 }
+interface TableItemProps {
+  product: Awaited<ReturnType<typeof getProducts>>["data"][0];
+}
+const TableItem = ({ product }: TableItemProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <>
+      <UpdateProductModal
+        closeModal={() => setIsOpen(false)}
+        open={isOpen}
+        product={product}
+      />
+      <TableRow onClick={() => setIsOpen(true)} key={product.id}>
+        <TableCell>{product.name}</TableCell>
+        <TableCell>
+          {product.isActive ? (
+            <span className="text-green-500">yes</span>
+          ) : (
+            <span className="text-red-500">no</span>
+          )}
+        </TableCell>
+        <TableCell>{product.createdAt?.toLocaleDateString()}</TableCell>
+        <TableCell onClick={(e) => e.stopPropagation()}>
+          <ProductActionsMenu product={product} />
+        </TableCell>
+      </TableRow>
+    </>
+  );
+};
 
 interface ProductActionsMenuProps {
-  productId: string;
-  isActive: boolean;
+  product: Awaited<ReturnType<typeof getProducts>>["data"][0];
 }
 
-export const ProductActionsMenu = ({
-  productId,
-  isActive,
-}: ProductActionsMenuProps) => {
+export const ProductActionsMenu = ({ product }: ProductActionsMenuProps) => {
   const { toast } = useToast();
   const deleteProductHandler = async () => {
     const result = await deleteProduct({
-      id: productId,
+      id: product.id,
     });
     if (result?.data?.success) {
       toast({
@@ -154,16 +164,16 @@ export const ProductActionsMenu = ({
   };
   const toggleProductActivationHandler = async () => {
     const result = await toggleProductActivation({
-      id: productId,
-      value: !isActive,
+      id: product.id,
+      value: !product.isActive,
     });
     if (result?.data?.success) {
       toast({
-        title: `Product ${isActive ? "deactivated" : "activated"}`,
+        title: `Product ${product.isActive ? "deactivated" : "activated"}`,
       });
     } else {
       toast({
-        title: `Failed to ${isActive ? "activate" : "deactivate"} product`,
+        title: `Failed to ${product.isActive ? "activate" : "deactivate"} product`,
         variant: "destructive",
       });
     }
@@ -184,7 +194,7 @@ export const ProductActionsMenu = ({
             size="sm"
             onClick={toggleProductActivationHandler}
           >
-            {isActive ? "Deactivate" : "Activate"}
+            {product.isActive ? "Deactivate" : "Activate"}
           </Button>
         </DropdownMenuItem>
         <DropdownMenuItem>

@@ -65,7 +65,13 @@ export const getProducts = cache(
     const hasNext = page < pageCount;
     const hasPrev = page > 1;
 
-    return { data: result, hasNext, hasPrev, count: totalCount, pageCount };
+    return {
+      data: result.map((item) => ({ ...item, images: [] })),
+      hasNext,
+      hasPrev,
+      count: totalCount,
+      pageCount,
+    };
   }
 );
 
