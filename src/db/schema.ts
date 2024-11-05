@@ -58,6 +58,7 @@ export const QandA = pgTable("q_and_a", {
 export const products = pgTable("products", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
+  slug: text("slug").unique().notNull(),
   description: text("description").notNull(),
   isFeatured: boolean("is_featured").default(false).notNull(),
   isActive: boolean("is_active").default(true).notNull(),

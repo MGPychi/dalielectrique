@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
+import slugify from "slugify";
 
 export async function generateUploadSignature() {
   const timestamp = Math.round(new Date().getTime() / 1000);
@@ -100,10 +101,12 @@ export const createProduct = actionClient
   .schema(createProductSchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
+      const slug = slugify(parsedInput.name);
       const [newProduct] = await ctx.db
         .insert(products)
         .values({
           description: parsedInput.description,
+          slug,
           name: parsedInput.name,
           isActive: parsedInput.isActive === "true",
           isFeatured: parsedInput.isFeatured === "true",

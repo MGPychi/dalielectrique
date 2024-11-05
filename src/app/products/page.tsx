@@ -21,7 +21,7 @@ const ProductsPage = async ({
   });
   return (
     <section className="container space-y-4 mt-10 mx-auto">
-      <Link href={"/"}>
+      <Link href="/">
         <Button variant={"link"}>
           <ChevronLeft className="w-6 h-6" />
           <span>Home</span>
