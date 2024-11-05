@@ -11,7 +11,7 @@ const ProductsPage = async ({
 }) => {
   const page = (searchParams?.page as string) || "1";
   const q = searchParams?.search as string;
-  const { count, data, hasNext, hasPrev, pageCount } = await getProducts({
+  const { data, hasNext, hasPrev, pageCount } = await getProducts({
     page: parseInt(page),
     isActive: true,
     q,
@@ -25,7 +25,7 @@ const ProductsPage = async ({
       />
       <div className=" gap-4 min-h-[70vh]  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         {data.map((product) => (
-          <ProductCard product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
       <div className="py-4" />

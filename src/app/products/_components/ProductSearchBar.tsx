@@ -1,12 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 

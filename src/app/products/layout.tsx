@@ -1,4 +1,3 @@
-import Header from "@/components/layout/Header/Header";
 import { ReactNode } from "react";
 
 const layout = async ({ children }: { children: ReactNode }) => {
