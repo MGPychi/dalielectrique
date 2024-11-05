@@ -3,7 +3,7 @@ import { productImage, products } from "@/db/schema";
 import { generateCloudinarySignature } from "@/lib/cloudinary";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
@@ -79,6 +79,8 @@ export const updateProduct = protectedActionClient
 
       // Revalidate the path to reflect the updated data
       revalidatePath("/admin/dashboard/products");
+      revalidateTag("featured_products");
+      revalidatePath("/");
       return { success: true };
     } catch (err) {
       console.error("Error updating product:", err);
@@ -120,7 +122,9 @@ export const createProduct = actionClient
           })
         )
       );
-
+      revalidatePath("/admin/dashboard/products");
+      revalidateTag("featured_products");
+      revalidatePath("/");
       return { success: true };
     } catch (err) {
       console.log(err);
