@@ -14,7 +14,7 @@ const ProductsPage = async ({
 }) => {
   const page = (searchParams?.page as string) || "1";
   const q = searchParams?.search as string;
-  const { data, hasNext, hasPrev, pageCount } = await getProducts({
+  const { data, count, hasNext, hasPrev, pageCount } = await getProducts({
     page: parseInt(page),
     isActive: true,
     q,
@@ -30,6 +30,7 @@ const ProductsPage = async ({
       <ProductSearchBar
         basePath="/products"
         currentPage={parseInt(page)}
+        count={count}
         searchTerm={q}
       />
       <div className=" gap-4 min-h-[70vh]  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">

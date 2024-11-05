@@ -12,12 +12,14 @@ interface Props {
   currentPage: number;
   placeholder?: string;
   className?: string;
+  count: number;
 }
 
 const ProductSearchBar = ({
   searchTerm,
   currentPage,
   basePath,
+  count,
   placeholder = "Search products...",
   className = "",
 }: Props) => {
@@ -105,7 +107,10 @@ const ProductSearchBar = ({
                 Updating results...
               </p>
             ) : searchInput ? (
-              <p>Showing results for "{searchInput}"</p>
+              <div>
+                <p>Showing results for &quot;{searchInput}&quot;</p>
+                <p>{count} results</p>
+              </div>
             ) : null}
           </div>
         </div>
