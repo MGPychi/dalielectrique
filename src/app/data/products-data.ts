@@ -1,17 +1,28 @@
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
-import { products } from "@/db/schema";
-import { and, count, eq, gte, or, sql } from "drizzle-orm";
+import { products, selectProductsSchema } from "@/db/schema";
+import { and, eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
+import { z } from "zod";
 
+interface ProductsResponse {
+  data: Array<z.infer<typeof selectProductsSchema> & { images: any[] }>;
+  hasNext: boolean;
+  hasPrev: boolean;
+  count: number;
+  pageCount: number;
+}
+
+interface GetProductsParams {
+  page: number;
+  q?: string;
+}
+
+// Get all featured and active products with their images
 export const getAllFeaturedActiveProducts = unstable_cache(
   async () => {
-    // const result = await db
-    //   .select()
-    //   .from(products)
-    //   .where(and(eq(products.isActive, true), eq(products.featured, true)));
-    return db.query.products.findMany({
+    return await db.query.products.findMany({
       where: and(eq(products.isActive, true), eq(products.isFeatured, true)),
       with: {
         images: true,
@@ -23,52 +34,47 @@ export const getAllFeaturedActiveProducts = unstable_cache(
     tags: ["featured_products"],
   }
 );
+
+// Get all products
 export const getAllProducts = unstable_cache(
   async () => {
-    const result = await db.select().from(products);
-    return result;
+    return await db.query.products.findMany({
+      with: {
+        images: true,
+      },
+    });
   },
   ["products"],
   {
     tags: ["products"],
   }
 );
-// Fetch paginated products with optional search query
+
+// Get paginated products with optional search
 export const getProducts = cache(
-  async ({ page, q }: { page: number; q?: string }) => {
-    const filteredProducts = db.$with("filtered_products").as(
-      db
-        .select()
-        .from(products)
-        .where(
-          and(
-            q
-              ? or(
-                  sql`${products.name} LIKE ${`%${q}%`}`,
-                  sql`${products.description} LIKE ${`%${q}%`}`
-                )
-              : undefined
-          )
-        )
-    );
+  async ({ page, q }: GetProductsParams): Promise<ProductsResponse> => {
+    const productsQuery = db.query.products.findMany({
+      where: q
+        ? sql`${products.name} LIKE ${`%${q}%`} OR ${products.description} LIKE ${`%${q}%`}`
+        : undefined,
+      limit: PAGE_SIZE,
+      offset: (page - 1) * PAGE_SIZE,
+      with: {
+        images: true,
+      },
+    });
 
-    const result = await db
-      .with(filteredProducts)
-      .select()
-      .from(filteredProducts)
-      .limit(PAGE_SIZE)
-      .offset((page - 1) * PAGE_SIZE);
+    const [result, totalCount] = await Promise.all([
+      productsQuery,
+      getProductsCount({ q }),
+    ]);
 
-    // Get total review count after filters
-    const totalCount = await getProductsCount({ q });
     const pageCount = Math.ceil(totalCount / PAGE_SIZE);
-    const hasNext = page < pageCount;
-    const hasPrev = page > 1;
 
     return {
-      data: result.map((item) => ({ ...item, images: [] })),
-      hasNext,
-      hasPrev,
+      data: result,
+      hasNext: page < pageCount,
+      hasPrev: page > 1,
       count: totalCount,
       pageCount,
     };
@@ -77,28 +83,16 @@ export const getProducts = cache(
 
 // Get total count of filtered products
 export const getProductsCount = cache(async ({ q }: { q?: string }) => {
-  const filteredProducts = db.$with("filtered_products").as(
-    db
-      .select()
-      .from(products)
-      .where(
-        and(
-          q
-            ? or(
-                sql`${products.name} LIKE ${`%${q}%`}`,
-                sql`${products.description} LIKE ${`%${q}%`}`
-              )
-            : undefined
-        )
-      )
-  );
+  const result = await db.query.products.findMany({
+    where: q
+      ? sql`${products.name} LIKE ${`%${q}%`} OR ${products.description} LIKE ${`%${q}%`}`
+      : undefined,
+    columns: {
+      id: true,
+    },
+  });
 
-  const [result] = await db
-    .with(filteredProducts)
-    .select({ count: count() })
-    .from(filteredProducts);
-
-  return result.count;
+  return result.length;
 });
 
 // Get count of products created today
@@ -106,29 +100,38 @@ export const getReviewCountToday = cache(async () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const [result] = await db
-    .select({ count: count() })
-    .from(products)
-    .where(gte(products.createdAt, today));
+  const result = await db.query.products.findMany({
+    where: sql`${products.createdAt} >= ${today}`,
+    columns: {
+      id: true,
+    },
+  });
 
-  return result.count;
+  return result.length;
 });
 
 // Get total count of all products
 export const getTotalProductsCount = cache(async () => {
-  const result = await db.select({ count: count() }).from(products);
-  return result[0].count;
+  const result = await db.query.products.findMany({
+    columns: {
+      id: true,
+    },
+  });
+
+  return result.length;
 });
 
-// Get count of products created specifically today
+// Get count of products created today
 export const getTotalProductsCountToday = cache(async () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const result = await db
-    .select({ count: count() })
-    .from(products)
-    .where(sql`DATE(created_at) = ${today.toISOString().split("T")[0]}`);
+  const result = await db.query.products.findMany({
+    where: sql`DATE(${products.createdAt}) = ${today.toISOString().split("T")[0]}`,
+    columns: {
+      id: true,
+    },
+  });
 
-  return result[0].count;
+  return result.length;
 });

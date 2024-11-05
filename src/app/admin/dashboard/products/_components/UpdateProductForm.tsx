@@ -1,9 +1,9 @@
-"use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,13 +14,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { updateProduct } from "../actions";
+import { updateProduct, generateUploadSignature } from "../actions";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
-import Image from "next/image";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 
 const MAX_CHARS = 2000;
 
@@ -35,16 +34,28 @@ const formSchema = z.object({
     .min(50)
     .max(MAX_CHARS),
   images: z
-    .array(z.object({ url: z.string(), id: z.string() }))
+    .array(z.any())
     .min(1, "At least one image is required")
     .max(MAX_FILES, `Maximum ${MAX_FILES} images allowed`),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
+type ImagePreview = {
+  id: string;
+  url: string;
+  file?: File;
+  isExisting?: boolean;
+};
+
 const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
   const { toast } = useToast();
-  const [imagePreviews, setImagePreviews] = useState(initialData.images);
+  const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>(
+    initialData.images.map((img) => ({
+      ...img,
+      isExisting: true,
+    }))
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -87,12 +98,13 @@ const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
     if (validFiles.length === 0) return;
 
     const newPreviews = validFiles.map((file) => {
-      return new Promise<{ url: string; id: string }>((resolve) => {
+      return new Promise<ImagePreview>((resolve) => {
         const reader = new FileReader();
         reader.onloadend = () => {
           resolve({
             id: Math.random().toString(36).substring(7),
             url: reader.result as string,
+            file: file,
           });
         };
         reader.readAsDataURL(file);
@@ -113,20 +125,67 @@ const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
     );
   };
 
-  const onSubmit = async (data: FormValues) => {
-    const formData = new FormData();
-    formData.append("id", data.id);
-    formData.append("name", data.name);
-    formData.append("isFeatured", data.isFeatured.toString());
-    formData.append("isActive", data.isActive.toString());
-    formData.append("description", data.description);
-
-    data.images.forEach((image, index) => {
-      formData.append(`images[${index}][url]`, image.url);
-      formData.append(`images[${index}][id]`, image.id);
-    });
-
+  const uploadToCloudinary = async (file: File) => {
     try {
+      const { signature, timestamp, apiKey, cloudName } =
+        await generateUploadSignature();
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("signature", signature);
+      formData.append("timestamp", timestamp.toString());
+      formData.append("api_key", apiKey.toString());
+      formData.append("folder", "products");
+
+      const uploadResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await uploadResponse.json();
+      return {
+        url: data.secure_url,
+        cloudId: data.public_id,
+      };
+    } catch (error) {
+      console.error("Upload failed:", error);
+      throw error;
+    }
+  };
+
+  const onSubmit = async (data: FormValues) => {
+    try {
+      // Upload new images to Cloudinary
+      const uploadPromises = imagePreviews
+        .filter((preview) => !preview.isExisting && preview.file)
+        .map((preview) => uploadToCloudinary(preview.file!));
+
+      const uploadedImages = await Promise.all(uploadPromises);
+
+      // Combine existing and new images
+      const allImages = [
+        ...imagePreviews.filter((preview) => preview.isExisting),
+        ...uploadedImages,
+      ];
+
+      const formData = new FormData();
+      formData.append("id", data.id);
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("isActive", String(data.isActive));
+      formData.append("isFeatured", String(data.isFeatured));
+      formData.append(
+        "imageUrls",
+        JSON.stringify(allImages.map((img) => img.url))
+      );
+      formData.append(
+        "cloudIds",
+        JSON.stringify(allImages.map((img) => img.url))
+      );
+
       const response = await updateProduct(formData);
 
       if (response?.data?.success) {
@@ -134,8 +193,6 @@ const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
           title: "Success",
           description: "Product has been updated",
         });
-        form.reset();
-        setImagePreviews([]);
       } else {
         throw new Error("Failed to update product");
       }
@@ -191,39 +248,51 @@ const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="isFeatured"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                <FormControl className="">
-                  <Checkbox
-                    onCheckedChange={field.onChange}
-                    checked={field.value}
-                  />
-                </FormControl>
-                <FormLabel>Featured</FormLabel>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex flex-col space-y-4">
+            <FormField
+              control={form.control}
+              name="isActive"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Active Status</FormLabel>
+                    <FormDescription>
+                      Make this product visible to customers
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="isActive"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    onCheckedChange={field.onChange}
-                    checked={field.value}
-                  />
-                </FormControl>
-                <FormLabel className="text-sm font-normal">Active</FormLabel>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="isFeatured"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">
+                      Featured Product
+                    </FormLabel>
+                    <FormDescription>
+                      Show this product in featured sections
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={form.control}

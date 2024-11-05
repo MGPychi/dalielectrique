@@ -42,3 +42,5 @@ export async function deleteImage(cloudId: string) {
     });
   }
 }
+
+export const generateCloudinarySignature = cloudinary.utils.api_sign_request;

@@ -1,6 +1,6 @@
 "use server";
 import { productImage, products } from "@/db/schema";
-import { uploadImage } from "@/lib/cloudinary";
+import { generateCloudinarySignature, uploadImage } from "@/lib/cloudinary";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
 import { eq, is } from "drizzle-orm";
 import { p } from "framer-motion/m";
@@ -8,47 +8,92 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
+export async function generateUploadSignature() {
+  const timestamp = Math.round(new Date().getTime() / 1000);
+  const signature = generateCloudinarySignature(
+    {
+      timestamp: timestamp,
+      folder: "products", // Optional: specify upload folder
+    },
+    process.env.CLOUDINARY_API_SECRET!
+  );
+
+  return {
+    timestamp,
+    signature,
+    apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!,
+    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
+  };
+}
+
 const updateProductSchema = zfd.formData({
-  id: z.string(),
-  images: zfd.file().nullable().array().optional(),
-  description: zfd.text().optional(),
-  name: zfd.text().optional(),
-  isActive: z.boolean().optional(),
+  id: zfd.text(),
+  name: zfd.text(),
+  description: zfd.text(),
+  isActive: zfd.text().transform((val) => val === "true"),
+  isFeatured: zfd.text().transform((val) => val === "true"),
+  imageUrls: zfd.text().transform((val) => JSON.parse(val)),
+  cloudIds: zfd.text().transform((val) => JSON.parse(val)),
 });
 
-// Define updateProduct action
 export const updateProduct = protectedActionClient
   .schema(updateProductSchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
-      // Update product data in the database
-      await ctx.db
-        .update(products)
-        .set({
-          description: parsedInput.description,
-          name: parsedInput.name,
-          isActive: parsedInput.isActive,
-        })
-        .where(eq(products.id, parsedInput.id));
+      // Start a transaction to ensure data consistency
+      const result = await ctx.db.transaction(async (tx) => {
+        // 1. Update product details
+        await tx
+          .update(products)
+          .set({
+            name: parsedInput.name,
+            description: parsedInput.description,
+            isActive: parsedInput.isActive,
+            isFeatured: parsedInput.isFeatured,
+          })
+          .where(eq(products.id, parsedInput.id));
 
-      // Log updated fields
-      console.log("Updated fields:", parsedInput);
+        // 2. Delete all existing product images from the database
+        await tx
+          .delete(productImage)
+          .where(eq(productImage.productId, parsedInput.id));
+
+        // 3. Insert new image records
+        if (parsedInput.imageUrls.length > 0) {
+          const imageRecords = parsedInput.imageUrls.map(
+            (url: string, index: number) => ({
+              productId: parsedInput.id,
+              url: url,
+              cloudId: parsedInput.cloudIds[index],
+            })
+          );
+
+          await tx.insert(productImage).values(imageRecords);
+        }
+
+        return true;
+      });
+
+      if (!result) {
+        throw new Error("Failed to update product");
+      }
+
+      // Revalidate the path to reflect the updated data
+      revalidatePath("/admin/dashboard/products");
+      return { success: true };
     } catch (err) {
-      console.log(err);
+      console.error("Error updating product:", err);
       return { success: false };
     }
-
-    // Revalidate the path to reflect the updated data
-    revalidatePath("/admin/dashboard/products");
-    return { success: true };
   });
 
 const createProductSchema = zfd.formData({
-  images: zfd.file().nullable().array(),
   description: zfd.text(),
   name: zfd.text(),
   isActive: zfd.text(),
   isFeatured: zfd.text(),
+  imageUrls: zfd.text().optional(), // For storing Cloudinary URLs
+  cloudIds: zfd.text().optional(), // For storing Cloudinary IDs
 });
 export const createProduct = actionClient
   .schema(createProductSchema)
@@ -59,30 +104,29 @@ export const createProduct = actionClient
         .values({
           description: parsedInput.description,
           name: parsedInput.name,
-          isActive: parsedInput.isActive == "true",
-          isFeatured: parsedInput.isFeatured == "true",
+          isActive: parsedInput.isActive === "true",
+          isFeatured: parsedInput.isFeatured === "true",
         })
         .returning({ id: products.id });
-      parsedInput.images.forEach(async (image) => {
-        if (image) {
-          const response = await uploadImage(image);
-          await ctx.db.insert(productImage).values({
+
+      // Now we just save the Cloudinary URLs and IDs that were uploaded client-side
+      const imageUrls = JSON.parse(parsedInput.imageUrls || "[]");
+      const cloudIds = JSON.parse(parsedInput.cloudIds || "[]");
+      await Promise.all(
+        imageUrls.map((url: string, index: number) =>
+          ctx.db.insert(productImage).values({
             productId: newProduct.id,
-            cloudId: response.cloudId,
-            url: response.url,
-          });
-          console.log("upladed  ", image.name);
-        }
-      });
+            cloudId: cloudIds[index],
+            url: url,
+          })
+        )
+      );
+
+      return { success: true };
     } catch (err) {
       console.log(err);
       return { success: false };
     }
-
-    revalidatePath("/admin/dashboard/products");
-    return {
-      success: true,
-    };
   });
 
 export const deleteProduct = protectedActionClient

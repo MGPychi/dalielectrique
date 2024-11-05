@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { createProduct } from "../actions";
+import { createProduct, generateUploadSignature } from "../actions";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -133,20 +133,64 @@ const AddNewProductForm = () => {
       imagePreviews.filter((p) => p.id !== id).map((p) => p.file)
     );
   };
+  const uploadToCloudinary = async (file: File) => {
+    try {
+      // Get upload signature from our API
+      const { signature, timestamp, apiKey, cloudName } =
+        await generateUploadSignature();
+
+      // Prepare form data for Cloudinary
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("signature", signature);
+      formData.append("timestamp", timestamp.toString());
+      formData.append("api_key", apiKey.toString());
+      formData.append("folder", "products");
+
+      // Upload directly to Cloudinary
+      const uploadResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await uploadResponse.json();
+      return {
+        url: data.secure_url,
+        cloudId: data.public_id,
+      };
+    } catch (error) {
+      console.error("Upload failed:", error);
+      throw error;
+    }
+  };
 
   const onSubmit = async (data: FormValues) => {
     try {
+      // Upload all images to Cloudinary first
+      const uploadPromises = imagePreviews.map((preview) =>
+        uploadToCloudinary(preview.file)
+      );
+
+      const uploadedImages = await Promise.all(uploadPromises);
+
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("description", data.description);
       formData.append("isActive", String(data.isActive));
       formData.append("isFeatured", String(data.isFeatured));
 
-      imagePreviews.forEach((preview) => {
-        formData.append(`images`, preview.file);
-      });
-      if (imagePreviews.length == 1)
-        formData.append(`images`, imagePreviews[0].file);
+      // Add the Cloudinary URLs and IDs to the form data
+      formData.append(
+        "imageUrls",
+        JSON.stringify(uploadedImages.map((img) => img.url))
+      );
+      formData.append(
+        "cloudIds",
+        JSON.stringify(uploadedImages.map((img) => img.cloudId))
+      );
 
       const response = await createProduct(formData);
 
@@ -158,8 +202,6 @@ const AddNewProductForm = () => {
         form.reset();
         setImagePreviews([]);
       } else {
-        console.error(response?.validationErrors);
-        console.error(response?.serverError);
         throw new Error("Failed to create product");
       }
     } catch (error) {
