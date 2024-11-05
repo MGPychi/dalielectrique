@@ -3,6 +3,9 @@ import { getProducts } from "../data/products-data";
 import ProductCard from "@/components/cards/ProductCard";
 import { PagePaginator } from "@/components/PagePaginator";
 import ProductSearchBar from "./_components/ProductSearchBar";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 const ProductsPage = async ({
   searchParams,
@@ -18,6 +21,12 @@ const ProductsPage = async ({
   });
   return (
     <section className="container space-y-4 mt-10 mx-auto">
+      <Link href={"/"}>
+        <Button variant={"link"}>
+          <ChevronLeft className="w-6 h-6" />
+          <span>Home</span>
+        </Button>
+      </Link>
       <ProductSearchBar
         basePath="/products"
         currentPage={parseInt(page)}
