@@ -100,7 +100,7 @@ export default function AdminProductsTable({
           </TableHeader>
           <TableBody>
             {data.map((item) => (
-              <TableItem product={item} />
+              <TableItem key={item.id} product={item} />
             ))}
           </TableBody>
         </Table>

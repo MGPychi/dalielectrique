@@ -1,9 +1,8 @@
 "use server";
 import { productImage, products } from "@/db/schema";
-import { generateCloudinarySignature, uploadImage } from "@/lib/cloudinary";
+import { generateCloudinarySignature } from "@/lib/cloudinary";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
-import { eq, is } from "drizzle-orm";
-import { p } from "framer-motion/m";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { zfd } from "zod-form-data";

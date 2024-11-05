@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { getAllFeaturedActiveProducts } from "../data/products-data";
 import DefaultImage from "../../../public/hero1.webp";
 import Image from "next/image";
@@ -11,7 +6,7 @@ import Link from "next/link";
 import * as motion from "framer-motion/m";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 
 const containerVariants = {
   hidden: { opacity: 0 },

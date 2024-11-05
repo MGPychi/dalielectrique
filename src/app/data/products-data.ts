@@ -7,7 +7,11 @@ import { cache } from "react";
 import { z } from "zod";
 
 interface ProductsResponse {
-  data: Array<z.infer<typeof selectProductsSchema> & { images: any[] }>;
+  data: Array<
+    z.infer<typeof selectProductsSchema> & {
+      images: { url: string; cloudId: string }[];
+    }
+  >;
   hasNext: boolean;
   hasPrev: boolean;
   count: number;
