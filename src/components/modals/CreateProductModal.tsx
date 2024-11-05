@@ -14,7 +14,7 @@ const CreateProductModal: React.FC = () => {
         <PlusIcon />
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-2xl    outline-none ring-none ">
+        <DialogContent className="max-w-2xl  h-[95vh] overflow-y-scroll     outline-none ring-none ">
           <DialogHeader>
             <DialogTitle> Create a new product </DialogTitle>
             {/* <DialogDescription>

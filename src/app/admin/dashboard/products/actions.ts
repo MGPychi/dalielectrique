@@ -1,7 +1,9 @@
 "use server";
-import { products } from "@/db/schema";
+import { productImage, products } from "@/db/schema";
+import { uploadImage } from "@/lib/cloudinary";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
-import { eq } from "drizzle-orm";
+import { eq, is } from "drizzle-orm";
+import { p } from "framer-motion/m";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -45,15 +47,32 @@ const createProductSchema = zfd.formData({
   images: zfd.file().nullable().array(),
   description: zfd.text(),
   name: zfd.text(),
+  isActive: zfd.text(),
+  isFeatured: zfd.text(),
 });
 export const createProduct = actionClient
   .schema(createProductSchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
-      console.log("data", parsedInput.images);
-      await ctx.db.insert(products).values({
-        description: parsedInput.description,
-        name: parsedInput.name,
+      const [newProduct] = await ctx.db
+        .insert(products)
+        .values({
+          description: parsedInput.description,
+          name: parsedInput.name,
+          isActive: parsedInput.isActive == "true",
+          isFeatured: parsedInput.isFeatured == "true",
+        })
+        .returning({ id: products.id });
+      parsedInput.images.forEach(async (image) => {
+        if (image) {
+          const response = await uploadImage(image);
+          await ctx.db.insert(productImage).values({
+            productId: newProduct.id,
+            cloudId: response.cloudId,
+            url: response.url,
+          });
+          console.log("upladed  ", image.name);
+        }
       });
     } catch (err) {
       console.log(err);

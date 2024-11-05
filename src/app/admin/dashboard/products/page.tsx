@@ -26,7 +26,7 @@ export default async function ProductDashboard({
       <PagePaginator
         hasNext={hasNext}
         hasPrev={hasPrev}
-        baseHref="/dashboard/products"
+        baseHref="/admin/dashboard/products"
         page={parseInt(page)}
         pageCount={pageCount}
       />

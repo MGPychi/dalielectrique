@@ -8,8 +8,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Upload, X } from "lucide-react";
@@ -20,7 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
 
-// Define a proper form schema
+// Form schema remains the same
 const MAX_CHARS = 2000;
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -35,6 +37,8 @@ const formSchema = z.object({
     .max(MAX_FILES, `Maximum ${MAX_FILES} images allowed`)
     .optional()
     .nullable(),
+  isFeatured: z.boolean(),
+  isActive: z.boolean(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -49,6 +53,8 @@ const initialValues: FormValues = {
   description: "",
   name: "",
   images: [],
+  isActive: true,
+  isFeatured: false,
 };
 
 const AddNewProductForm = () => {
@@ -60,10 +66,10 @@ const AddNewProductForm = () => {
     defaultValues: initialValues,
   });
 
+  // Previous handlers remain the same
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
 
-    // Check if adding new files would exceed the limit
     if (imagePreviews.length + files.length > MAX_FILES) {
       toast({
         title: "Too many files",
@@ -74,7 +80,6 @@ const AddNewProductForm = () => {
     }
 
     const validFiles = files.filter((file) => {
-      // Validate file type
       if (!file.type.startsWith("image/")) {
         toast({
           title: "Invalid file type",
@@ -84,7 +89,6 @@ const AddNewProductForm = () => {
         return false;
       }
 
-      // Validate file size
       if (file.size > MAX_FILE_SIZE) {
         toast({
           title: "File too large",
@@ -99,7 +103,6 @@ const AddNewProductForm = () => {
 
     if (validFiles.length === 0) return;
 
-    // Create new previews
     const newPreviews = validFiles.map((file) => {
       return new Promise<ImagePreview>((resolve) => {
         const reader = new FileReader();
@@ -136,8 +139,9 @@ const AddNewProductForm = () => {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("description", data.description);
+      formData.append("isActive", String(data.isActive));
+      formData.append("isFeatured", String(data.isFeatured));
 
-      // Append each image with a unique key
       imagePreviews.forEach((preview) => {
         formData.append(`images`, preview.file);
       });
@@ -154,6 +158,8 @@ const AddNewProductForm = () => {
         form.reset();
         setImagePreviews([]);
       } else {
+        console.error(response?.validationErrors);
+        console.error(response?.serverError);
         throw new Error("Failed to create product");
       }
     } catch (error) {
@@ -207,6 +213,52 @@ const AddNewProductForm = () => {
               </FormItem>
             )}
           />
+
+          <div className="flex flex-col space-y-4">
+            <FormField
+              control={form.control}
+              name="isActive"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Active Status</FormLabel>
+                    <FormDescription>
+                      Make this product visible to customers
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="isFeatured"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">
+                      Featured Product
+                    </FormLabel>
+                    <FormDescription>
+                      Show this product in featured sections
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={form.control}

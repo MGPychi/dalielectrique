@@ -12,7 +12,7 @@ export const getAllFeaturedActiveProducts = unstable_cache(
     //   .from(products)
     //   .where(and(eq(products.isActive, true), eq(products.featured, true)));
     return db.query.products.findMany({
-      where: and(eq(products.isActive, true), eq(products.featured, true)),
+      where: and(eq(products.isActive, true), eq(products.isFeatured, true)),
       with: {
         images: true,
       },
