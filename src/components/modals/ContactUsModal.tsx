@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -22,16 +23,16 @@ const ContactUsModal: React.FC = () => {
         Contact Us
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="max-w-2xl    outline-none ring-none ">
-            <DialogHeader>
-              <DialogTitle> Contact Us </DialogTitle>
-              <DialogDescription>
-                Please provide your information to get a detailed review of your
-                professional profile.
-              </DialogDescription>
-            </DialogHeader>
-            <ContactUsForm />
-          </DialogContent>
+        <DialogContent className="max-w-2xl    outline-none ring-none ">
+          <DialogHeader>
+            <DialogTitle> Contact Us </DialogTitle>
+            <DialogDescription>
+              Please provide your information to get a detailed review of your
+              professional profile.
+            </DialogDescription>
+          </DialogHeader>
+          <ContactUsForm />
+        </DialogContent>
       </Dialog>
     </>
   );

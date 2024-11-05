@@ -124,7 +124,10 @@ const TableItem = ({ product }: TableItemProps) => {
         product={product}
       />
       <TableRow onClick={() => setIsOpen(true)} key={product.id}>
-        <TableCell>{product.name}</TableCell>
+        <TableCell className=" md:min-w-32">
+          {product.name.slice(0, 20)}
+          {product.name.length > 20 && "..."}
+        </TableCell>
         <TableCell>
           {product.isActive ? (
             <span className="text-green-500">yes</span>

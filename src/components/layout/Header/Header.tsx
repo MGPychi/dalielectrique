@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Facebook, Menu, Phone } from "lucide-react";
+import { Facebook, Phone } from "lucide-react";
 import * as motion from "framer-motion/m";
 import ContactUsModal from "@/components/modals/ContactUsModal";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
+import clsx from "clsx";
 const links = [
   {
     title: "Home",
@@ -24,12 +23,27 @@ const links = [
   },
 ];
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const Header = ({
+  className,
+  containerClassName,
+}: {
+  className?: string;
+  containerClassName?: string;
+}) => {
   return (
     <>
-      <header className="absolute  w-full max-w-screen-xl rounded-xl py-2.5 px-2 backdrop-blur-2xl top-0 lg:top-0 xl:top-6 z-10 left-1/2 -translate-x-1/2">
-        <div className="container origin-center mx-auto px-4 ">
+      <header
+        className={clsx(
+          "absolute  w-full max-w-screen-xl rounded-xl py-2.5 px-2 backdrop-blur-2xl top-0 lg:top-0 xl:top-6 z-10 left-1/2 -translate-x-1/2",
+          className
+        )}
+      >
+        <div
+          className={clsx(
+            "container origin-center mx-auto px-4 ",
+            containerClassName
+          )}
+        >
           <div className="flex justify-between items-center py-2.5 text-sm border-b border-gray-500">
             <motion.a
               href="mailto:admin@dalielictrique.com"
@@ -60,13 +74,6 @@ const Header = () => {
             <DesktopNav links={links} />
             <div className="flex items-center space-x-4">
               <ContactUsModal />
-              <Button
-                variant="ghost"
-                className="lg:hidden text-white hover:text-white hover:bg-primary"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              >
-                <Menu size={24} />
-              </Button>
             </div>
           </div>
         </div>

@@ -14,7 +14,7 @@ const DesktopNav = ({ links }: Props) => {
   const [currentHovered, setCurrentHovered] = useState<string | null>(null);
 
   return (
-    <nav className="hidden   lg:flex font-bold text-lg sm:-ml-10 items-center space-x-8">
+    <nav className="hidden    lg:flex font-bold   text-lg sm:-ml-10 items-center space-x-8">
       {links.map((item, index) => (
         <DesktopItemLink
           setHovered={setCurrentHovered}
@@ -54,7 +54,7 @@ export const DesktopItemLink = ({
     >
       <Link
         href={href}
-        className={` ${currentHovered && currentHovered != title && "blur-sm"}    py-2.5  rounded-sm     font-medium  hover:text-blur  text-gray-100    transition-all duration-300`}
+        className={` ${currentHovered && currentHovered != title && "blur-sm"}    py-2.5  rounded-sm     font-medium  hover:text-blur   text-gray-200    transition-all duration-300`}
       >
         {title}
       </Link>
@@ -65,7 +65,7 @@ export const DesktopItemLink = ({
             animate={{ opacity: 1, width: "100%" }}
             exit={{ opacity: 0, width: 0 }}
             transition={{ duration: 0.4 }}
-            className="absolute -bottom-1 left-0 w-full h-px bg-primary"
+            className="absolute -bottom-1 left-0 w-full h-px bg-primary  "
           />
         )}
       </AnimatePresence>

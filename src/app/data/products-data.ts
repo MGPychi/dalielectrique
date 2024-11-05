@@ -21,6 +21,7 @@ interface ProductsResponse {
 interface GetProductsParams {
   page: number;
   q?: string;
+  isActive?: boolean;
 }
 
 // Get all featured and active products with their images
@@ -36,6 +37,20 @@ export const getAllFeaturedActiveProducts = unstable_cache(
   ["featured_products"],
   {
     tags: ["featured_products"],
+  }
+);
+export const getAllActiveProducts = unstable_cache(
+  async () => {
+    return await db.query.products.findMany({
+      where: eq(products.isActive, true),
+      with: {
+        images: true,
+      },
+    });
+  },
+  ["active_products"],
+  {
+    tags: ["active_products"],
   }
 );
 
@@ -56,11 +71,20 @@ export const getAllProducts = unstable_cache(
 
 // Get paginated products with optional search
 export const getProducts = cache(
-  async ({ page, q }: GetProductsParams): Promise<ProductsResponse> => {
+  async ({
+    page,
+    q,
+    isActive,
+  }: GetProductsParams): Promise<ProductsResponse> => {
     const productsQuery = db.query.products.findMany({
-      where: q
-        ? sql`${products.name} LIKE ${`%${q}%`} OR ${products.description} LIKE ${`%${q}%`}`
-        : undefined,
+      where: and(
+        q
+          ? sql`${products.name} LIKE ${`%${q}%`} OR ${products.description} LIKE ${`%${q}%`}`
+          : undefined,
+        isActive != undefined
+          ? sql`${products.isActive}=${`${isActive}`}`
+          : undefined
+      ),
       limit: PAGE_SIZE,
       offset: (page - 1) * PAGE_SIZE,
       with: {
@@ -68,10 +92,12 @@ export const getProducts = cache(
       },
     });
 
-    const [result, totalCount] = await Promise.all([
-      productsQuery,
-      getProductsCount({ q }),
-    ]);
+    // const [result, totalCount] = await Promise.all([
+    //   productsQuery,
+    //   getProductsCount({ q }),
+    // ]);
+    const result = await productsQuery;
+    const totalCount = result.length;
 
     const pageCount = Math.ceil(totalCount / PAGE_SIZE);
 
@@ -84,20 +110,6 @@ export const getProducts = cache(
     };
   }
 );
-
-// Get total count of filtered products
-export const getProductsCount = cache(async ({ q }: { q?: string }) => {
-  const result = await db.query.products.findMany({
-    where: q
-      ? sql`${products.name} LIKE ${`%${q}%`} OR ${products.description} LIKE ${`%${q}%`}`
-      : undefined,
-    columns: {
-      id: true,
-    },
-  });
-
-  return result.length;
-});
 
 // Get count of products created today
 export const getReviewCountToday = cache(async () => {
