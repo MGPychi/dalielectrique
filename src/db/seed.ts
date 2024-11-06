@@ -45,33 +45,37 @@ const productsData = [
   },
 ];
 const seedProducts = async () => {
-  productsData.forEach(async (p) => {
-    const result = await db
-      .insert(products)
-      .values({
-        description: p.description,
-        name: p.name,
-        slug: slugify(p.name),
-        isActive: p.isActive,
-        isFeatured: p.isFeatured,
-      })
-      .returning({ productId: products.id });
-    const product = result[0];
-    p.images.forEach(async (img) => {
-      await db.insert(productImage).values({
-        cloudId: img.cloudId,
-        url: img.url,
-        productId: product.productId,
+  try {
+    productsData.forEach(async (p) => {
+      const result = await db
+        .insert(products)
+        .values({
+          description: p.description,
+          name: p.name,
+          slug: slugify(p.name),
+          isActive: p.isActive,
+          isFeatured: p.isFeatured,
+        })
+        .returning({ productId: products.id });
+      const product = result[0];
+      p.images.forEach(async (img) => {
+        await db.insert(productImage).values({
+          cloudId: img.cloudId,
+          url: img.url,
+          productId: product.productId,
+        });
       });
+      console.log("seeded product ", p.name);
     });
-    console.log("seeded product ", p.name);
-  });
+  } catch (err) {
+    console.log("cant seed product");
+  }
 };
 
 const seed = async () => {
   console.log("starting seeding the database");
   await registerAdminUser();
-  await seedProducts();
+  // await seedProducts();
 };
 
 seed().catch((e) => {
