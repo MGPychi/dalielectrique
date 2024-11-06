@@ -4,6 +4,7 @@ import { getProducts } from "@/app/data/products-data";
 import DefaultImage from "../../../public/hero1.webp";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 interface Props {
   product: Awaited<ReturnType<typeof getProducts>>["data"][0];
 }
@@ -30,7 +31,7 @@ const ProductCard = ({ product }: Props) => {
           </motion.div>
         </div>
         <h3 className="font-semibold text-2xl mb-3 text-gray-800 group-hover:text-primary transition-colors duration-300">
-          {product.name}
+          <Link href={`products/${product.slug}`}>{product.name}</Link>
         </h3>
         <p className="text-gray-600 leading-relaxed flex-grow">
           {product.description.slice(0, 100)}...

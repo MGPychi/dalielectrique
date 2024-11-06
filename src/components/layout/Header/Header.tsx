@@ -40,7 +40,7 @@ const Header = ({
       >
         <div
           className={clsx(
-            "container origin-center mx-auto px-4 ",
+            "container origin-center mx-auto px-4  ",
             containerClassName
           )}
         >
@@ -66,7 +66,7 @@ const Header = ({
               </motion.a>
             </div>
           </div>
-          <div className="flex justify-between items-center py-4">
+          <div className="flex   justify-between items-center py-4 relative">
             <motion.div className="text-2xl md:text-3xl font-bold">
               <span className="text-white">DALI</span>
               <span className="text-primary">ELICTRIQUE</span>
@@ -75,9 +75,11 @@ const Header = ({
             <div className="flex items-center space-x-4">
               <ContactUsModal />
             </div>
+            <div className="lg:hidden">
+              <MobileNav links={links} />
+            </div>
           </div>
         </div>
-        <MobileNav links={links} />
       </header>
     </>
   );

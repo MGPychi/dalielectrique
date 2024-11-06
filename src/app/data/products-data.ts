@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
 import { products, selectProductsSchema } from "@/db/schema";
-import { and, eq, sql } from "drizzle-orm";
+import { and, ConsoleLogWriter, eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 import { z } from "zod";
@@ -69,6 +69,19 @@ export const getAllProducts = unstable_cache(
   }
 );
 
+export const getProductDetailWithSlug = unstable_cache(
+  async (slug: string) => {
+    const decodedSlug = decodeURIComponent(slug);
+    return await db.query.products.findFirst({
+      where: eq(products.slug, decodedSlug),
+      with: {
+        images: true,
+      },
+    });
+  },
+  ["product_details"],
+  { tags: ["product_details"] }
+);
 // Get paginated products with optional search
 export const getProducts = cache(
   async ({
