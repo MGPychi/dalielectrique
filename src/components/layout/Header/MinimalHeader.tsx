@@ -3,8 +3,6 @@ import { Phone } from "lucide-react";
 import * as motion from "framer-motion/m";
 import ContactUsModal from "@/components/modals/ContactUsModal";
 import clsx from "clsx";
-import DesktopNav from "./DesktopNav";
-import MobileMenu from "./MobileMenu";
 import MobileNav from "./MobileNav";
 
 const MinimalHeader = ({

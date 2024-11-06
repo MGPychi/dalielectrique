@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, m as motion } from "framer-motion";
-import { Cross, X } from "lucide-react";
+import { X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 

@@ -79,7 +79,7 @@ const ProductSearchBar = ({
               placeholder={placeholder}
               value={searchInput}
               onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 pr-10"
+              className="pl-10 h-12 pr-10"
               disabled={isPending}
             />
             {searchInput && (

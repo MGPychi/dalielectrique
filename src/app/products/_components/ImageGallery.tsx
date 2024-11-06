@@ -1,5 +1,6 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 import { useState } from "react";
 
 const ImageGallery = ({
@@ -12,22 +13,23 @@ const ImageGallery = ({
   const [selectedImage, setSelectedImage] = useState(0);
 
   return (
-    <div className="space-y-4">
-      {/* Main Image */}
+    <div className="space-y-4 ">
       <Card className="bg-white shadow-lg">
         <CardContent className="p-2">
-          <div className="relative aspect-square">
-            <img
+          <div className="relative  flex justify-center items-center aspect-square">
+            <Image
+              width={800}
+              height={700}
               src={images[selectedImage].url}
               alt={`${productName} - View ${selectedImage + 1}`}
-              className="w-full h-full object-cover rounded-lg"
+              className="   -full object-cover rounded-lg"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Thumbnail Grid */}
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid gap-4 grid-cols-5 ">
         {images.map((image, index) => (
           <button
             key={image.id}

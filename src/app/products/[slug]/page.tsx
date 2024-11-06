@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { notFound } from "next/navigation";
 import { getProductDetailWithSlug } from "@/app/data/products-data";
@@ -43,7 +42,4 @@ const ProductDetailsPage = async ({ params }: { params: { slug: string } }) => {
     </section>
   );
 };
-
-// Separate ImageGallery component for better organization
-
 export default ProductDetailsPage;
