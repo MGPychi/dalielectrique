@@ -2,7 +2,6 @@ import React from "react";
 import { getProducts } from "../data/products-data";
 import ProductCard from "@/components/cards/ProductCard";
 import { PagePaginator } from "@/components/PagePaginator";
-import ProductSearchBar from "./_components/ProductSearchBar";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -14,7 +13,7 @@ const ProductsPage = async ({
 }) => {
   const page = (searchParams?.page as string) || "1";
   const q = searchParams?.search as string;
-  const { data, count, hasNext, hasPrev, pageCount } = await getProducts({
+  const { data, hasNext, hasPrev, pageCount } = await getProducts({
     page: parseInt(page),
     isActive: true,
     q,
@@ -27,13 +26,13 @@ const ProductsPage = async ({
           <span>Home</span>
         </Button>
       </Link>
-      <ProductSearchBar
+      {/* <ProductSearchBar
         basePath="/products"
         currentPage={parseInt(page)}
         count={count}
         searchTerm={q}
-      />
-      <div className=" gap-4 min-h-[70vh]  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      /> */}
+      <div className=" gap-4 min-h-[70vh]  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {data.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

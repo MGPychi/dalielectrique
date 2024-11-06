@@ -26,12 +26,13 @@ interface GetProductsParams {
 
 // Get all featured and active products with their images
 export const getAllFeaturedActiveProducts = unstable_cache(
-  async () => {
+  async (limit?: number) => {
     return await db.query.products.findMany({
       where: and(eq(products.isActive, true), eq(products.isFeatured, true)),
       with: {
         images: true,
       },
+      limit,
     });
   },
   ["featured_products"],
