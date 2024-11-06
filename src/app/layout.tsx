@@ -6,6 +6,7 @@ import MotionWrapper from "@/components/wrappers/MotionWrapper";
 import Providers from "@/components/providers";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { PageProgressBar } from "@/components/PageProgressBar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,10 +34,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          <MotionWrapper>{children}</MotionWrapper>
-        </Providers>
-        <Toaster />
+        <PageProgressBar>
+          <Providers>
+            <MotionWrapper>{children}</MotionWrapper>
+          </Providers>
+          <Toaster />
+        </PageProgressBar>
         <SpeedInsights />
         <Analytics />
       </body>
