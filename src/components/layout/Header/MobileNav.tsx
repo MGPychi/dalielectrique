@@ -1,29 +1,43 @@
 "use client";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import MobileMenu from "./MobileMenu";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MenuIcon } from "lucide-react";
+import { Menu, MenuIcon, X } from "lucide-react";
 interface Props {
   links: {
     title: string;
     href: string;
   }[];
 }
+
 const MobileNav = ({ links }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <AnimatePresence>
+    <div>
       <Button
-        className="  hover:ring-primary  "
-        onClick={() => setIsMenuOpen((p) => !p)}
+        variant="ghost"
+        className="p-2 hover:primary group rounded-md"
+        onClick={() => setIsMenuOpen(true)}
       >
-        <MenuIcon className="  text-white" />
+        <Menu className="!w-5 text-white group-hover:text-primary !h-5" />
       </Button>
-      {isMenuOpen && (
-        <MobileMenu links={links} close={() => setIsMenuOpen(false)} />
-      )}
-    </AnimatePresence>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 "
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "100vh" }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <MobileMenu onClose={() => setIsMenuOpen(false)} links={links} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

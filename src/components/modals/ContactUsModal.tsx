@@ -18,7 +18,7 @@ const ContactUsModal: React.FC = () => {
     <>
       <Button
         onClick={openModal}
-        className="  rounded-sm hidden lg:block hover:ring-2 hover:ring-primary"
+        className="rounded-sm hidden lg:block hover:ring-2 hover:ring-primary"
       >
         Contact Us
       </Button>

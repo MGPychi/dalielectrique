@@ -1,45 +1,62 @@
-import { Button } from "@/components/ui/button";
+"use client";
+import { Separator } from "@/components/ui/separator";
+import React, { useState } from "react";
 import { AnimatePresence, m as motion } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Phone, Mail, MapPin, Facebook } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useState } from "react";
 
 interface Props {
-  links: { title: string; href: string }[];
-  close: () => void;
+  links: { href: string; title: string }[];
+  onClose: () => void;
 }
+const socials = [
+  { Icon: Facebook, label: "Facebook", href: "www.facebook.com" },
+];
 
-const MobileMenu = ({ links, close }: Props) => {
-  const [currentHovered, setCurrentHovered] = useState<string | null>(null);
+export default function Component({ links, onClose = () => {} }: Props) {
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+
+  const contactInfo = {
+    phone: "+3(924)4596512",
+    email: "info@example.com",
+    address: "55 East Birchwood Ave. Brooklyn, New York 11201, United States",
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: "100vh" }}
-      exit={{ opacity: 0, height: 0 }}
-      transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-50  backdrop-blur-lg bg-opacity-95 lg:hidden flex flex-col justify-center items-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 h-screen  z-50 flex flex-col bg-gradient-to-b  backdrop-blur-sm bg-gray-800 text-white"
     >
-      <div className="absolute  inset-0 bg-black/50 backdrop-blur z-10" />
-      <nav className="z-40">
-        <ul className="  px-4 flex flex-col  space-y-6">
+      <header className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+        <h1 className="flex items-center gap-2 font-bold text-xl">Pages</h1>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full hover:bg-primary hover:text-white"
+          onClick={onClose}
+        >
+          <X className="h-6 w-6" />
+          <span className="sr-only">Close menu</span>
+        </Button>
+      </header>
+
+      <nav className="flex-1 overflow-y-auto px-6 py-8">
+        <ul className="space-y-2">
           <AnimatePresence>
             {links.map((item, index) => (
               <motion.li
-                key={`mobile_menu_nav_item_${index}`}
+                key={item.title}
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -50, opacity: 0 }}
-                transition={{ delay: 0.05 * index, duration: 0.3 }}
+                transition={{ delay: index * 0.05 }}
               >
                 <Link
+                  className=" flex w-full items-center justify-between rounded-lg py-3 px-4 text-lg font-semibold transition-colors hover:bg-white/5"
                   href={item.href}
-                  className={`text-2xl font-semibold block my-2 transition-colors duration-200 text-white hover:text-primary ${
-                    currentHovered && currentHovered !== item.title && "blur-sm"
-                  }`}
-                  onMouseOver={() => setCurrentHovered(item.title)}
-                  onMouseLeave={() => setCurrentHovered(null)}
-                  onClick={close}
                 >
                   {item.title}
                 </Link>
@@ -49,14 +66,58 @@ const MobileMenu = ({ links, close }: Props) => {
         </ul>
       </nav>
 
-      <Button
-        className="absolute z-40 top-4 right-4 text-white hover:text-primary transition-colors duration-200"
-        onClick={close}
-      >
-        <X />
-      </Button>
+      <div className="border-t border-white/10 bg-black/50 p-6 backdrop-blur-sm">
+        <Link href={"/#contact"}>
+          <Button className="mb-8 h-14 w-full bg-gradient-to-r  bg-primary/90 hover:bg-primary text-lg font-semibold shadow-lg transition-all   ">
+            Contact Us
+          </Button>
+        </Link>
+
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold">Contact Info</h2>
+          <div className="space-y-4">
+            <a
+              href={`tel:${contactInfo.phone}`}
+              className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-white/5 hover:text-primary"
+            >
+              <Phone className="h-5 w-5" />
+              <span>{contactInfo.phone}</span>
+            </a>
+            <a
+              href={`mailto:${contactInfo.email}`}
+              className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-white/5 hover:text-primary"
+            >
+              <Mail className="h-5 w-5" />
+              <span>{contactInfo.email}</span>
+            </a>
+            <div className="flex gap-3 rounded-lg p-2 transition-colors hover:bg-white/5">
+              <MapPin className="h-5 w-5 flex-shrink-0" />
+              <span>{contactInfo.address}</span>
+            </div>
+          </div>
+
+          <Separator className="bg-white/10" />
+
+          <div>
+            <h2 className="mb-4 text-xl font-semibold">Social Links</h2>
+            <div className="flex gap-4">
+              {socials.map(({ Icon, label, href }) => (
+                <a href={href} target="_blank">
+                  <Button
+                    key={label}
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-md      "
+                    asChild
+                  >
+                    {<Icon href={href} className="" />}
+                  </Button>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
-};
-
-export default MobileMenu;
+}
