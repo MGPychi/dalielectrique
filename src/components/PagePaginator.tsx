@@ -72,7 +72,9 @@ export function PagePaginator({
               size="sm"
               href={`${baseHref}?page=${p}`}
               className={
-                p === page ? "bg-blue-500 text-white hover:bg-blue-600" : ""
+                p === page
+                  ? "bg-primary/90 hover:text-white text-white hover:bg-primary"
+                  : ""
               }
             >
               {p}

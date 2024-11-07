@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 // import { useToast } from "@/hooks/use-toast";
-import { MoreHorizontalIcon } from "lucide-react";
+import { Check, MoreHorizontalIcon, X } from "lucide-react";
 import { useState } from "react";
 import { deleteProduct, toggleProductActivation } from "../actions";
 import CreateProductModal from "@/components/modals/CreateProductModal";
@@ -93,7 +93,8 @@ export default function AdminProductsTable({
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>is active</TableHead>
+              <TableHead>active</TableHead>
+              <TableHead>featured</TableHead>
               <TableHead>Created at</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -130,9 +131,16 @@ const TableItem = ({ product }: TableItemProps) => {
         </TableCell>
         <TableCell>
           {product.isActive ? (
-            <span className="text-green-500">yes</span>
+            <Check className="w-5 h-5" />
           ) : (
-            <span className="text-red-500">no</span>
+            <X className="w-5 h-5" />
+          )}
+        </TableCell>
+        <TableCell>
+          {product.isFeatured ? (
+            <Check className="w-5 h-5" />
+          ) : (
+            <X className="w-5 h-5" />
           )}
         </TableCell>
         <TableCell>{product.createdAt?.toLocaleDateString()}</TableCell>

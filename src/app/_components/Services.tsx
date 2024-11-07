@@ -137,20 +137,19 @@ export default function ProfessionalServicesSection() {
     </section>
   );
 }
+
 interface ServiceItemProps {
   Icon: typeof HomeIcon;
   title: string;
   description: string;
   image: StaticImageData;
 }
+
 const ServiceItem = ({ description, Icon, image, title }: ServiceItemProps) => {
   console.log(image.src);
   return (
     <Card className="h-full group relative flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
       <CardHeader className="relative flex items-center">
-        {/* <div className="w-full h-[300px] relative ">
-          <Image alt={title} src={image} fill  className="rounded-md" />
-        </div> */}
         <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
           <Icon className="w-8 h-8 text-white" />
         </div>

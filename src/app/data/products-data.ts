@@ -111,7 +111,7 @@ export const getProducts = cache(
     //   getProductsCount({ q }),
     // ]);
     const result = await productsQuery;
-    const totalCount = result.length;
+    const totalCount = await getTotalProductsCount();
 
     const pageCount = Math.ceil(totalCount / PAGE_SIZE);
 
@@ -142,13 +142,7 @@ export const getReviewCountToday = cache(async () => {
 
 // Get total count of all products
 export const getTotalProductsCount = cache(async () => {
-  const result = await db.query.products.findMany({
-    columns: {
-      id: true,
-    },
-  });
-
-  return result.length;
+  return db.$count(products);
 });
 
 // Get count of products created today

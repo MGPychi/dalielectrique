@@ -12,6 +12,7 @@ export default async function ProductDashboard({
     page: parseInt(page),
     q: searchParams?.search as string,
   });
+
   const searchTerm = (searchParams?.search as string) || "";
   return (
     <main className="flex-col space-y-8 p-2">

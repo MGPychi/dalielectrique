@@ -31,7 +31,9 @@ const ProductCard = ({ product }: Props) => {
           </motion.div>
         </div>
         <h3 className="font-semibold text-2xl mb-3 text-gray-800 group-hover:text-primary transition-colors duration-300">
-          <Link href={`products/${product.slug}`}>{product.name}</Link>
+          <Link href={`products/${product.slug}`}>
+            {product.name.split(" ").slice(0, 10).join(" ")}
+          </Link>
         </h3>
         <p className="text-gray-600 leading-relaxed flex-grow">
           {product.description.slice(0, 100)}...

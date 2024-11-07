@@ -71,7 +71,7 @@ const MinimalHeader = ({
           </motion.div>
 
           <div className="flex items-center justify-end lg:justify-center w-full max-w-3xl space-x-2 mx-auto">
-            <div className="w-full  max-w-sm">
+            <div className="w-full hidden md:block  max-w-sm">
               <ProductSearchBar
                 basePath="/products"
                 className="!py-px"
@@ -81,7 +81,7 @@ const MinimalHeader = ({
               />
             </div>
             {/* Desktop Navigation */}
-            <div className="hidden  lg:flex items-center space-x-6">
+            <div className="hidden  xl:flex items-center space-x-6">
               <div className="space-x-4">
                 {links.map((link) => (
                   <Button
@@ -105,15 +105,19 @@ const MinimalHeader = ({
                         {featuredProducts.map((product) => (
                           <ListItem
                             key={product.id}
-                            title={product.name}
+                            title={product.name
+                              .split(" ")
+                              .slice(0, 4)
+                              .join(" ")}
                             href={`/products/${product.slug}`}
                           >
+                            <div className="py-1" />
                             <div className="flex items-center space-x-2">
                               <Image
                                 src={product.images[0].url}
                                 alt={product.name}
-                                width={60}
-                                height={60}
+                                width={40}
+                                height={40}
                                 className="rounded-md object-cover"
                               />
                               <span className="text-xs">
@@ -172,12 +176,14 @@ const MinimalHeader = ({
                     /> */}
                   </div>
                   <Separator />
-                  <div className="flex flex-col">
+
+                  <h3 className="mb-2 py-4 text-lg font-semibold">Pages</h3>
+                  <div className="flex flex-col gap-y-2">
                     {links.map((link) => (
-                      <SheetClose asChild key={link.title}>
+                      <SheetClose asChild key={link.title} className="">
                         <Link
                           href={link.href}
-                          className="block py-2 text-sm text-muted-foreground hover:text-primary"
+                          className="block  hover:bg-gray-50  px-4   rounded-md  py-3 transition-all   duration-200 text-muted-foreground hover:text-primary"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
                           {link.title}
@@ -193,18 +199,20 @@ const MinimalHeader = ({
                     {featuredProducts.map((product) => (
                       <SheetClose asChild key={product.id}>
                         <div className="flex gap-4 items-center">
-                          <Image
-                            width={60}
-                            height={60}
-                            src={product.images[0].url}
-                            alt={`${product.name} image`}
-                          />
                           <Link
                             href={`/products/${product.slug}`}
                             className="block py-2 text-sm text-muted-foreground hover:text-primary"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
-                            {product.name.slice(0, 30)}
+                            <div className="flex space-x-2 items-center hover:bg-gray-50 rounded-d p-2 px-4">
+                              <Image
+                                width={50}
+                                height={50}
+                                src={product.images[0].url}
+                                alt={`${product.name} image`}
+                              />
+                              <span>{product.name.slice(0, 30)}</span>
+                            </div>
                           </Link>
                         </div>
                       </SheetClose>
