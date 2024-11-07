@@ -3,7 +3,7 @@ import { AnimatePresence, m as motion } from "framer-motion";
 import MobileMenu from "./MobileMenu";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, MenuIcon, X } from "lucide-react";
+import { Menu } from "lucide-react";
 interface Props {
   links: {
     title: string;

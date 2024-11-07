@@ -1,6 +1,5 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
-import React, { useState } from "react";
 import { AnimatePresence, m as motion } from "framer-motion";
 import { X, Phone, Mail, MapPin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,15 +13,12 @@ const socials = [
   { Icon: Facebook, label: "Facebook", href: "www.facebook.com" },
 ];
 
+const contactInfo = {
+  phone: "+3(924)4596512",
+  email: "info@example.com",
+  address: "55 East Birchwood Ave. Brooklyn, New York 11201, United States",
+};
 export default function Component({ links, onClose = () => {} }: Props) {
-  const [expandedItem, setExpandedItem] = useState<string | null>(null);
-
-  const contactInfo = {
-    phone: "+3(924)4596512",
-    email: "info@example.com",
-    address: "55 East Birchwood Ave. Brooklyn, New York 11201, United States",
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -102,7 +98,11 @@ export default function Component({ links, onClose = () => {} }: Props) {
             <h2 className="mb-4 text-xl font-semibold">Social Links</h2>
             <div className="flex gap-4">
               {socials.map(({ Icon, label, href }) => (
-                <a href={href} target="_blank">
+                <a
+                  key={`mobile_menu_nav_link_${href}`}
+                  href={href}
+                  target="_blank"
+                >
                   <Button
                     key={label}
                     variant="ghost"
