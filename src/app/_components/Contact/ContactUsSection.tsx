@@ -1,97 +1,88 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
-import { MapPinIcon, PhoneIcon, MailIcon, LinkedinIcon } from "lucide-react";
-import ContactUsForm from "./ContactUsForm";
+import { MapPinIcon, PhoneIcon, MailIcon, Facebook } from "lucide-react";
 import { m as motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
+import { infos } from "@/constants";
+import ContactUsForm from "./ContactUsForm";
+import SectionsBadge from "@/components/SectionsBadge";
 
 const contactInfos = [
   {
     icon: <MapPinIcon className="h-5 w-5 mr-4 text-primary" />,
-    title: "Address",
-    info: "London Eye, London",
+    title: "Adresse",
+    info: infos.address,
   },
   {
     icon: <PhoneIcon className="h-5 w-5 mr-4 text-primary" />,
-    title: "Phone",
-    info: "+44 20 7946 0958",
+    title: "Téléphone",
+    info: infos.phone,
   },
   {
     icon: <MailIcon className="h-5 w-5 mr-4 text-primary" />,
     title: "Email",
-    info: "info@fleexstudio.com",
+    info: infos.email,
   },
   {
-    icon: <LinkedinIcon className="h-5 w-5 mr-4 text-primary" />,
-    title: "LinkedIn",
-    info: "Fleexstudio",
+    icon: <Facebook className="h-5 w-5 mr-4 text-primary" />,
+    title: "Facebook",
+    info: infos.facebookName,
   },
 ];
+
 const letterAnimation = {
-  hidden: { opacity: 0, y: 50 },
+  hidden: { opacity: 0, scale: 1.05, y: 50 },
   visible: (i: number) => ({
     opacity: 1,
+    scale: 1,
     y: 0,
     transition: {
-      delay: i * 0.05,
+      duration: 0.4,
+      delay: i * 0.1,
     },
   }),
 };
 
 const ContactUsSection = () => {
-  const title1 = "Illuminate Your Message";
-  const title2 = "Get in Contact";
+  const title1 = "Illuminez Votre Message";
+  const title2 = "Entrez en Contact";
 
   return (
-    <div className="container mx-auto py-16">
-      <div className="lg:flex gap-4  lg:space-x-10">
+    <section id="contact" className="container mx-auto py-16 px-4 sm:px-0">
+      <div className="lg:flex gap-4 lg:space-x-10">
         <div className="lg:w-1/2 space-y-4">
           <motion.div
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
             variants={letterAnimation}
           >
-            <Badge className="mb-6 px-4 py-2 font-bold bg-primary/10 text-primary rounded-md">
-              Contact Us
-            </Badge>
+            <SectionsBadge>Contactez-Nous</SectionsBadge>
           </motion.div>
-          <h1 className="text-5xl font-bold mb-4">
-            {title1.split("").map((letter, index) => (
-              <motion.span
-                key={index}
-                custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={letterAnimation}
-                className="inline-block"
-              >
-                {letter}
-              </motion.span>
-            ))}
-          </h1>
-          <motion.h2 className="text-4xl font-semibold mb-6">
-            {title2.split("").map((letter, index) => (
-              <motion.span
-                key={index}
-                custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={letterAnimation}
-                className="inline-block"
-              >
-                {letter}
-              </motion.span>
-            ))}
+          <motion.h1
+            initial="hidden"
+            whileInView="visible"
+            variants={letterAnimation}
+            className="text-5xl font-bold mb-4"
+          >
+            {title1}
+          </motion.h1>
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            variants={letterAnimation}
+            className="text-4xl font-semibold mb-6"
+          >
+            {title2}
           </motion.h2>
           <motion.p
             className="mb-8 text-muted-foreground"
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
             variants={letterAnimation}
           >
-            Have questions or ready to get started with our electricity
-            services? Our team is here to help! Whether you are seeking...
+            Vous avez des questions ou êtes prêt à commencer avec nos services
+            d&pos;électricité ? Notre équipe est là pour vous aider ! Que vous
+            recherchiez...
           </motion.p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {contactInfos.map((contact, index) => (
@@ -99,7 +90,7 @@ const ContactUsSection = () => {
                 key={index}
                 custom={index}
                 initial="hidden"
-                animate="visible"
+                whileInView="visible"
                 variants={letterAnimation}
               >
                 <ContactUsInfo
@@ -113,14 +104,14 @@ const ContactUsSection = () => {
         </div>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="lg:w-1/2 flex bg-gray-50  shadow  px-4 flex-col justify-end py-14 rounded-md "
+          className="lg:w-1/2 flex bg-gray-50 shadow px-4 flex-col justify-end py-14 rounded-md"
         >
           <ContactUsForm />
         </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 

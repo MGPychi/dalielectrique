@@ -18,13 +18,13 @@ const itemVariants = {
 
 const Location = () => {
   return (
-    <section className="relative  min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden">
       <div className="absolute inset-0 z-0 blur-sm">
         <Image
           src={LocationImage}
           layout="fill"
           objectFit="cover"
-          alt="Location map background"
+          alt="Carte de localisation en arrière-plan"
           loading="lazy"
           placeholder="blur"
         />
@@ -42,15 +42,16 @@ const Location = () => {
               variants={itemVariants}
               className="text-4xl md:text-5xl font-bold mb-6 text-white"
             >
-              Where to find us?
+              Où nous trouver ?
             </motion.h1>
             <motion.p
               variants={itemVariants}
               className="text-gray-200 text-lg md:text-xl mb-8"
             >
-              Located in the heart of innovation, our office is where ideas come
-              to life. We are easily accessible and always ready to welcome you
-              for a visit or collaboration.
+              Situé au cœur de l&pos;innovation, notre bureau est l&pos;endroit
+              où les idées prennent vie. Nous sommes facilement accessibles et
+              toujours prêts à vous accueillir pour une visite ou une
+              collaboration.
             </motion.p>
             <motion.div variants={itemVariants} className="space-y-4">
               <div className="flex items-center space-x-4 text-white">
@@ -75,7 +76,7 @@ const Location = () => {
               src={LocationImage}
               layout="fill"
               objectFit="cover"
-              alt="Our office"
+              alt="Notre bureau"
               className="rounded-lg shadow-lg"
               loading="lazy"
               placeholder="blur"

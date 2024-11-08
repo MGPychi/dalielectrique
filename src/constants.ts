@@ -9,6 +9,7 @@ export const infos = {
   openingHours: "Monday - Friday, 9:00 AM - 6:00 PM",
   email: "dalielectronique@email.com",
   facebook: "https://www.facebook.com",
+  facebookName: "dalielectrique",
   website: "https://www.dalielectronique.com",
   whatsapp: "+1 (555) 123-4567",
   description:

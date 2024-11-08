@@ -37,14 +37,14 @@ const ContactUsForm = () => {
     });
     if (response?.data?.success) {
       toast({
-        title: "Message sent",
-        description: "We will get back to you soon",
+        title: "Message envoyé",
+        description: "Nous vous répondrons bientôt",
       });
       form.reset();
     } else {
       toast({
-        title: "Failed sent",
-        description: "cant send your message",
+        title: "Échec de l'envoi",
+        description: "Impossible d'envoyer votre message",
         variant: "destructive",
       });
     }
@@ -52,16 +52,16 @@ const ContactUsForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4  ">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nom</FormLabel>
                 <FormControl>
-                  <Input placeholder="Name" {...field} />
+                  <Input placeholder="Nom" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,9 +72,9 @@ const ContactUsForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email (Optional)</FormLabel>
+                <FormLabel>Email (Facultatif)</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email " {...field} />
+                  <Input placeholder="Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,9 +85,9 @@ const ContactUsForm = () => {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel>Numéro de Téléphone</FormLabel>
                 <FormControl>
-                  <Input placeholder="Phone Number" {...field} />
+                  <Input placeholder="Numéro de Téléphone" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,12 +99,12 @@ const ContactUsForm = () => {
           name="body"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>body</FormLabel>
+              <FormLabel>Message</FormLabel>
               <FormControl>
                 <Textarea
                   rows={8}
                   className="resize-none"
-                  placeholder="Your message"
+                  placeholder="Votre message"
                   {...field}
                 />
               </FormControl>
@@ -118,7 +118,7 @@ const ContactUsForm = () => {
             className="flex px-8 gap-2 active:scale-[95%] items-center"
             disabled={form.formState.isSubmitting}
           >
-            <span>Send</span>
+            <span>Envoyer</span>
             {form.formState.isSubmitting && (
               <Loader2 className="h-4 w-4 animate-spin" />
             )}

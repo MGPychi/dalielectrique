@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -8,67 +7,110 @@ import {
 } from "@/components/ui/accordion";
 import { getAllQandA } from "@/app/data/qna-data";
 import Link from "next/link";
+import SectionsBadge from "@/components/SectionsBadge";
+import * as motion from "framer-motion/m";
+
+const anearingAnimation = {
+  hidden: { opacity: 0, x: -100 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.6,
+    },
+  },
+};
 
 async function QandA() {
   const data = await getAllQandA();
 
   return (
-    <div id="q-and-a" className="container mx-auto min-h-[70vh] px-4 py-16">
+    <section id="q-and-a" className="container mx-auto min-h-[70vh] px-4 py-16">
       <div className="grid lg:grid-cols-2 gap-12">
-        <div className="space-y-6">
-          <div>
-            <Badge className="mb-6 px-4 py-2 font-bold bg-primary/10 text-primary rounded-md">
-              FAQ&apos;S
-            </Badge>
-          </div>
+        <div className="space-y-9">
+          <motion.div
+            variants={anearingAnimation}
+            initial={"hidden"}
+            whileInView={"visible"}
+          >
+            <SectionsBadge>FAQ</SectionsBadge>
+          </motion.div>
 
-          <h2 className="text-4xl font-bold">
-            Frequently Best Asked Question?
-          </h2>
+          <motion.h2
+            variants={anearingAnimation}
+            whileInView={"visible"}
+            initial={"hidden"}
+            className="text-4xl font-bold"
+          >
+            Questions Fréquemment Posées
+          </motion.h2>
 
-          <p className="text-gray-600 text-lg">
-            That&apos;s why we&apos;ve compiled a list of frequently asked
-            questions to help make the process as smooth as possible for you.
-          </p>
+          <motion.p
+            variants={anearingAnimation}
+            whileInView={"visible"}
+            initial={"hidden"}
+            className="text-gray-600 text-lg"
+          >
+            C&pos;est pourquoi nous avons compilé une liste de questions
+            fréquemment posées pour vous aider à rendre le processus aussi
+            fluide que possible.
+          </motion.p>
 
-          <div>
+          <motion.div
+            className=""
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5 }}
+          >
             <Link href={"#contact"}>
               <Button
                 className="bg-primary/90 hover:bg-primary text-white rounded-full px-6"
                 size="lg"
               >
-                Have Any Questions
-                <span className="ml-2">→</span>
+                Vous avez des questions ?<span className="ml-2">→</span>
               </Button>
             </Link>
-          </div>
+          </motion.div>
         </div>
 
         <div className="space-y-4">
           <Accordion type="single" collapsible className="w-full">
             {data.map((item, index) => (
-              <AccordionItem
+              <motion.div
                 key={index}
-                value={`item-${index}`}
-                className="border rounded-2xl mb-4 data-[state=open]:bg-primary data-[state=open]:text-white"
+                initial={{ opacity: 0, x: 100 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                  <div className="flex items-center justify-between w-full">
-                    <h3 className="font-semibold text-left pr-8">
-                      {item.question}
-                    </h3>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-4 data-[state=open]:text-white/90">
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
+                <AccordionItem
+                  value={`item-${index}`}
+                  className="border rounded-2xl mb-4 data-[state=open]:bg-primary data-[state=open]:text-white"
+                >
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                    <div className="flex items-center justify-between w-full">
+                      <h3 className="font-semibold text-left pr-8">
+                        {item.question}
+                      </h3>
+                    </div>
+                  </AccordionTrigger>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                  >
+                    <AccordionContent className="px-6 pb-4 data-[state=open]:text-white/90">
+                      {item.answer}
+                    </AccordionContent>
+                  </motion.div>
+                </AccordionItem>
+              </motion.div>
             ))}
           </Accordion>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
-
 export default QandA;

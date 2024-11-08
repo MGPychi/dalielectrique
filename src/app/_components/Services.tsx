@@ -2,13 +2,13 @@
 
 import { m as motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Hero1 from "../../../public/hero1.webp";
 import Hero2 from "../../../public/hero2.png";
 import Hero3 from "../../../public/hero3.png";
+import SectionsBadge from "@/components/SectionsBadge";
 
 const services = [
   {
@@ -81,9 +81,7 @@ export default function Component() {
           className="text-center mb-20"
         >
           <motion.div variants={badgeVariants}>
-            <Badge className="px-6 text-white py-2 text-sm font-medium  rounded-full">
-              Nos Services
-            </Badge>
+            <SectionsBadge>Nos Services</SectionsBadge>
           </motion.div>
           <motion.h2
             variants={badgeVariants}

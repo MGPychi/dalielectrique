@@ -2,8 +2,8 @@
 
 import { m as motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Award, DollarSign, Heart } from "lucide-react";
+import SectionsBadge from "@/components/SectionsBadge";
 
 const features = [
   {
@@ -51,7 +51,7 @@ const itemVariants = {
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-32  px-4 ">
+    <section className="py-20  px-4 ">
       <div className="container mx-auto ">
         <motion.div
           initial="hidden"
@@ -60,10 +60,9 @@ export default function WhyChooseUs() {
           className="text-center mb-16"
         >
           <motion.div variants={itemVariants}>
-            <Badge variant="secondary" className="mb-4 text-sm font-semibold">
-              WHY CHOOSE US
-            </Badge>
+            <SectionsBadge>WHY CHOOSE US</SectionsBadge>
           </motion.div>
+          <div className="py-4" />
           <motion.h2
             variants={itemVariants}
             className="text-4xl font-bold mb-6 text-gray-800"

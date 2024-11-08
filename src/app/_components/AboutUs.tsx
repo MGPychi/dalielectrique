@@ -8,25 +8,26 @@ import Hero1 from "../../../public/hero1.webp";
 import Hero2 from "../../../public/hero2.png";
 import Image from "next/image";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import SectionsBadge from "@/components/SectionsBadge";
+
 const data = [
   {
-    text: "Highlight the unique features or benefits",
-  },
-
-  {
-    text: "Our Commitment to Sustainable Energy",
+    text: "Mettez en avant les caractéristiques uniques ou les avantages",
   },
   {
-    text: "Present your main solutions/services",
+    text: "Notre engagement pour une énergie durable",
+  },
+  {
+    text: "Présentez vos principales solutions/services",
   },
 ];
-export default function Component() {
+
+export default function Composant() {
   const [count, setCount] = useState(0);
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
-  // Counter animation
+  // Animation du compteur
   useEffect(() => {
     if (isInView) {
       const timer = setInterval(() => {
@@ -45,8 +46,8 @@ export default function Component() {
   }, [isInView]);
 
   return (
-    <div className="container mx-auto  px-4 py-16" ref={containerRef}>
-      <div className="grid lg:grid-cols-2 gap-8 items-center">
+    <section className="container mx-auto px-4 py-16" ref={containerRef}>
+      <div className="grid  lg:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
           <motion.div
             initial={{ scale: 1.5, opacity: 0 }}
@@ -56,11 +57,11 @@ export default function Component() {
           >
             <Image
               src={Hero1}
-              alt="Team meeting"
+              alt="Réunion d'équipe"
               className="rounded-lg w-full object-cover"
             />
           </motion.div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <motion.div
               initial={{ scale: 1.5, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
@@ -69,7 +70,7 @@ export default function Component() {
             >
               <div className="flex text-center flex-col gap-2">
                 <div className="text-5xl font-bold mb-2">{count}+</div>
-                <div className="">Years of Experience</div>
+                <div className="">Années d&apos;expérience</div>
               </div>
             </motion.div>
             <motion.div
@@ -79,7 +80,7 @@ export default function Component() {
             >
               <Image
                 src={Hero2}
-                alt="Business consultation"
+                alt="Consultation d'affaires"
                 className="rounded-lg w-full h-full object-cover"
               />
             </motion.div>
@@ -87,10 +88,11 @@ export default function Component() {
         </div>
 
         <motion.div className="space-y-6 py-4">
-          <Badge className="py-2">About Us</Badge>
+          <SectionsBadge>À Propos de Nous</SectionsBadge>
 
           <h2 className="text-4xl font-bold leading-tight">
-            Charged with Purpose to Shaping Future of Energy
+            Investis d&apos;une Mission pour Façonner l&apos;Avenir de
+            l&apos;Énergie
           </h2>
 
           <motion.p
@@ -99,14 +101,16 @@ export default function Component() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-gray-600"
           >
-            We're more than just a provider of electricity services - we're
-            pioneers in the energy industry, dedicated to shaping a brighter,
-            more sustainable future for all.
+            Nous sommes plus qu&apos;un simple fournisseur de services
+            d&apos;électricité - nous sommes des pionniers de l&apos;industrie
+            de l&apos;énergie, dédiés à construire un avenir plus lumineux et
+            durable pour tous.
           </motion.p>
 
           <ul className="space-y-4">
             {data.map((item, index) => (
               <motion.li
+                key={index} // Added key prop
                 initial={{ x: 100, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{
@@ -150,13 +154,13 @@ export default function Component() {
                 size={"lg"}
                 className="bg-primary:90 h-12 hover:bg-primary"
               >
-                Learn more
+                En savoir plus
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </motion.div>
         </motion.div>
       </div>
-    </div>
+    </section>
   );
 }

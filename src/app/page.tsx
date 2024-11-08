@@ -6,7 +6,7 @@ import MainProducts from "./_components/MainProducts";
 import Location from "./_components/Location";
 import WhyChooseUs from "./_components/WhyUs";
 import Reviews from "./_components/Reviews/Reviews";
-import ContactusSection from "./_components/ContactUsSection";
+import ContactusSection from "./_components/Contact/ContactUsSection";
 import ScrollUp from "./_components/ScrollUp";
 import AandQ from "./_components/QandA/QandA";
 
