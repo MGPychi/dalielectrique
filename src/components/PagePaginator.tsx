@@ -15,12 +15,14 @@ interface Props {
   hasNext: boolean;
   hasPrev: boolean;
   pageCount: number; // Add pageCount to the Props interface
+  q?: string;
 }
 
 export function PagePaginator({
   baseHref,
   page,
   hasNext,
+  q,
   hasPrev,
   pageCount,
 }: Props) {
@@ -53,11 +55,11 @@ export function PagePaginator({
           {hasPrev ? (
             <PaginationPrevious
               size="sm"
-              href={`${baseHref}?page=${page - 1}`}
+              href={`${baseHref}?page=${page - 1}${q ? `&search=${q}` : ""}`}
             />
           ) : (
             <PaginationPrevious
-              href={`${baseHref}?page=${page - 1}`}
+              href={`${baseHref}?page=${page - 1}${q ? `&search=${q}` : ""}`}
               size="sm"
               className="pointer-events-none opacity-50"
               aria-disabled="true"
@@ -70,7 +72,7 @@ export function PagePaginator({
           <PaginationItem key={p}>
             <PaginationLink
               size="sm"
-              href={`${baseHref}?page=${p}`}
+              href={`${baseHref}?page=${p}${q ? `&search=${q}` : ""}`}
               className={
                 p === page
                   ? "bg-primary/90 hover:text-white text-white hover:bg-primary"
@@ -85,12 +87,15 @@ export function PagePaginator({
         {/* Next Button */}
         <PaginationItem>
           {hasNext ? (
-            <PaginationNext size="sm" href={`${baseHref}?page=${page + 1}`} />
+            <PaginationNext
+              size="sm"
+              href={`${baseHref}?page=${page + 1}${q ? `&search=${q}` : ""}`}
+            />
           ) : (
             <PaginationNext
               size="sm"
               className="pointer-events-none opacity-50"
-              href={`${baseHref}?page=${page + 1}`}
+              href={`${baseHref}?page=${page + 1}${q ? `&search=${q}` : ""}`}
               aria-disabled="true"
             />
           )}

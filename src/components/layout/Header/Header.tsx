@@ -11,16 +11,20 @@ const links = [
     href: "/",
   },
   {
-    title: "Introduction",
-    href: "/introduction",
-  },
-  {
     title: "About",
-    href: "/about",
+    href: "/#about",
   },
   {
     title: "Services",
-    href: "#services",
+    href: "/#services",
+  },
+  {
+    title: "Products",
+    href: "/products",
+  },
+  {
+    title: "Contact Us",
+    href: "/#contact",
   },
 ];
 

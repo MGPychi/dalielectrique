@@ -20,7 +20,7 @@ const ProductsPage = async ({
     q,
   });
   return (
-    <section className="container space-y-4 pt-10 mt-10 px-4 md:px-0 mx-auto">
+    <section className="container space-y-4 py-10 mt-10 px-4 md:px-0 mx-auto">
       {/* <Link href="/">
         <Button variant={"link"}>
           <ChevronLeft className="w-6 h-6" />
@@ -42,6 +42,7 @@ const ProductsPage = async ({
       </div>
       <div className="py-4" />
       <PagePaginator
+        q={q}
         baseHref="/products"
         hasNext={hasNext}
         hasPrev={hasPrev}
