@@ -4,6 +4,7 @@ import { AnimatePresence, m as motion } from "framer-motion";
 import { X, Phone, Mail, MapPin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { infos } from "@/constants";
 
 interface Props {
   links: { href: string; title: string }[];
@@ -14,9 +15,9 @@ const socials = [
 ];
 
 const contactInfo = {
-  phone: "+3(924)4596512",
-  email: "info@example.com",
-  address: "55 East Birchwood Ave. Brooklyn, New York 11201, United States",
+  phone: infos.phone,
+  email: infos.email,
+  address: infos.address,
 };
 export default function Component({ links, onClose = () => {} }: Props) {
   return (

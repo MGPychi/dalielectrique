@@ -4,6 +4,7 @@ import ContactUsModal from "@/components/modals/ContactUsModal";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
 import clsx from "clsx";
+import { infos } from "@/constants";
 const links = [
   {
     title: "Home",
@@ -46,19 +47,19 @@ const Header = ({
         >
           <div className="flex justify-between items-center py-2.5 text-sm border-b border-gray-500">
             <motion.a
-              href="mailto:admin@dalielictrique.com"
+              href={`mailto:${infos.email}`}
               className=" text-white transition-colors duration-200"
               whileHover={{ scale: 1.05 }}
             >
-              admin@dalielictrique.ca
+              {infos.email}
             </motion.a>
             <div className="flex text-white items-center space-x-4">
               <motion.div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4" />
-                <span>0781810656</span>
+                <span>{infos.phone}</span>
               </motion.div>
               <motion.a
-                href="#"
+                href={infos.facebook}
                 className=" transition-colors duration-200"
                 whileHover={{ scale: 1.2 }}
               >
