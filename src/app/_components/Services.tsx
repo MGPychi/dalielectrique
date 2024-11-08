@@ -1,61 +1,33 @@
-import * as motion from "framer-motion/m";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
-import { Home, Building2, Factory, HomeIcon } from "lucide-react";
+"use client";
+
+import { m as motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ChevronRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import Hero1 from "../../../public/hero1.webp";
-import { StaticImageData } from "next/image";
+import Hero2 from "../../../public/hero2.png";
+import Hero3 from "../../../public/hero3.png";
 
 const services = [
   {
-    icon: Home,
-    title: "Residential",
+    title: "Services Étincelles Lumineuses",
     description:
-      "Your trusted electricians for all your home electrical needs...",
-    items: [
-      "House Wiring",
-      "Installation",
-      "Service",
-      "Upgrades",
-      "Smart Home",
-      "Rough-Ins",
-      "Emergency Lighting",
-      "Panel Upgrades",
-    ],
+      "Découvrez notre gamme de services et dynamisez votre quotidien avec des solutions adaptées à vos besoins énergétiques.",
     image: Hero1,
   },
   {
-    icon: Building2,
-    title: "Commercial",
-    description: "Running a business is challenging...",
-    items: [
-      "Lighting Upgrades",
-      "Emergency Lighting",
-      "Low Voltage Switchings",
-      "120v/347 Volt Lighting",
-      "Rough-Ins",
-      "Panel Upgrades",
-    ],
-    image: Hero1,
+    title: "Forfaits Énergie Facile",
+    description:
+      "Avec des technologies de pointe, nous vous offrons des solutions énergétiques pour optimiser l’efficacité de votre entreprise.",
+    image: Hero2,
   },
   {
-    icon: Factory,
-    title: "Industrial",
+    title: "Forfaits Soin Électra",
     description:
-      "Count on our licensed electricians for on-site industrial electrical services...",
-
-    items: [
-      "Safety Devices",
-      "Smoke Detectors",
-      "Exit / Emergency Signs",
-      "Exterior Lighting",
-    ],
-    image: Hero1,
+      "Notre équipe d'experts assure des services de haute qualité pour la maintenance et l’optimisation de vos installations.",
+    image: Hero3,
   },
 ];
 
@@ -64,72 +36,108 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.3,
+      duration: 0.8,
     },
   },
 };
 
-const itemVariants = {
+const badgeVariants = {
   hidden: { y: 50, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
       type: "spring",
-      stiffness: 100,
+      stiffness: 120,
+      damping: 20,
+      duration: 0.6,
     },
   },
 };
 
-export default function ProfessionalServicesSection() {
+const cardVariants = {
+  hidden: { scale: 0.9, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 80,
+      damping: 15,
+      duration: 0.5,
+    },
+  },
+};
+
+export default function Component() {
   return (
-    <section
-      id="services"
-      className="py-24 px-4 bg-gradient-to-b from-background to-secondary/10"
-    >
-      <div className="container mx-auto">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+      <div className="container px-4 mx-auto">
         <motion.div
           initial="hidden"
-          whileInView={"visible"}
+          whileInView="visible"
           variants={containerVariants}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <motion.div variants={itemVariants} className="">
-            <Badge className="mb-6 px-4 py-2 font-bold bg-primary/10 text-primary rounded-md">
-              Our Services
+          <motion.div variants={badgeVariants}>
+            <Badge className="px-6 text-white py-2 text-sm font-medium  rounded-full">
+              Nos Services
             </Badge>
           </motion.div>
           <motion.h2
-            variants={itemVariants}
-            className="text-4xl font-medium mb-6 bg-clip-text bg-gradient-to-r text-primary"
+            variants={badgeVariants}
+            className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl"
           >
-            Delivering Excellent Services Through Our Expert Team
+            Offres de Services Électriques
           </motion.h2>
           <motion.p
-            variants={itemVariants}
-            className="text-muted-foreground max-w-2xl mx-auto text-lg"
+            variants={badgeVariants}
+            className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto"
           >
-            At our core, excellence defines us and our services. We are
-            committed to providing the best electrical services to our clients.
-            Our team of expert electricians is always ready to deliver excellent
-            services to you.
+            Des foyers résidentiels aux entreprises commerciales, nous
+            fournissons des solutions énergétiques fiables, efficaces et
+            durables.
           </motion.p>
         </motion.div>
 
         <motion.div
-          variants={containerVariants}
           initial="hidden"
-          whileInView={"visible"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          whileInView="visible"
+          variants={containerVariants}
+          className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-8"
         >
           {services.map((service, index) => (
-            <motion.div key={index} variants={itemVariants}>
-              <ServiceItem
-                image={service.image}
-                title={service.title}
-                description={service.description}
-                Icon={service.icon}
-              />
+            <motion.div key={index} variants={cardVariants}>
+              <Card className="group overflow-hidden border-0  bg-white shadow-lg transition-all duration-300 hover:shadow-xl lg:min-h-[600px]   flex flex-col">
+                <div className="relative">
+                  <div className="relative h-[300px] overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/20 transition-colors duration-300 group-hover:bg-primary/40" />
+                  </div>
+                  <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 h-14 w-14 rounded-full bg-black text-white flex items-center justify-center text-xl font-bold shadow-lg">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                </div>
+                <CardContent className="p-8 pt-10 items-center flex flex-col text-center flex-grow">
+                  <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    {service.description}
+                  </p>
+                  <Link
+                    href="#learn-more"
+                    className="inline-flex items-center text-sm font-semibold text-black hover:text-primary transition-colors group/link"
+                  >
+                    En savoir plus
+                    <ChevronRight className="w-4 h-4 ml-1 transition-transform duration-200 group-hover/link:translate-x-1" />
+                  </Link>
+                </CardContent>
+              </Card>
             </motion.div>
           ))}
         </motion.div>
@@ -137,29 +145,3 @@ export default function ProfessionalServicesSection() {
     </section>
   );
 }
-
-interface ServiceItemProps {
-  Icon: typeof HomeIcon;
-  title: string;
-  description: string;
-  image: StaticImageData;
-}
-
-const ServiceItem = ({ description, Icon, image, title }: ServiceItemProps) => {
-  console.log(image.src);
-  return (
-    <Card className="h-full group relative flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
-      <CardHeader className="relative flex items-center">
-        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-          <Icon className="w-8 h-8 text-white" />
-        </div>
-        <CardTitle className="text-2xl mb-2 py-1">{title}</CardTitle>
-        <CardDescription className="text-sm text-center py-1">
-          {description}
-        </CardDescription>
-        <div className="absolute top-4 right-4 w-20 h-20 bg-primary/10 rounded-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
-      </CardHeader>
-      <CardFooter />
-    </Card>
-  );
-};

@@ -13,7 +13,7 @@ async function QandA() {
   const data = await getAllQandA();
 
   return (
-    <div className="container mx-auto min-h-[70vh] px-4 py-16">
+    <div id="q-and-a" className="container mx-auto min-h-[70vh] px-4 py-16">
       <div className="grid lg:grid-cols-2 gap-12">
         <div className="space-y-6">
           <div>
