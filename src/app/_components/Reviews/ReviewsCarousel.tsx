@@ -41,7 +41,7 @@ const ReviewsCarousel = ({ reviews }: Props) => {
 
   const sliderTransition = { duration: 0.35 };
   return (
-    <div className="relative   lg:w-1/2  flex flex-col md:flex-row">
+    <div className="relative    lg:w-1/2  flex flex-col md:flex-row">
       <div className="w-full">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
@@ -53,11 +53,12 @@ const ReviewsCarousel = ({ reviews }: Props) => {
             exit="exit"
             transition={sliderTransition}
           >
-            <Card className="bg-gray-800 w-full max-w-screen-sm  text-white shadow-lg rounded-lg p-8 border-none">
+            <Card className="bg-gray-800 w-full max-w-screen-sm  text-white shadow-lg rounded-lg p-2 md:p-8 border-none">
               <CardHeader className="px-0 pt-0"></CardHeader>
-              <CardContent className="px-0  md:min-h-[250px]  pb-0">
-                <div className="text-lg min-h-40">
-                  {reviews[currentIndex].body.split(" ").slice(0, 45).join(" ")}
+              <CardContent className="px-0 min-h-[300px]  md:min-h-[250px]  pb-0">
+                <div className="md:text-lg min-h-40">
+                  {reviews[currentIndex].body.split(" ").slice(0, 40).join(" ")}
+                  ...
                 </div>
                 <div className="flex items-center mt-6">
                   <div className="space-2">

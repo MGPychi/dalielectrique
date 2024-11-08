@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 // import { m as motion } from "framer-motion";
-import * as  motion from "framer-motion/m";
+import * as motion from "framer-motion/m";
 import { MapPin, Clock, Phone } from "lucide-react";
 import LocationImage from "../../../public/location1.png";
 
@@ -29,7 +29,6 @@ const Location = () => {
         />
         <div className="absolute inset-0 bg-black/60" />
       </div>
-
       <motion.div
         variants={containerVariants}
         initial="hidden"

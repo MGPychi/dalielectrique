@@ -131,7 +131,7 @@ export default function HeroCarousel() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: 0.2 }}
-                    className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 max-w-3xl"
+                    className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 max-w-3xl"
                   >
                     {item.title}
                   </motion.h1>
@@ -140,7 +140,7 @@ export default function HeroCarousel() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="text-lg md:text-xl text-white mb-8 max-w-2xl"
+                    className="sm:text-lg md:text-xl text-white mb-8 max-w-2xl"
                   >
                     {item.subtitle}
                   </motion.p>

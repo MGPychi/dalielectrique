@@ -1,9 +1,10 @@
 "use client";
 import { AnimatePresence, m as motion } from "framer-motion";
 import MobileMenu from "./MobileMenu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
+
 interface Props {
   links: {
     title: string;
@@ -13,6 +14,19 @@ interface Props {
 
 const MobileNav = ({ links }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = ""; // Resets to default
+    }
+
+    // Clean up to remove overflow style when component unmounts
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
 
   return (
     <div>
@@ -27,10 +41,11 @@ const MobileNav = ({ links }: Props) => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-50 "
+            className="fixed  inset-0 z-50"
+            style={{ overflowY: "scroll" }}
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "100vh" }}
-            exit={{ opacity: 0 }}
+            animate={{ opacity: 1, height: "60vh" }}
+            exit={{ opacity: 0.5 }}
             transition={{ duration: 0.3 }}
           >
             <MobileMenu onClose={() => setIsMenuOpen(false)} links={links} />

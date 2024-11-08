@@ -24,9 +24,9 @@ export default function Component({ links, onClose = () => {} }: Props) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 h-screen  z-50 flex flex-col bg-gradient-to-b  backdrop-blur-sm bg-gray-800 text-white"
+      className="fixed inset-0  h-[100vh] pb-10 overflow-y-scroll z-50 flex flex-col bg-gradient-to-b  backdrop-blur-sm bg-gray-800 text-white"
     >
-      <header className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+      <header className="flex items-center justify-between border-b border-white/10 px-6 py-2">
         <h1 className="flex items-center gap-2 font-bold text-xl">Pages</h1>
         <Button
           variant="ghost"
@@ -39,8 +39,8 @@ export default function Component({ links, onClose = () => {} }: Props) {
         </Button>
       </header>
 
-      <nav className="flex-1 overflow-y-auto px-6 py-8">
-        <ul className="space-y-2">
+      <nav className="flex flex-grow     px-6 py-4">
+        <ul className="space-y-2  w-full">
           <AnimatePresence>
             {links.map((item, index) => (
               <motion.li
@@ -51,7 +51,7 @@ export default function Component({ links, onClose = () => {} }: Props) {
                 transition={{ delay: index * 0.05 }}
               >
                 <Link
-                  className=" flex w-full items-center justify-between rounded-lg py-3 px-4 text-lg font-semibold transition-colors hover:bg-white/5"
+                  className=" flex w-full py-4  items-center justify-between rounded-lg md:py-1 px-4  font-semibold transition-colors hover:bg-white/5"
                   href={item.href}
                 >
                   {item.title}
@@ -62,7 +62,7 @@ export default function Component({ links, onClose = () => {} }: Props) {
         </ul>
       </nav>
 
-      <div className="border-t border-white/10 bg-black/50 p-6 backdrop-blur-sm">
+      <div className="border-t border-white/10  p-6 backdrop-blur-sm">
         <Link href={"/#contact"}>
           <Button className="mb-8 h-14 w-full bg-gradient-to-r  bg-primary/90 hover:bg-primary text-lg font-semibold shadow-lg transition-all   ">
             Contact Us
