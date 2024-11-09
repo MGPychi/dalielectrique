@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { getProductDetailWithSlug } from "@/app/data/products-data";
 import ImageGallery from "../_components/ImageGallery";
 
-const ProductDetailsPage = async ({ params }: { params: { slug: string } }) => {
+const ProductDetailsPage = async (props: {
+  params: Promise<{ slug: string }>;
+}) => {
+  const params = await props.params;
   const product = await getProductDetailWithSlug(params.slug);
 
   if (!product) notFound();

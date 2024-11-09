@@ -25,7 +25,7 @@ const data = [
 export default function Composant() {
   const [count, setCount] = useState(0);
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const isInView = useInView(containerRef, { once: false, margin: "-100px" });
 
   // Animation du compteur
   useEffect(() => {
@@ -50,10 +50,10 @@ export default function Composant() {
       <div className="grid  lg:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
           <motion.div
+            className="relative"
             initial={{ scale: 1.5, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="relative"
           >
             <Image
               src={Hero1}

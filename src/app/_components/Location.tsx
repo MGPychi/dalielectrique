@@ -39,7 +39,7 @@ export default function Location() {
   const currentHour = new Date().getHours();
 
   React.useEffect(() => {
-    setIsOpen(currentHour >= 9 && currentHour < 18 && new Date());
+    setIsOpen(currentHour >= 9 && currentHour < 18);
   }, [currentHour]);
 
   const locationInfos = [

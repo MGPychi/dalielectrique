@@ -2,11 +2,12 @@ import { PagePaginator } from "@/components/PagePaginator";
 import { getProducts } from "@/app/data/products-data";
 import AdminProductsTable from "./_components/AdminProductsTable";
 
-export default async function ProductDashboard({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] };
-}) {
+export default async function ProductDashboard(
+  props: {
+    searchParams?: Promise<{ [key: string]: string | string[] }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const page = (searchParams?.page as string) || "1";
   const { data, count, hasNext, hasPrev, pageCount } = await getProducts({
     page: parseInt(page),

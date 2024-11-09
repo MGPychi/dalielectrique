@@ -2,11 +2,12 @@ import { PagePaginator } from "@/components/PagePaginator";
 import AdminUsersTable from "./_components/AdminUsersTable";
 import { getUsers } from "@/app/data/users-data";
 
-export default async function UserDashboard({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] };
-}) {
+export default async function UserDashboard(
+  props: {
+    searchParams?: Promise<{ [key: string]: string | string[] }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const page = (searchParams?.page as string) || "1";
   const { data, count, hasNext, hasPrev, pageCount } = await getUsers({
     page: parseInt(page),

@@ -2,11 +2,12 @@ import { PagePaginator } from "@/components/PagePaginator";
 import { getReviews } from "@/app/data/reviews-data";
 import AdminReviewsTable from "./_components/AdminReviewsTable";
 
-export default async function ReviewsDashboard({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] };
-}) {
+export default async function ReviewsDashboard(
+  props: {
+    searchParams?: Promise<{ [key: string]: string | string[] }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const page = (searchParams?.page as string) || "1";
   const { data, count, hasNext, hasPrev, pageCount } = await getReviews({
     page: parseInt(page),

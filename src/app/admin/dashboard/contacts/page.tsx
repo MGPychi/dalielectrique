@@ -4,11 +4,12 @@ import { PagePaginator } from "@/components/PagePaginator";
 import AdminContactsTable from "./_components/AdminContactsTable";
 import { getContacts } from "@/app/data/contacts-data";
 
-export default async function ContactsDashboard({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] };
-}) {
+export default async function ContactsDashboard(
+  props: {
+    searchParams?: Promise<{ [key: string]: string | string[] }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const page = (searchParams?.page as string) || "1";
   const { data, hasNext, hasPrev, pageCount, count } = await getContacts({
     page: parseInt(page),
