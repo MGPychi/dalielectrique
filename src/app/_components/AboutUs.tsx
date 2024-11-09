@@ -58,6 +58,11 @@ export default function Composant() {
             <Image
               src={Hero1}
               alt="Réunion d'équipe"
+              placeholder="blur"
+              height={550}
+              width={550}
+              quality={70}
+              loading="lazy"
               className="rounded-lg w-full object-cover"
             />
           </motion.div>
@@ -80,6 +85,10 @@ export default function Composant() {
             >
               <Image
                 src={Hero2}
+                height={500}
+                width={500}
+                quality={70}
+                loading="lazy"
                 alt="Consultation d'affaires"
                 className="rounded-lg w-full h-full object-cover"
               />

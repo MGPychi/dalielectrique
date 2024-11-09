@@ -5,6 +5,7 @@ export const MAX_FILES = 6; // Maximum number of files allowed
 
 export const infos = {
   address: "123 Tech Avenue, Innovation City, IC 54321",
+  googleAddress: `36°15'13.5"N 6°34'48.2"E`,
   phone: "+1 (555) 123-4567",
   openingHours: "Monday - Friday, 9:00 AM - 6:00 PM",
   email: "dalielectronique@email.com",
