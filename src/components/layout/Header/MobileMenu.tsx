@@ -53,6 +53,7 @@ export default function Component({ links, onClose = () => {} }: Props) {
               >
                 <Link
                   className=" flex w-full py-4  items-center justify-between rounded-lg md:py-1 px-4  font-semibold transition-colors hover:bg-white/5"
+                  onClick={onClose}
                   href={item.href}
                 >
                   {item.title}
