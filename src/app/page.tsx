@@ -13,7 +13,7 @@ import AandQ from "./_components/QandA/QandA";
 export default function Homepage() {
   return (
     <>
-      <main className="flex-grow bg-white ">
+      <main className="flex-grow w-full overflow-hidden   ">
         <Hero />
         <AboutUs />
         <Services />

@@ -48,7 +48,7 @@ export default function Composant() {
   return (
     <section
       id="about"
-      className="container mx-auto px-4 py-16"
+      className="container  mx-auto px-4 py-16"
       ref={containerRef}
     >
       <div className="grid  lg:grid-cols-2 gap-8 items-center">

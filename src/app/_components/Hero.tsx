@@ -75,11 +75,11 @@ export default function HeroCarousel() {
   }, [paginate]);
 
   return (
-    <motion.section className="relative h-screen w-full overflow-hidden bg-black/40 backdrop-blur  ">
+    <motion.section className="relative  h-screen w-full overflow-hidden bg-black/40 backdrop-blur  ">
       <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pt-4 pb-16">
         <Header />
       </div>
-      <div className="hidden">
+      {/* <div className="hidden">
         {content.map(
           (item, idx) =>
             idx != 0 && (
@@ -90,11 +90,11 @@ export default function HeroCarousel() {
                 className="hidden"
                 blurDataURL=""
                 quality={1}
-                priority
+                // priority
               />
             )
         )}
-      </div>
+      </div> */}
       <AnimatePresence
         initial={true}
         mode="wait"
@@ -193,18 +193,18 @@ export default function HeroCarousel() {
         onClick={() => paginate("left")}
         disabled={!doneAnimating}
         className={`
-         absolute left-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors`}
+         absolute left-4 bottom-10 hover:bg-primary rounded-md p-1 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-all duration-300`}
       >
-        <ChevronLeft size={48} />
+        <ChevronLeft size={35} />
       </button>
       <button
         onClick={() => paginate("right")}
         disabled={!doneAnimating}
         className={`
           
-          absolute right-4 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 transition-colors`}
+          absolute right-4 hover:bg-primary p-1 rounded-md transition-all duration-300 bottom-10 transform -translate-y-1/2 z-30 text-white hover:text-gray-300 `}
       >
-        <ChevronRight size={48} />
+        <ChevronRight size={35} />
       </button>
     </motion.section>
   );

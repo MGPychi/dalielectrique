@@ -71,7 +71,7 @@ export default function Location() {
     <motion.section
       initial="hidden"
       whileInView="visible"
-      className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16 lg:py-24"
+      className="relative  md:px-0  min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16 lg:py-24"
     >
       <motion.div
         className="absolute inset-0 opacity-10"
