@@ -152,10 +152,16 @@ export default function HeroCarousel() {
                     className="flex space-x-4"
                   >
                     <Link href="#contact">
-                      <Button size="lg">Contact</Button>
+                      <Button className="md:w-40 md:h-12" size="lg">
+                        Contact
+                      </Button>
                     </Link>
                     <Link href="#about">
-                      <Button variant="outline" size="lg">
+                      <Button
+                        className="text-white md:w-32 md:h-12  ring-2 ring-primary hover:bg-primary hover:text-white transition-all duration-300 "
+                        variant="ghost"
+                        size="lg"
+                      >
                         About Us
                       </Button>
                     </Link>

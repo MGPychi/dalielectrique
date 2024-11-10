@@ -41,11 +41,11 @@ const MobileNav = ({ links }: Props) => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed  inset-0 z-50"
-            style={{ overflowY: "scroll" }}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "60vh" }}
-            exit={{ opacity: 0.5 }}
+            className="fixed   h-screen inset-0 z-50"
+            // style={{ overflowY: "scroll" }}
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
             transition={{ duration: 0.3 }}
           >
             <MobileMenu onClose={() => setIsMenuOpen(false)} links={links} />

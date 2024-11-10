@@ -22,12 +22,13 @@ const contactInfo = {
 export default function Component({ links, onClose = () => {} }: Props) {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0  h-[100vh] pb-10 overflow-y-scroll z-50 flex flex-col bg-gradient-to-b  backdrop-blur-sm bg-gray-800 text-white"
+      // initial={{ opacity: 0, height: 0 }}
+      // animate={{ opacity: 1, height: "100vh" }}
+      // exit={{ opacity: 0 }}
+      // transition={{ duration: 0.2 }}
+      className="fixed inset-0  h-[100vh] pb-10 overflow-y-scroll z-50 flex flex-col backdrop-blur-3xl     text-white"
     >
-      <header className="flex items-center justify-between border-b border-white/10 px-6 py-2">
+      <header className="flex items-center justify-between border-b border-white/10 px-6 py-2 backdrop-blur-sm">
         <h1 className="flex items-center gap-2 font-bold text-xl">Pages</h1>
         <Button
           variant="ghost"

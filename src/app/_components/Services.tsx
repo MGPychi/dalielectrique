@@ -72,7 +72,10 @@ const cardVariants = {
 
 export default function Component() {
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+    <section
+      id="services"
+      className="py-24 bg-gradient-to-b from-white to-gray-50"
+    >
       <div className="container px-4 mx-auto">
         <motion.div
           initial="hidden"

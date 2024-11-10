@@ -46,7 +46,11 @@ export default function Composant() {
   }, [isInView]);
 
   return (
-    <section className="container mx-auto px-4 py-16" ref={containerRef}>
+    <section
+      id="about"
+      className="container mx-auto px-4 py-16"
+      ref={containerRef}
+    >
       <div className="grid  lg:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
           <motion.div

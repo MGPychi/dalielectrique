@@ -50,22 +50,29 @@ const Header = ({
           )}
         >
           <div className="flex justify-between items-center py-2.5 text-sm border-b border-gray-500">
-            <motion.a
-              href={`mailto:${infos.email}`}
-              className=" text-white transition-colors duration-200"
-              whileHover={{ scale: 1.05 }}
-            >
-              {infos.email}
-            </motion.a>
+            <div className="flex flex-col gap-2">
+              <motion.a
+                href={`mailto:${infos.email}`}
+                className=" text-white transition-colors duration-200"
+                whileHover={{ scale: 1.05 }}
+              >
+                {infos.email}
+              </motion.a>
+              <span className=" text-white sm:hidden transition-colors duration-200">
+                {infos.phone}
+              </span>
+            </div>
+
             <div className="flex text-white items-center space-x-4">
-              <motion.div className="flex items-center space-x-2">
+              <motion.div className="hidden sm:flex items-center space-x-2">
                 <Phone className="w-4 h-4" />
                 <span>{infos.phone}</span>
               </motion.div>
               <motion.a
                 href={infos.facebook}
+                target="_blank"
                 className=" transition-colors duration-200"
-                whileHover={{ scale: 1.2 }}
+                whileHover={{ scale: 1.05 }}
               >
                 <Facebook size={18} />
               </motion.a>
