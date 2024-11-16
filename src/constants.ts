@@ -6,13 +6,14 @@ export const MAX_FILES = 6; // Maximum number of files allowed
 export const infos = {
   address: "123 Tech Avenue, Innovation City, IC 54321",
   googleAddress: `36°15'13.5"N 6°34'48.2"E`,
-  phone: "+1 (555) 123-4567",
+  phone: "0557252629",
+  phone2: "0772734203",
+  whatsapp: "0557252629",
   openingHours: "Monday - Friday, 9:00 AM - 6:00 PM",
-  email: "dalielectronique@email.com",
+  email: "contact@dalielectric.com",
   facebook: "https://www.facebook.com",
-  facebookName: "dalielectrique",
-  website: "https://www.dalielectronique.com",
-  whatsapp: "+1 (555) 123-4567",
+  facebookName: "dalielectric",
+  website: "https://www.dalielectric.com",
   description:
-    "Zak Electric is a neighborhood, family-possessed organization, zeroed in on giving the best electrical technician administrations. We highly esteem the quality and security of the work we do in your home or business.",
+    "DaliElectric is a neighborhood, family-possessed organization, zeroed in on giving the best electrical technician administrations. We highly esteem the quality and security of the work we do in your home or business.",
 };

@@ -41,7 +41,7 @@ const MobileNav = ({ links }: Props) => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed   h-screen inset-0 z-50"
+            className="fixed bg-primary   h-screen inset-0 z-50"
             // style={{ overflowY: "scroll" }}
             initial={{ x: "100%" }}
             animate={{ x: 0 }}

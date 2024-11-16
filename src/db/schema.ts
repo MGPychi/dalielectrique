@@ -55,6 +55,17 @@ export const QandA = pgTable("q_and_a", {
     .$onUpdate(() => new Date()),
 });
 
+export const productCategories = pgTable("product_categories", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").unique().notNull(),
+  description: text("description").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+
 export const products = pgTable("products", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
@@ -68,6 +79,12 @@ export const products = pgTable("products", {
     .$onUpdate(() => new Date()),
 });
 
+export const productCategoriesRelations = relations(products, ({ one }) => ({
+  category: one(productCategories),
+}));
+export const categoryRelations = relations(productCategories, ({ many }) => ({
+  products: many(products),
+}));
 export const userRelations = relations(products, ({ many }) => ({
   images: many(productImage),
 }));
