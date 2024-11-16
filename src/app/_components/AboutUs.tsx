@@ -1,7 +1,7 @@
 "use client";
 
 import { m as motion, useInView } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+// import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Hero1 from "../../../public/hero1.webp";
@@ -9,6 +9,7 @@ import Hero2 from "../../../public/hero2.png";
 import Image from "next/image";
 import Link from "next/link";
 import SectionsBadge from "@/components/SectionsBadge";
+import { useEffect, useRef, useState } from "react";
 
 const data = [
   {
@@ -21,21 +22,22 @@ const data = [
     text: "Présentez vos principales solutions/services",
   },
 ];
+const YEARS = new Date().getFullYear() - 1960;
 
 export default function Composant() {
   const [count, setCount] = useState(0);
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: false, margin: "-100px" });
 
-  // Animation du compteur
   useEffect(() => {
     if (isInView) {
       const timer = setInterval(() => {
         setCount((prev) => {
-          if (prev === 12) {
+          if (prev === YEARS) {
             clearInterval(timer);
             return prev;
           }
+          if (prev + 2 < YEARS) return prev + 2;
           return prev + 1;
         });
       }, 100);
@@ -78,8 +80,13 @@ export default function Composant() {
               className="bg-primary flex justify-center items-center text-white p-6 rounded-lg"
             >
               <div className="flex text-center flex-col gap-2">
-                <div className="text-5xl font-bold mb-2">{count}+</div>
-                <div className="">Années d&apos;expérience</div>
+                {/* <div className="text-5xl font-bold mb-2">{count}+</div> */}
+                <div className="text-2xl font-bold mb-2">Depuis</div>
+                <div className="text-5xl font-bold mb-2">1960</div>
+                <div className="">
+                  <span className="font-semibold px-1">{count}</span>
+                  Années d&apos;expérience
+                </div>
               </div>
             </motion.div>
             <motion.div
