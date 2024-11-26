@@ -39,7 +39,7 @@ const paths: IPath[] = [
   {
     name: "Categories",
     icon: <ALargeSmall className="h-5 w-5" />,
-    href: "/admin/dashboard/products",
+    href: "/admin/dashboard/categories",
   },
   {
     name: "products",

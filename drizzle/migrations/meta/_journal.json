@@ -127,6 +127,13 @@
       "when": 1732643508203,
       "tag": "0017_thin_the_hunter",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1732654840494,
+      "tag": "0018_cold_kid_colt",
+      "breakpoints": true
     }
   ]
 }

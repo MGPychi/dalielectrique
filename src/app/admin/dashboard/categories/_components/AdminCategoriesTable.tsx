@@ -1,5 +1,5 @@
 "use client";
-import { getCategorys } from "@/app/data/categorys-data";
+import { getCategories } from "@/app/data/categories-data";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -28,13 +28,16 @@ import { useToast } from "@/hooks/use-toast";
 // import { useToast } from "@/hooks/use-toast";
 import { Check, MoreHorizontalIcon, X } from "lucide-react";
 import { useState } from "react";
-import { deleteCategory, toggleCategoryActivation } from "../actions";
+import {
+  deleteProductCategory,
+  toggleProductCategoryActivation,
+} from "../actions";
 import CreateCategoryModal from "@/components/modals/CreateCategoryModal";
 import { useRouter } from "next/navigation";
 import UpdateCategoryModal from "@/components/modals/UpdateCategoryModal";
 
 interface Props {
-  data: Awaited<ReturnType<typeof getCategorys>>["data"];
+  data: Awaited<ReturnType<typeof getCategories>>["data"];
   count: number;
   currentPage: number;
   searchTerm: string;
@@ -113,7 +116,7 @@ export default function AdminCategorysTable({
   );
 }
 interface TableItemProps {
-  category: Awaited<ReturnType<typeof getCategorys>>["data"][0];
+  category: Awaited<ReturnType<typeof getCategories>>["data"][0];
 }
 const TableItem = ({ category }: TableItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -153,13 +156,13 @@ const TableItem = ({ category }: TableItemProps) => {
 };
 
 interface CategoryActionsMenuProps {
-  category: Awaited<ReturnType<typeof getCategorys>>["data"][0];
+  category: Awaited<ReturnType<typeof getCategories>>["data"][0];
 }
 
 export const CategoryActionsMenu = ({ category }: CategoryActionsMenuProps) => {
   const { toast } = useToast();
   const deleteCategoryHandler = async () => {
-    const result = await deleteCategory({
+    const result = await deleteProductCategory({
       id: category.id,
     });
     if (result?.data?.success) {
@@ -174,7 +177,7 @@ export const CategoryActionsMenu = ({ category }: CategoryActionsMenuProps) => {
     }
   };
   const toggleCategoryActivationHandler = async () => {
-    const result = await toggleCategoryActivation({
+    const result = await toggleProductCategoryActivation({
       id: category.id,
       value: !category.isActive,
     });

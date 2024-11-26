@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { updateCategory, generateUploadSignature } from "../actions";
+import { updateProductCategory, generateUploadSignature } from "../actions";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -186,7 +186,7 @@ const UpdateCategoryForm = ({ initialData }: { initialData: FormValues }) => {
         JSON.stringify(allImages.map((img) => img.url))
       );
 
-      const response = await updateCategory(formData);
+      const response = await updateProductCategory(formData);
 
       if (response?.data?.success) {
         toast({

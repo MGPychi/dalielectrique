@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { createCategory, generateUploadSignature } from "../actions";
+import { createProductCategory, generateUploadSignature } from "../actions";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,7 +24,7 @@ import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
 
 // Form schema remains the same
 const MAX_CHARS = 2000;
-const formSchema = z.object({src/app/admin/dashboard/products/_components src/app/admin/dashboard/products/actions.ts src/app/admin/dashboard/products/page.tsx
+const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z
     .string()
@@ -192,7 +192,7 @@ const AddNewCategoryForm = () => {
         JSON.stringify(uploadedImages.map((img) => img.cloudId))
       );
 
-      const response = await createCategory(formData);
+      const response = await createProductCategory(formData);
 
       if (response?.data?.success) {
         toast({

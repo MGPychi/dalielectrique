@@ -67,7 +67,7 @@ export const productCategories = pgTable("product_categories", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  imageUrl: text("image_url").notNull(),
+  // imageUrl: text("image_url").notNull(),
   slug: text("slug").unique().notNull(),
   isActive: boolean("is_active").default(true).notNull(),
   isFeatured: boolean("is_featured").default(false).notNull(),
