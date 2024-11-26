@@ -53,6 +53,7 @@ export default function Composant() {
       className="container  mx-auto px-4 py-16"
       ref={containerRef}
     >
+      <div className="py-4" />
       <div className="grid  lg:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
           <motion.div
