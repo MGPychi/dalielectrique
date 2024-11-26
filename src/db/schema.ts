@@ -67,10 +67,8 @@ export const productCategories = pgTable("product_categories", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  // imageUrl: text("image_url").notNull(),
+  imageUrl: text("image_url").notNull(),
   slug: text("slug").unique().notNull(),
-  isActive: boolean("is_active").default(true).notNull(),
-  isFeatured: boolean("is_featured").default(false).notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
     .notNull()
@@ -106,26 +104,11 @@ export const productImage = pgTable("product_image", {
     .$onUpdate(() => new Date()),
 });
 
-// Category Image Table
-export const categoryImage = pgTable("category_image", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  categoryId: uuid("category_id")
-    .notNull()
-    .references(() => productCategories.id, { onDelete: "cascade" }),
-  cloudId: text("cloud_id").notNull(),
-  url: text("url").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .$onUpdate(() => new Date()),
-});
-
 // Relations
 export const productCategoriesRelations = relations(
   productCategories,
   ({ many }) => ({
     products: many(products),
-    images: many(categoryImage),
   })
 );
 
@@ -141,13 +124,6 @@ export const productImageRelations = relations(productImage, ({ one }) => ({
   product: one(products, {
     fields: [productImage.productId],
     references: [products.id],
-  }),
-}));
-
-export const categoryImageRelations = relations(categoryImage, ({ one }) => ({
-  category: one(productCategories, {
-    fields: [categoryImage.categoryId],
-    references: [productCategories.id],
   }),
 }));
 

@@ -26,12 +26,9 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 // import { useToast } from "@/hooks/use-toast";
-import { Check, MoreHorizontalIcon, X } from "lucide-react";
+import { MoreHorizontalIcon } from "lucide-react";
 import { useState } from "react";
-import {
-  deleteProductCategory,
-  toggleProductCategoryActivation,
-} from "../actions";
+import { deleteProductCategory } from "../actions";
 import CreateCategoryModal from "@/components/modals/CreateCategoryModal";
 import { useRouter } from "next/navigation";
 import UpdateCategoryModal from "@/components/modals/UpdateCategoryModal";
@@ -96,8 +93,6 @@ export default function AdminCategorysTable({
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>active</TableHead>
-              <TableHead>featured</TableHead>
               <TableHead>Created at</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -132,20 +127,6 @@ const TableItem = ({ category }: TableItemProps) => {
           {category.name.slice(0, 20)}
           {category.name.length > 20 && "..."}
         </TableCell>
-        <TableCell>
-          {category.isActive ? (
-            <Check className="w-5 h-5" />
-          ) : (
-            <X className="w-5 h-5" />
-          )}
-        </TableCell>
-        <TableCell>
-          {category.isFeatured ? (
-            <Check className="w-5 h-5" />
-          ) : (
-            <X className="w-5 h-5" />
-          )}
-        </TableCell>
         <TableCell>{category.createdAt?.toLocaleDateString()}</TableCell>
         <TableCell onClick={(e) => e.stopPropagation()}>
           <CategoryActionsMenu category={category} />
@@ -176,22 +157,6 @@ export const CategoryActionsMenu = ({ category }: CategoryActionsMenuProps) => {
       });
     }
   };
-  const toggleCategoryActivationHandler = async () => {
-    const result = await toggleProductCategoryActivation({
-      id: category.id,
-      value: !category.isActive,
-    });
-    if (result?.data?.success) {
-      toast({
-        title: `Category ${category.isActive ? "deactivated" : "activated"}`,
-      });
-    } else {
-      toast({
-        title: `Failed to ${category.isActive ? "activate" : "deactivate"} category`,
-        variant: "destructive",
-      });
-    }
-  };
 
   return (
     <DropdownMenu>
@@ -201,16 +166,6 @@ export const CategoryActionsMenu = ({ category }: CategoryActionsMenuProps) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-32">
-        <DropdownMenuItem>
-          <Button
-            className="w-full"
-            variant="default"
-            size="sm"
-            onClick={toggleCategoryActivationHandler}
-          >
-            {category.isActive ? "Deactivate" : "Activate"}
-          </Button>
-        </DropdownMenuItem>
         <DropdownMenuItem>
           <Button
             className="w-full"

@@ -7,11 +7,7 @@ import { cache } from "react";
 import { z } from "zod";
 
 interface CategoriesResponse {
-  data: Array<
-    z.infer<typeof selectProductCategorySchema> & {
-      images: { url: string; cloudId: string }[];
-    }
-  >;
+  data: Array<z.infer<typeof selectProductCategorySchema>>;
   hasNext: boolean;
   hasPrev: boolean;
   count: number;
@@ -28,13 +24,6 @@ interface GetCategoriesParams {
 export const getAllFeaturedActiveCategories = unstable_cache(
   async (limit?: number) => {
     return await db.query.productCategories.findMany({
-      where: and(
-        eq(productCategories.isActive, true),
-        eq(productCategories.isFeatured, true)
-      ),
-      with: {
-        images: true,
-      },
       limit,
     });
   },
@@ -47,12 +36,7 @@ export const getAllFeaturedActiveCategories = unstable_cache(
 // Get all active categories
 export const getAllActiveCategories = unstable_cache(
   async () => {
-    return await db.query.productCategories.findMany({
-      where: eq(productCategories.isActive, true),
-      with: {
-        images: true,
-      },
-    });
+    return await db.query.productCategories.findMany({});
   },
   ["active_product_categories"],
   {
@@ -63,11 +47,7 @@ export const getAllActiveCategories = unstable_cache(
 // Get all categories
 export const getAllCategories = unstable_cache(
   async () => {
-    return await db.query.productCategories.findMany({
-      with: {
-        images: true,
-      },
-    });
+    return await db.query.productCategories.findMany({});
   },
   ["product_categories"],
   {
@@ -81,12 +61,6 @@ export const getCategoryDetailWithSlug = unstable_cache(
     const decodedSlug = decodeURIComponent(slug);
     return await db.query.productCategories.findFirst({
       where: eq(productCategories.slug, decodedSlug),
-      with: {
-        images: true,
-        products: {
-          where: eq(productCategories.isActive, true),
-        },
-      },
     });
   },
   ["product_category_details"],
@@ -95,29 +69,19 @@ export const getCategoryDetailWithSlug = unstable_cache(
 
 // Get paginated categories with optional search
 export const getCategories = cache(
-  async ({
-    page,
-    q,
-    isActive,
-  }: GetCategoriesParams): Promise<CategoriesResponse> => {
+  async ({ page, q }: GetCategoriesParams): Promise<CategoriesResponse> => {
     const categoriesQuery = db.query.productCategories.findMany({
       where: and(
         q
           ? sql`${productCategories.name} LIKE ${`%${q}%`} OR ${productCategories.description} LIKE ${`%${q}%`}`
-          : undefined,
-        isActive != undefined
-          ? sql`${productCategories.isActive}=${`${isActive}`}`
           : undefined
       ),
       limit: PAGE_SIZE,
       offset: (page - 1) * PAGE_SIZE,
-      with: {
-        images: true,
-      },
     });
 
     const result = await categoriesQuery;
-    const totalCount = await getTotalCategoriesCount({ q, isActive });
+    const totalCount = await getTotalCategoriesCount({ q });
     const pageCount = Math.ceil(totalCount / PAGE_SIZE);
 
     return {
@@ -145,8 +109,8 @@ export const getCategoriesCountToday = cache(async () => {
 
 // Get total count of all categories
 export const getTotalCategoriesCount = cache(
-  async (params?: { q?: string; isActive?: boolean }) => {
-    const { q, isActive } = params || {};
+  async (params?: { q?: string }) => {
+    const { q } = params || {};
 
     const result = await db
       .select({ count: sql`count(*)` })
@@ -155,9 +119,6 @@ export const getTotalCategoriesCount = cache(
         and(
           q
             ? sql`${productCategories.name} LIKE ${`%${q}%`} OR ${productCategories.description} LIKE ${`%${q}%`}`
-            : undefined,
-          isActive != undefined
-            ? sql`${productCategories.isActive}=${`${isActive}`}`
             : undefined
         )
       );

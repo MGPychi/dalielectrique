@@ -1,5 +1,5 @@
 "use server";
-import { productCategories, categoryImage } from "@/db/schema";
+import { productCategories } from "@/db/schema";
 import { generateCloudinarySignature } from "@/lib/cloudinary";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
 import { eq } from "drizzle-orm";
@@ -13,7 +13,7 @@ export async function generateUploadSignature() {
   const signature = generateCloudinarySignature(
     {
       timestamp: timestamp,
-      folder: "product_categories", // Adjusted folder name
+      folder: "product_categories",
     },
     process.env.CLOUDINARY_API_SECRET!
   );
@@ -30,16 +30,7 @@ const updateProductCategorySchema = zfd.formData({
   id: zfd.text(),
   name: zfd.text(),
   description: zfd.text(),
-  isActive: zfd
-    .text()
-    .optional()
-    .transform((val) => val === "true"),
-  isFeatured: zfd
-    .text()
-    .optional()
-    .transform((val) => val === "true"),
   imageUrls: zfd.text().transform((val) => JSON.parse(val)),
-  cloudIds: zfd.text().transform((val) => JSON.parse(val)),
 });
 
 export const updateProductCategory = protectedActionClient
@@ -50,6 +41,7 @@ export const updateProductCategory = protectedActionClient
       const result = await ctx.db.transaction(async (tx) => {
         // Generate new slug if name changes
         const slug = slugify(parsedInput.name);
+        const imageUrl = parsedInput.imageUrls[0] as string;
 
         // 1. Update product category details
         await tx
@@ -57,33 +49,10 @@ export const updateProductCategory = protectedActionClient
           .set({
             name: parsedInput.name,
             description: parsedInput.description,
+            imageUrl,
             slug,
-            ...(parsedInput.isActive !== undefined && {
-              isActive: parsedInput.isActive,
-            }),
-            ...(parsedInput.isFeatured !== undefined && {
-              isFeatured: parsedInput.isFeatured,
-            }),
           })
           .where(eq(productCategories.id, parsedInput.id));
-
-        // 2. Delete all existing category images from the database
-        await tx
-          .delete(categoryImage)
-          .where(eq(categoryImage.categoryId, parsedInput.id));
-
-        // 3. Insert new image records
-        if (parsedInput.imageUrls.length > 0) {
-          const imageRecords = parsedInput.imageUrls.map(
-            (url: string, index: number) => ({
-              categoryId: parsedInput.id,
-              url: url,
-              cloudId: parsedInput.cloudIds[index],
-            })
-          );
-
-          await tx.insert(categoryImage).values(imageRecords);
-        }
 
         return true;
       });
@@ -99,58 +68,6 @@ export const updateProductCategory = protectedActionClient
       return { success: true };
     } catch (err) {
       console.error("Error updating product category:", err);
-      return {
-        success: false,
-        error: err instanceof Error ? err.message : "Unknown error",
-      };
-    }
-  });
-
-const createProductCategorySchema = zfd.formData({
-  description: zfd.text(),
-  name: zfd.text(),
-  isActive: zfd.text().optional(),
-  isFeatured: zfd.text().optional(),
-  imageUrls: zfd.text().optional(), // For storing Cloudinary URLs
-  cloudIds: zfd.text().optional(), // For storing Cloudinary IDs
-});
-
-export const createProductCategory = actionClient
-  .schema(createProductCategorySchema)
-  .action(async ({ ctx, parsedInput }) => {
-    try {
-      const slug = slugify(parsedInput.name);
-      const [newProductCategory] = await ctx.db
-        .insert(productCategories)
-        .values({
-          description: parsedInput.description,
-          slug,
-          name: parsedInput.name,
-          isActive: parsedInput.isActive === "true",
-          isFeatured: parsedInput.isFeatured === "true",
-        })
-        .returning({ id: productCategories.id });
-
-      // Save Cloudinary URLs and IDs that were uploaded client-side
-      const imageUrls = JSON.parse(parsedInput.imageUrls || "[]");
-      const cloudIds = JSON.parse(parsedInput.cloudIds || "[]");
-
-      await Promise.all(
-        imageUrls.map((url: string, index: number) =>
-          ctx.db.insert(categoryImage).values({
-            categoryId: newProductCategory.id,
-            cloudId: cloudIds[index],
-            url: url,
-          })
-        )
-      );
-
-      revalidatePath("/admin/dashboard/product-categories");
-      revalidateTag("featured_product_categories");
-      revalidatePath("/");
-      return { success: true };
-    } catch (err) {
-      console.error("Error creating product category:", err);
       return {
         success: false,
         error: err instanceof Error ? err.message : "Unknown error",
@@ -177,21 +94,35 @@ export const deleteProductCategory = protectedActionClient
     }
   });
 
-export const toggleProductCategoryActivation = protectedActionClient
-  .schema(z.object({ id: z.string(), value: z.boolean() }))
+const createProductCategorySchema = zfd.formData({
+  description: zfd.text(),
+  name: zfd.text(),
+  imageUrls: zfd.text().transform((val) => JSON.parse(val)),
+});
+
+export const createProductCategory = actionClient
+  .schema(createProductCategorySchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
+      const imageUrls = parsedInput.imageUrls || [];
+      const slug = slugify(parsedInput.name);
+      const imageUrl = imageUrls[0] || ""; // Take the first image URL or empty string
+
       await ctx.db
-        .update(productCategories)
-        .set({
-          isActive: parsedInput.value,
+        .insert(productCategories)
+        .values({
+          description: parsedInput.description,
+          imageUrl,
+          slug,
+          name: parsedInput.name,
         })
-        .where(eq(productCategories.id, parsedInput.id));
+        .returning({ id: productCategories.id });
 
       revalidatePath("/admin/dashboard/product-categories");
+      revalidatePath("/");
       return { success: true };
     } catch (err) {
-      console.error("Error toggling product category activation:", err);
+      console.error("Error creating product category:", err);
       return {
         success: false,
         error: err instanceof Error ? err.message : "Unknown error",

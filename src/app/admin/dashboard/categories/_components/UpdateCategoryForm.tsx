@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,25 +17,19 @@ import { updateProductCategory, generateUploadSignature } from "../actions";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
-import { Switch } from "@/components/ui/switch";
+import { MAX_FILE_SIZE } from "@/constants";
 
 const MAX_CHARS = 2000;
 
 const formSchema = z.object({
   id: z.string(),
   name: z.string().min(1, "Name is required"),
-  isFeatured: z.boolean(),
-  isActive: z.boolean(),
   description: z
     .string()
     .min(1, "Description is required")
     .min(50)
     .max(MAX_CHARS),
-  images: z
-    .array(z.any())
-    .min(1, "At least one image is required")
-    .max(MAX_FILES, `Maximum ${MAX_FILES} images allowed`),
+  image: z.instanceof(File).optional().nullable(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -48,81 +41,72 @@ type ImagePreview = {
   isExisting?: boolean;
 };
 
-const UpdateCategoryForm = ({ initialData }: { initialData: FormValues }) => {
+const UpdateCategoryForm = ({
+  initialData,
+}: {
+  initialData: FormValues & { imageUrl?: string };
+}) => {
   const { toast } = useToast();
-  const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>(
-    initialData.images.map((img) => ({
-      ...img,
-      isExisting: true,
-    }))
+  const [imagePreview, setImagePreview] = useState<ImagePreview | null>(
+    initialData.imageUrl
+      ? {
+          id: "existing-image",
+          url: initialData.imageUrl,
+          isExisting: true,
+        }
+      : null
   );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      ...initialData,
+      image: null,
+    },
   });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-    if (imagePreviews.length + files.length > MAX_FILES) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
       toast({
-        title: "Too many files",
-        description: `Maximum ${MAX_FILES} images allowed`,
+        title: "Invalid file type",
+        description: `${file.name} is not an image file`,
         variant: "destructive",
       });
       return;
     }
 
-    const validFiles = files.filter((file) => {
-      if (!file.type.startsWith("image/")) {
-        toast({
-          title: "Invalid file type",
-          description: `${file.name} is not an image file`,
-          variant: "destructive",
-        });
-        return false;
-      }
-
-      if (file.size > MAX_FILE_SIZE) {
-        toast({
-          title: "File too large",
-          description: `${file.name} is larger than 10MB`,
-          variant: "destructive",
-        });
-        return false;
-      }
-
-      return true;
-    });
-
-    if (validFiles.length === 0) return;
-
-    const newPreviews = validFiles.map((file) => {
-      return new Promise<ImagePreview>((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          resolve({
-            id: Math.random().toString(36).substring(7),
-            url: reader.result as string,
-            file: file,
-          });
-        };
-        reader.readAsDataURL(file);
+    // Validate file size
+    if (file.size > MAX_FILE_SIZE) {
+      toast({
+        title: "File too large",
+        description: `${file.name} is larger than 10MB`,
+        variant: "destructive",
       });
-    });
+      return;
+    }
 
-    Promise.all(newPreviews).then((previews) => {
-      setImagePreviews((prev) => [...prev, ...previews]);
-      form.setValue("images", [...imagePreviews, ...previews]);
-    });
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const preview = {
+        id: Math.random().toString(36).substring(7),
+        url: reader.result as string,
+        file: file,
+      };
+      setImagePreview(preview);
+      form.setValue("image", file);
+    };
+    reader.readAsDataURL(file);
   };
 
-  const removeImage = (id: string) => {
-    setImagePreviews((prev) => prev.filter((p) => p.id !== id));
-    form.setValue(
-      "images",
-      imagePreviews.filter((p) => p.id !== id)
-    );
+  const removeImage = () => {
+    setImagePreview(null);
+    form.setValue("image", null);
   };
 
   const uploadToCloudinary = async (file: File) => {
@@ -135,7 +119,7 @@ const UpdateCategoryForm = ({ initialData }: { initialData: FormValues }) => {
       formData.append("signature", signature);
       formData.append("timestamp", timestamp.toString());
       formData.append("api_key", apiKey.toString());
-      formData.append("folder", "categorys");
+      formData.append("folder", "product_categories");
 
       const uploadResponse = await fetch(
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
@@ -158,34 +142,21 @@ const UpdateCategoryForm = ({ initialData }: { initialData: FormValues }) => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      // Upload new images to Cloudinary
-      const uploadPromises = imagePreviews
-        .filter((preview) => !preview.isExisting && preview.file)
-        .map((preview) => uploadToCloudinary(preview.file!));
+      let imageUrl = imagePreview?.isExisting ? imagePreview.url : "";
 
-      const uploadedImages = await Promise.all(uploadPromises);
-
-      // Combine existing and new images
-      const allImages = [
-        ...imagePreviews.filter((preview) => preview.isExisting),
-        ...uploadedImages,
-      ];
+      // Upload new image to Cloudinary if exists
+      if (imagePreview?.file) {
+        const uploadedImage = await uploadToCloudinary(imagePreview.file);
+        imageUrl = uploadedImage.url;
+      }
 
       const formData = new FormData();
       formData.append("id", data.id);
       formData.append("name", data.name);
       formData.append("description", data.description);
-      formData.append("isActive", String(data.isActive));
-      formData.append("isFeatured", String(data.isFeatured));
-      formData.append(
-        "imageUrls",
-        JSON.stringify(allImages.map((img) => img.url))
-      );
-      formData.append(
-        "cloudIds",
-        JSON.stringify(allImages.map((img) => img.url))
-      );
+      formData.append("imageUrls", JSON.stringify([imageUrl]));
 
+      console.log(formData);
       const response = await updateProductCategory(formData);
 
       if (response?.data?.success) {
@@ -248,87 +219,37 @@ const UpdateCategoryForm = ({ initialData }: { initialData: FormValues }) => {
             )}
           />
 
-          <div className="flex flex-col space-y-4">
-            <FormField
-              control={form.control}
-              name="isActive"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Active Status</FormLabel>
-                    <FormDescription>
-                      Make this category visible to customers
-                    </FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="isFeatured"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">
-                      Featured Category
-                    </FormLabel>
-                    <FormDescription>
-                      Show this category in featured sections
-                    </FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-
           <FormField
             control={form.control}
-            name="images"
+            name="image"
             render={({ field }) => {
               const { value, onChange, ...restField } = field;
               void value;
               void onChange;
               return (
                 <FormItem>
-                  <FormLabel>Category Images</FormLabel>
+                  <FormLabel>Category Image</FormLabel>
                   <FormControl>
                     <Card className="border-2 border-dashed">
                       <CardContent className="flex flex-col items-center justify-center p-6 space-y-4">
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-                          {imagePreviews.map((preview) => (
-                            <div key={preview.id} className="relative">
-                              <img
-                                src={preview.url}
-                                alt="Preview"
-                                className="w-full h-32 object-cover rounded-md"
-                              />
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                size="icon"
-                                className="absolute top-2 right-2 h-6 w-6"
-                                onClick={() => removeImage(preview.id)}
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          ))}
-                        </div>
-
-                        {imagePreviews.length < MAX_FILES && (
+                        {imagePreview ? (
+                          <div className="relative">
+                            <img
+                              src={imagePreview.url}
+                              alt="Preview"
+                              className="w-full h-64 object-cover rounded-md"
+                            />
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="icon"
+                              className="absolute top-2 right-2 h-6 w-6"
+                              onClick={removeImage}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ) : (
                           <>
                             <Upload className="w-8 h-8 text-gray-400" />
                             <div className="text-center">
@@ -341,11 +262,11 @@ const UpdateCategoryForm = ({ initialData }: { initialData: FormValues }) => {
                                     ?.click();
                                 }}
                               >
-                                Choose Images
+                                Choose Image
                               </Button>
                             </div>
                             <p className="text-sm text-gray-500">
-                              PNG, JPG up to 10MB (Maximum {MAX_FILES} images)
+                              PNG, JPG up to 10MB
                             </p>
                           </>
                         )}
@@ -354,7 +275,6 @@ const UpdateCategoryForm = ({ initialData }: { initialData: FormValues }) => {
                           id="image-upload"
                           type="file"
                           accept="image/*"
-                          multiple
                           className="hidden"
                           onChange={handleImageChange}
                           {...restField}
