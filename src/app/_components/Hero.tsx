@@ -79,7 +79,7 @@ export default function HeroCarousel() {
       <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pt-4 pb-16">
         <Header />
       </div>
-      {/* <div className="hidden">
+      <div className="hidden">
         {content.map(
           (item, idx) =>
             idx != 0 && (
@@ -94,7 +94,7 @@ export default function HeroCarousel() {
               />
             )
         )}
-      </div> */}
+      </div>
       <AnimatePresence
         initial={true}
         mode="wait"
