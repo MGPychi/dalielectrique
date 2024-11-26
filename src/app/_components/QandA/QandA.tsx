@@ -34,6 +34,7 @@ async function QandA() {
           <motion.div
             variants={anearingAnimation}
             initial={"hidden"}
+            viewport={{ once: true, margin: "-100px" }}
             whileInView={"visible"}
           >
             <SectionsBadge>FAQ</SectionsBadge>
@@ -42,6 +43,7 @@ async function QandA() {
           <motion.h2
             variants={anearingAnimation}
             whileInView={"visible"}
+            viewport={{ once: true, margin: "-100px" }}
             initial={"hidden"}
             className="text-4xl font-bold"
           >
@@ -52,6 +54,7 @@ async function QandA() {
             variants={anearingAnimation}
             whileInView={"visible"}
             initial={"hidden"}
+            viewport={{ once: true, margin: "-100px" }}
             className="text-gray-600 text-lg"
           >
             C&pos;est pourquoi nous avons compilé une liste de questions
@@ -63,6 +66,7 @@ async function QandA() {
             className=""
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 50 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5 }}
           >
             <Link href={"#contact"}>
@@ -83,6 +87,7 @@ async function QandA() {
                 key={index}
                 initial={{ opacity: 0, x: 100 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <AccordionItem

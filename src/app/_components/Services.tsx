@@ -80,6 +80,7 @@ export default function Component() {
         <motion.div
           initial="hidden"
           whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
           variants={containerVariants}
           className="text-center mb-20"
         >
@@ -105,6 +106,7 @@ export default function Component() {
         <motion.div
           initial="hidden"
           whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
           variants={containerVariants}
           className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-8"
         >

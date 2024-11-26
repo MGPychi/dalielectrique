@@ -60,6 +60,7 @@ export default function Composant() {
             className="relative"
             initial={{ scale: 1.5, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <Image
@@ -77,6 +78,7 @@ export default function Composant() {
             <motion.div
               initial={{ scale: 1.5, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
               className="bg-primary flex justify-center items-center text-white p-6 rounded-lg"
             >
@@ -93,6 +95,7 @@ export default function Composant() {
             <motion.div
               initial={{ scale: 1.5, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
             >
               <Image
@@ -119,6 +122,7 @@ export default function Composant() {
           <motion.p
             initial={{ x: 100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-gray-600"
           >
@@ -134,6 +138,7 @@ export default function Composant() {
                 key={index} // Added key prop
                 initial={{ x: 100, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
                 transition={{
                   duration: 0.5,
                   delay: 0.2 * index,
@@ -165,6 +170,7 @@ export default function Composant() {
             className="pt-8"
             initial={{ x: 100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{
               duration: 0.5,
               ease: "easeOut",

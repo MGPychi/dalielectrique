@@ -43,6 +43,7 @@ export default async function VitrineProduitsAnimée() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
         >
           {products.map((product, index) => (
             <motion.div
@@ -50,6 +51,7 @@ export default async function VitrineProduitsAnimée() {
               variants={itemVariants}
               initial="hidden"
               whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: 0.1 * index }}
             >
               <ProductCard key={product.id} product={product} />
@@ -60,6 +62,7 @@ export default async function VitrineProduitsAnimée() {
           className="flex justify-center mt-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ delay: 0.5, duration: 0.5 }}
         >
           <Link href="/products" passHref>

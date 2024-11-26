@@ -24,6 +24,7 @@ export default async function Avis() {
           variants={itemVariants}
           initial="hidden"
           whileInView={"visible"}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5 }}
           className="text-left mb-16"
         >
@@ -51,6 +52,7 @@ export default async function Avis() {
                 variants={itemVariants}
                 initial={"hidden"}
                 whileInView={"visible"}
+                viewport={{ once: true, margin: "-100px" }}
                 transition={{ delay: 0.1 * (idx + 2) }}
                 className="inline-block mr-2"
               >
@@ -61,6 +63,7 @@ export default async function Avis() {
           <motion.p
             initial={"hidden"}
             whileInView={"visible"}
+            viewport={{ once: true, margin: "-100px" }}
             className="text-gray-400 max-w-2xl"
           >
             Nous sommes fiers de fournir des services électriques de première

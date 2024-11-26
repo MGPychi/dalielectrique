@@ -54,6 +54,7 @@ const ContactUsSection = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
             variants={letterAnimation}
           >
             <SectionsBadge>Contactez-Nous</SectionsBadge>
@@ -61,6 +62,7 @@ const ContactUsSection = () => {
           <motion.h1
             initial="hidden"
             whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
             variants={letterAnimation}
             className="text-5xl font-bold mb-4"
           >
@@ -69,6 +71,7 @@ const ContactUsSection = () => {
           <motion.h2
             initial="hidden"
             whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
             variants={letterAnimation}
             className="text-4xl font-semibold mb-6"
           >
@@ -78,6 +81,7 @@ const ContactUsSection = () => {
             className="mb-8 text-muted-foreground"
             initial="hidden"
             whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
             variants={letterAnimation}
           >
             Vous avez des questions ou êtes prêt à commencer avec nos services
@@ -91,6 +95,7 @@ const ContactUsSection = () => {
                 custom={index}
                 initial="hidden"
                 whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
                 variants={letterAnimation}
               >
                 <ContactUsInfo
@@ -106,6 +111,7 @@ const ContactUsSection = () => {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          viewport={{ once: true, margin: "-100px" }}
           className="lg:w-1/2 flex bg-gray-50 shadow px-4 flex-col justify-end py-14 rounded-md"
         >
           <ContactUsForm />

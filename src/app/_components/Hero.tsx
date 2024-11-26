@@ -90,7 +90,7 @@ export default function HeroCarousel() {
                 className="hidden"
                 blurDataURL=""
                 quality={1}
-                // priority
+                priority
               />
             )
         )}

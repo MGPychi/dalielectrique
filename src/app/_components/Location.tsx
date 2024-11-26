@@ -71,6 +71,7 @@ export default function Location() {
     <motion.section
       initial="hidden"
       whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
       className="relative  md:px-0  min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16 lg:py-24"
     >
       <motion.div
@@ -78,6 +79,7 @@ export default function Location() {
         whileInView={{
           backgroundPosition: ["0px 0px", "40px 40px"],
         }}
+        viewport={{ once: true, margin: "-100px" }}
         transition={{
           duration: 20,
           repeat: Infinity,
@@ -110,10 +112,12 @@ export default function Location() {
                   <h2 className="text-2xl font-semibold text-white">
                     Contact Information
                   </h2>
+
                   <motion.div
                     whileInView={{
                       scale: isOpen ? [1, 1.1, 1] : 1,
                     }}
+                    viewport={{ once: true, margin: "-100px" }}
                     transition={{
                       duration: 0.5,
                       times: [0, 0.5, 1],
@@ -195,6 +199,7 @@ export default function Location() {
                     className="absolute bottom-6 left-6 right-6"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     transition={{ delay: 0.5 }}
                   >
                     <div className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/10">
