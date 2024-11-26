@@ -1,6 +1,6 @@
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
-import { products, selectProductsSchema } from "@/db/schema";
+import { products, selectProductSchema } from "@/db/schema";
 import { and, eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
@@ -8,7 +8,7 @@ import { z } from "zod";
 
 interface ProductsResponse {
   data: Array<
-    z.infer<typeof selectProductsSchema> & {
+    z.infer<typeof selectProductSchema> & {
       images: { url: string; cloudId: string }[];
     }
   >;

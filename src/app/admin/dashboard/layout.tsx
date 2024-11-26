@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import {
   Contact,
   ShoppingBasket,
+  ALargeSmall,
   HelpCircleIcon,
   Home,
   Text,
@@ -33,6 +34,12 @@ const paths: IPath[] = [
     name: "users",
     icon: <Users className="h-5 w-5" />,
     href: "/admin/dashboard/users",
+  },
+
+  {
+    name: "Categories",
+    icon: <ALargeSmall className="h-5 w-5" />,
+    href: "/admin/dashboard/products",
   },
   {
     name: "products",
