@@ -1,3 +1,4 @@
+"use server";
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
 import { productCategories, selectProductCategorySchema } from "@/db/schema";

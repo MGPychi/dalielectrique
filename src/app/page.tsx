@@ -2,7 +2,7 @@ import Footer from "@/components/layout/Footer";
 import Hero from "./_components/Hero";
 import Services from "./_components/Services";
 import AboutUs from "./_components/AboutUs";
-import MainProducts from "./_components/MainProducts";
+import MainProducts from "./_components/CategoriesSection";
 import Location from "./_components/Location";
 import WhyChooseUs from "./_components/WhyUs";
 import Reviews from "./_components/Reviews/Reviews";

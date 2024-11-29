@@ -4,6 +4,7 @@ import { products, selectProductSchema } from "@/db/schema";
 import { and, eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
+import slugify from "slugify";
 import { z } from "zod";
 
 interface ProductsResponse {
@@ -22,6 +23,7 @@ interface GetProductsParams {
   page: number;
   q?: string;
   isActive?: boolean;
+  category?: string;
 }
 
 // Get all featured and active products with their images
@@ -89,9 +91,15 @@ export const getProducts = cache(
     page,
     q,
     isActive,
+    category,
   }: GetProductsParams): Promise<ProductsResponse> => {
+    const sluggedCategory = slugify(category ?? "");
+    const foundCategory = await db.query.productCategories.findFirst({
+      where: eq(products.slug, sluggedCategory),
+    });
     const productsQuery = db.query.products.findMany({
       where: and(
+        foundCategory ? eq(products.categoryId, foundCategory.id) : undefined,
         q
           ? sql`${products.name} LIKE ${`%${q}%`} OR ${products.description} LIKE ${`%${q}%`}`
           : undefined,

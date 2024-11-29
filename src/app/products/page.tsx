@@ -7,17 +7,17 @@ import { PagePaginator } from "@/components/PagePaginator";
 // import Link from "next/link";
 import ProductSearchBar from "./_components/ProductSearchBar";
 
-const ProductsPage = async (
-  props: {
-    searchParams?: Promise<{ [key: string]: string | string[] }>;
-  }
-) => {
+const ProductsPage = async (props: {
+  searchParams?: Promise<{ [key: string]: string | string[] }>;
+}) => {
   const searchParams = await props.searchParams;
   const page = (searchParams?.page as string) || "1";
   const q = searchParams?.search as string;
+  const category = searchParams?.category as string;
   const { data, count, hasNext, hasPrev, pageCount } = await getProducts({
     page: parseInt(page),
     isActive: true,
+    category,
     q,
   });
   return (
