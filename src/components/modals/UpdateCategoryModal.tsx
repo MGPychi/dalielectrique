@@ -1,3 +1,4 @@
+"use client";
 import UpdateCategoryForm from "@/app/admin/dashboard/categories/_components/UpdateCategoryForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { getCategories } from "@/app/data/categories-data";

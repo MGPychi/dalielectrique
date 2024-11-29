@@ -15,7 +15,7 @@ export const createQandA = actionClient
         ...parsedInput,
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
 
@@ -33,7 +33,7 @@ export const deleteQandA = protectedActionClient
     try {
       await ctx.db.delete(QandA).where(eq(QandA.id, parsedInput.id));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
 

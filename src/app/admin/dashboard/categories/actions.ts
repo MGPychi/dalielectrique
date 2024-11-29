@@ -62,7 +62,8 @@ export const updateProductCategory = protectedActionClient
       }
 
       // Revalidate the path to reflect the updated data
-      revalidatePath("/admin/dashboard/product-categories");
+      revalidatePath("/admin/dashboard/categories");
+      revalidatePath("/admin/dashboard/products");
       revalidateTag("featured_product_categories");
       revalidatePath("/");
       return { success: true };
@@ -83,7 +84,9 @@ export const deleteProductCategory = protectedActionClient
         .delete(productCategories)
         .where(eq(productCategories.id, parsedInput.id));
 
-      revalidatePath("/admin/dashboard/product-categories");
+      revalidatePath("/admin/dashboard/categories");
+      revalidatePath("/admin/dashboard/products");
+      revalidateTag("featured_product_categories");
       return { success: true };
     } catch (err) {
       console.error("Error deleting product category:", err);

@@ -16,7 +16,7 @@ export const createUser = actionClient
         password: hashed,
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
 
@@ -35,7 +35,7 @@ export const deleteUser = protectedActionClient
         .delete(users)
         .where(and(eq(users.id, parsedInput.id), ne(users.role, "superAdmin")));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
     revalidatePath("/admin/dashboard/users");

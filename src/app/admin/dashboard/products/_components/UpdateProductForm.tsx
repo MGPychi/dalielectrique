@@ -20,6 +20,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
 import { Switch } from "@/components/ui/switch";
+import { getAllCategories } from "@/app/data/categories-data";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const MAX_CHARS = 2000;
 
@@ -37,6 +45,7 @@ const formSchema = z.object({
     .array(z.any())
     .min(1, "At least one image is required")
     .max(MAX_FILES, `Maximum ${MAX_FILES} images allowed`),
+  category: z.string().min(1, "Category is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -48,7 +57,15 @@ type ImagePreview = {
   isExisting?: boolean;
 };
 
-const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
+const UpdateProductForm = ({
+  initialData,
+  categories,
+}: {
+  initialData: Omit<FormValues, "category"> & {
+    category: { name: string; id: string };
+  };
+  categories: Awaited<ReturnType<typeof getAllCategories>>;
+}) => {
   const { toast } = useToast();
   const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>(
     initialData.images.map((img) => ({
@@ -59,7 +76,10 @@ const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      ...initialData,
+      category: initialData.category.id,
+    },
   });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -177,6 +197,7 @@ const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
       formData.append("description", data.description);
       formData.append("isActive", String(data.isActive));
       formData.append("isFeatured", String(data.isFeatured));
+      formData.append("category", data.category);
       formData.append(
         "imageUrls",
         JSON.stringify(allImages.map((img) => img.url))
@@ -243,6 +264,34 @@ const UpdateProductForm = ({ initialData }: { initialData: FormValues }) => {
                     {form.getValues("description").length}/{MAX_CHARS}
                   </span>
                 </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={initialData.category.name}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

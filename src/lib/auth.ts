@@ -61,7 +61,7 @@ export const authConfig: NextAuthConfig = {
             role: user.role,
           };
         } catch (err) {
-          console.log("Error in auth.ts ", err);
+          console.error("Error in auth.ts ", err);
           return null;
         }
       },

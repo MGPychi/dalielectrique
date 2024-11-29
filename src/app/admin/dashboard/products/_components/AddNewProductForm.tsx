@@ -21,8 +21,15 @@ import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MAX_FILES, MAX_FILE_SIZE } from "@/constants";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { getAllCategories } from "@/app/data/categories-data";
 
-// Form schema remains the same
 const MAX_CHARS = 2000;
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -39,6 +46,7 @@ const formSchema = z.object({
     .nullable(),
   isFeatured: z.boolean(),
   isActive: z.boolean(),
+  category: z.string().min(1, "Category is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -55,9 +63,14 @@ const initialValues: FormValues = {
   images: [],
   isActive: true,
   isFeatured: false,
+  category: "",
 };
 
-const AddNewProductForm = () => {
+const AddNewProductForm = ({
+  categories,
+}: {
+  categories: Awaited<ReturnType<typeof getAllCategories>>;
+}) => {
   const { toast } = useToast();
   const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
 
@@ -66,7 +79,6 @@ const AddNewProductForm = () => {
     defaultValues: initialValues,
   });
 
-  // Previous handlers remain the same
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
 
@@ -133,13 +145,12 @@ const AddNewProductForm = () => {
       imagePreviews.filter((p) => p.id !== id).map((p) => p.file)
     );
   };
+
   const uploadToCloudinary = async (file: File) => {
     try {
-      // Get upload signature from our API
       const { signature, timestamp, apiKey, cloudName } =
         await generateUploadSignature();
 
-      // Prepare form data for Cloudinary
       const formData = new FormData();
       formData.append("file", file);
       formData.append("signature", signature);
@@ -147,7 +158,6 @@ const AddNewProductForm = () => {
       formData.append("api_key", apiKey.toString());
       formData.append("folder", "products");
 
-      // Upload directly to Cloudinary
       const uploadResponse = await fetch(
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         {
@@ -169,7 +179,6 @@ const AddNewProductForm = () => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      // Upload all images to Cloudinary first
       const uploadPromises = imagePreviews.map((preview) =>
         uploadToCloudinary(preview.file)
       );
@@ -181,8 +190,7 @@ const AddNewProductForm = () => {
       formData.append("description", data.description);
       formData.append("isActive", String(data.isActive));
       formData.append("isFeatured", String(data.isFeatured));
-
-      // Add the Cloudinary URLs and IDs to the form data
+      formData.append("category", data.category);
       formData.append(
         "imageUrls",
         JSON.stringify(uploadedImages.map((img) => img.url))
@@ -251,6 +259,34 @@ const AddNewProductForm = () => {
                     {form.getValues("description").length}/{MAX_CHARS}
                   </span>
                 </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

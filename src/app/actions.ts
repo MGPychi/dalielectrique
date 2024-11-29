@@ -9,12 +9,11 @@ export const createContact = actionClient
   .schema(insertContactSchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
-      console.log(parsedInput);
       await ctx.db.insert(contacts).values({
         ...parsedInput,
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
     return {
@@ -28,7 +27,7 @@ export const deleteContact = protectedActionClient
     try {
       await ctx.db.delete(contacts).where(eq(contacts.id, parsedInput.id));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
     revalidatePath("/admin/dashboard/contacts");

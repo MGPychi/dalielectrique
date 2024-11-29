@@ -156,7 +156,6 @@ const UpdateCategoryForm = ({
       formData.append("description", data.description);
       formData.append("imageUrls", JSON.stringify([imageUrl]));
 
-      console.log(formData);
       const response = await updateProductCategory(formData);
 
       if (response?.data?.success) {

@@ -1,14 +1,21 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import UpdateProductForm from "@/app/admin/dashboard/products/_components/UpdateProductForm";
+import { getAllCategories } from "@/app/data/categories-data";
 import { getProducts } from "@/app/data/products-data";
 
 interface Props {
   product: Awaited<ReturnType<typeof getProducts>>["data"][0];
   open: boolean;
   closeModal: () => void;
+  categories: Awaited<ReturnType<typeof getAllCategories>>;
 }
 
-const UpdateProductModal = ({ product, closeModal, open }: Props) => {
+const UpdateProductModal = ({
+  product,
+  categories,
+  closeModal,
+  open,
+}: Props) => {
   return (
     <>
       <Dialog open={open} onOpenChange={closeModal}>
@@ -16,7 +23,16 @@ const UpdateProductModal = ({ product, closeModal, open }: Props) => {
           <DialogHeader>
             <DialogTitle>Update Product</DialogTitle>
           </DialogHeader>
-          <UpdateProductForm initialData={product} />
+          <UpdateProductForm
+            categories={categories}
+            initialData={{
+              ...product,
+              category: {
+                id: product.category?.id ?? "",
+                name: product.category?.name ?? "",
+              },
+            }}
+          />
         </DialogContent>
       </Dialog>
     </>

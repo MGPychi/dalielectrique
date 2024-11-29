@@ -1,23 +1,23 @@
 import { PAGE_SIZE } from "@/constants";
 import { db } from "@/db";
-import { products, selectProductSchema } from "@/db/schema";
+import { products } from "@/db/schema";
 import { and, eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 import slugify from "slugify";
-import { z } from "zod";
+// import { z } from "zod";
 
-interface ProductsResponse {
-  data: Array<
-    z.infer<typeof selectProductSchema> & {
-      images: { url: string; cloudId: string }[];
-    }
-  >;
-  hasNext: boolean;
-  hasPrev: boolean;
-  count: number;
-  pageCount: number;
-}
+// interface ProductsResponse {
+//   data: Array<
+//     z.infer<typeof selectProductSchema> & {
+//       images: { url: string; cloudId: string }[];
+//     }
+//   >;
+//   hasNext: boolean;
+//   hasPrev: boolean;
+//   count: number;
+//   pageCount: number;
+// }
 
 interface GetProductsParams {
   page: number;
@@ -87,12 +87,7 @@ export const getProductDetailWithSlug = unstable_cache(
 );
 // Get paginated products with optional search
 export const getProducts = cache(
-  async ({
-    page,
-    q,
-    isActive,
-    category,
-  }: GetProductsParams): Promise<ProductsResponse> => {
+  async ({ page, q, isActive, category }: GetProductsParams) => {
     const sluggedCategory = slugify(category ?? "");
     const foundCategory = await db.query.productCategories.findFirst({
       where: eq(products.slug, sluggedCategory),
@@ -111,6 +106,7 @@ export const getProducts = cache(
       offset: (page - 1) * PAGE_SIZE,
       with: {
         images: true,
+        category: true,
       },
     });
 
@@ -132,21 +128,6 @@ export const getProducts = cache(
     };
   }
 );
-
-// Get count of products created today
-export const getReviewCountToday = cache(async () => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const result = await db.query.products.findMany({
-    where: sql`${products.createdAt} >= ${today}`,
-    columns: {
-      id: true,
-    },
-  });
-
-  return result.length;
-});
 
 // Get total count of all products
 export const getTotalProductsCount = cache(async () => {

@@ -1,10 +1,16 @@
+"use client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
 import AddNewProductForm from "@/app/admin/dashboard/products/_components/AddNewProductForm";
+import { getAllCategories } from "@/app/data/categories-data";
 
-const CreateProductModal: React.FC = () => {
+const CreateProductModal = ({
+  categories,
+}: {
+  categories: Awaited<ReturnType<typeof getAllCategories>>;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
 
@@ -20,7 +26,7 @@ const CreateProductModal: React.FC = () => {
             {/* <DialogDescription>
               this admin product will be able to manage the admin page
             </DialogDescription> */}
-            <AddNewProductForm />
+            <AddNewProductForm categories={categories} />
           </DialogHeader>
         </DialogContent>
       </Dialog>

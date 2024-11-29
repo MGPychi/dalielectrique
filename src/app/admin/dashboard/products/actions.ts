@@ -1,5 +1,5 @@
 "use server";
-import { productImage, products } from "@/db/schema";
+import { productCategories, productImage, products } from "@/db/schema";
 import { generateCloudinarySignature } from "@/lib/cloudinary";
 import { actionClient, protectedActionClient } from "@/lib/safe-actions";
 import { eq } from "drizzle-orm";
@@ -34,6 +34,7 @@ const updateProductSchema = zfd.formData({
   isFeatured: zfd.text().transform((val) => val === "true"),
   imageUrls: zfd.text().transform((val) => JSON.parse(val)),
   cloudIds: zfd.text().transform((val) => JSON.parse(val)),
+  category: zfd.text().optional(),
 });
 
 export const updateProduct = protectedActionClient
@@ -41,6 +42,10 @@ export const updateProduct = protectedActionClient
   .action(async ({ ctx, parsedInput }) => {
     try {
       // Start a transaction to ensure data consistency
+      const sluggedCategory = slugify(parsedInput.category || "");
+      const category = await ctx.db.query.productCategories.findFirst({
+        where: eq(productCategories.slug, sluggedCategory),
+      });
       const result = await ctx.db.transaction(async (tx) => {
         // 1. Update product details
         await tx
@@ -50,6 +55,7 @@ export const updateProduct = protectedActionClient
             description: parsedInput.description,
             isActive: parsedInput.isActive,
             isFeatured: parsedInput.isFeatured,
+            categoryId: category ? category?.id : undefined,
           })
           .where(eq(products.id, parsedInput.id));
 
@@ -96,12 +102,17 @@ const createProductSchema = zfd.formData({
   isFeatured: zfd.text(),
   imageUrls: zfd.text().optional(), // For storing Cloudinary URLs
   cloudIds: zfd.text().optional(), // For storing Cloudinary IDs
+  category: zfd.text().optional(),
 });
 export const createProduct = actionClient
   .schema(createProductSchema)
   .action(async ({ ctx, parsedInput }) => {
     try {
       const slug = slugify(parsedInput.name);
+      const sluggedCategory = slugify(parsedInput.category || "");
+      const foundCategory = await ctx.db.query.productCategories.findFirst({
+        where: eq(products.slug, sluggedCategory),
+      });
       const [newProduct] = await ctx.db
         .insert(products)
         .values({
@@ -110,6 +121,7 @@ export const createProduct = actionClient
           name: parsedInput.name,
           isActive: parsedInput.isActive === "true",
           isFeatured: parsedInput.isFeatured === "true",
+          ...(foundCategory ? { categoryId: foundCategory.id } : {}),
         })
         .returning({ id: products.id });
 
@@ -130,7 +142,7 @@ export const createProduct = actionClient
       revalidatePath("/");
       return { success: true };
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
   });
@@ -141,7 +153,7 @@ export const deleteProduct = protectedActionClient
     try {
       await ctx.db.delete(products).where(eq(products.id, parsedInput.id));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
     revalidatePath("/admin/dashboard/products");
@@ -159,7 +171,7 @@ export const toggleProductActivation = protectedActionClient
         })
         .where(eq(products.id, parsedInput.id));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
     revalidatePath("/admin/dashboard/products");

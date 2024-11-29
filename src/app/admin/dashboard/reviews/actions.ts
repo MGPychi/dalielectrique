@@ -13,7 +13,7 @@ export const createReview = actionClient
         ...parsedInput,
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
 
@@ -30,7 +30,7 @@ export const deleteReview = protectedActionClient
     try {
       await ctx.db.delete(reviews).where(eq(reviews.id, parsedInput.id));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false };
     }
     revalidatePath("/admin/dashboard/reviews");

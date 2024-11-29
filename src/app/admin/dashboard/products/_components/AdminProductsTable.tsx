@@ -32,12 +32,14 @@ import { deleteProduct, toggleProductActivation } from "../actions";
 import CreateProductModal from "@/components/modals/CreateProductModal";
 import { useRouter } from "next/navigation";
 import UpdateProductModal from "@/components/modals/UpdateProductModal";
+import { getAllCategories } from "@/app/data/categories-data";
 
 interface Props {
   data: Awaited<ReturnType<typeof getProducts>>["data"];
   count: number;
   currentPage: number;
   searchTerm: string;
+  categories: Awaited<ReturnType<typeof getAllCategories>>;
 }
 
 export default function AdminProductsTable({
@@ -45,6 +47,7 @@ export default function AdminProductsTable({
   count,
   currentPage,
   searchTerm,
+  categories,
 }: Props) {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState(searchTerm || "");
@@ -76,7 +79,7 @@ export default function AdminProductsTable({
       <CardHeader>
         <div className="flex items-center justify-between space-x-6">
           <CardTitle>Products Dashboard</CardTitle>
-          <CreateProductModal />
+          <CreateProductModal categories={categories} />
         </div>
       </CardHeader>
       <CardContent className="min-h-[calc(100vh-328px)]">
@@ -93,6 +96,7 @@ export default function AdminProductsTable({
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
+              <TableHead>Category</TableHead>
               <TableHead>active</TableHead>
               <TableHead>featured</TableHead>
               <TableHead>Created at</TableHead>
@@ -101,7 +105,7 @@ export default function AdminProductsTable({
           </TableHeader>
           <TableBody>
             {data.map((item) => (
-              <TableItem key={item.id} product={item} />
+              <TableItem categories={categories} key={item.id} product={item} />
             ))}
           </TableBody>
         </Table>
@@ -114,12 +118,14 @@ export default function AdminProductsTable({
 }
 interface TableItemProps {
   product: Awaited<ReturnType<typeof getProducts>>["data"][0];
+  categories: Awaited<ReturnType<typeof getAllCategories>>;
 }
-const TableItem = ({ product }: TableItemProps) => {
+const TableItem = ({ product, categories }: TableItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <UpdateProductModal
+        categories={categories}
         closeModal={() => setIsOpen(false)}
         open={isOpen}
         product={product}
@@ -129,6 +135,7 @@ const TableItem = ({ product }: TableItemProps) => {
           {product.name.slice(0, 20)}
           {product.name.length > 20 && "..."}
         </TableCell>
+        <TableCell>{product.category?.name}</TableCell>
         <TableCell>
           {product.isActive ? (
             <Check className="w-5 h-5" />
